@@ -10,28 +10,28 @@ namespace GameTime.Models
     {
         [Required]
         [Display(Name = "Competition ID")]
-        public int competitionID { get; set; }
+        public int CompetitionID { get; set; }
 
         [Required(ErrorMessage = "Area of Interest ID is required.")]
         [Display(Name = "Area Of Interest ID")]
-        public int areaInterestID { get; set; }
+        public int AreaInterestID { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(255, ErrorMessage = "Competition name cannot exceed 255 characters.")]
         [Display(Name = "Competition Name")]
-        public string competitionName { get; set; }
+        public string CompetitionName { get; set; }
 
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
-        public DateTime startDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
-        public DateTime endDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         [Display(Name = "Result Released Date")]
         [DataType(DataType.Date)]
-        public DateTime resultReleasedDate { get; set; }
+        public DateTime ResultReleasedDate { get; set; }
 
     }
 }

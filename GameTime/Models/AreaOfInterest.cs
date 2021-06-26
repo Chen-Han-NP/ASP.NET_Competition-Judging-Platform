@@ -11,7 +11,7 @@ namespace GameTime.Models
 
         [Required]
         [Display(Name = "Area Of Interest ID")]
-        public int areaInterestID { get; set; }
+        public int AreaInterestID { get; set; }
 
 
         [Required(ErrorMessage = "Name is required.")]
