@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GameTime.Models;
-using GameTime.SQ
+using GameTime.DAL;
 
 namespace GameTime.Controllers
 {
     public class AreaOfInterestController : Controller
     {
+        private AreaOfInterestDAL AOIContext = new AreaOfInterestDAL();
         //create form default page
         public IActionResult Create()
         {
@@ -32,19 +33,21 @@ namespace GameTime.Controllers
         public IActionResult Create(AreaOfInterest aoi)
         {
             // The aoi object contains user inputs from view
-            if (!ModelState.IsValid) // validation fails
-            {
-                return View(aoi); // returns the view with errors
-            }
             if (ModelState.IsValid)
             {
                 //Add staff record to database
-                aoi.AreaInterestID = aoi.Add(staff);
+                aoi.AreaInterestID = AOIContext.Add(aoi);
                 //Redirect user to Staff/Index view
                 return RedirectToAction("Index");
             }
+            else
+            {
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(aoi);
+            }
 
-            //generate Area of Interest ID
+            
 
         }
     }
