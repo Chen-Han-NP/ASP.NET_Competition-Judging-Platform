@@ -14,7 +14,7 @@ namespace GameTime.Controllers
     {
         private AreaOfInterestDAL AOIContext = new AreaOfInterestDAL();
         //create form default page
-        public IActionResult Create()
+        public IActionResult CreateAOI()
         {
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
@@ -30,13 +30,13 @@ namespace GameTime.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AreaOfInterest aoi)
+        public IActionResult CreateAOI(AreaOfInterest aoi)
         {
             // The aoi object contains user inputs from view
             if (ModelState.IsValid)
             {
                 //Add staff record to database
-                aoi.AreaInterestID = AOIContext.Add(aoi);
+                aoi.AreaInterestID = AOIContext.AddAOI(aoi);
                 //Redirect user to Staff/Index view
                 return RedirectToAction("Index");
             }

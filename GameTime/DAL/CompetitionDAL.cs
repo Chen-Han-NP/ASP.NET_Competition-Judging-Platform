@@ -9,12 +9,12 @@ using System.Data.SqlClient;
 
 namespace GameTime.DAL
 {
-    public class AreaOfInterestDAL
+    public class CompetitionDAL
     {
         private IConfiguration Configuration { get; set; }
         private SqlConnection conn;
         //Constructor
-        public AreaOfInterestDAL()
+        public CompetitionDAL()
         {
             //Read ConnectionString from appsettings.json file
             var builder = new ConfigurationBuilder()
@@ -28,32 +28,31 @@ namespace GameTime.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int AddAOI(AreaOfInterest aoi)
+        public int AddComp(Competition comp)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO AreaInterest (Name)
-OUTPUT INSERTED.AreaInterestID
-VALUES(@Name)";
+            cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleasedDate)
+OUTPUT INSERTED.CompetitionID
+VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedDate)";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@Name", aoi.Name);
+            cmd.Parameters.AddWithValue("@AreaInterestID", comp.AreaInterestID);
+            cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName);
+            cmd.Parameters.AddWithValue("@StartDate", comp.StartDate);
+            cmd.Parameters.AddWithValue("@EndDate", comp.EndDate);
+            cmd.Parameters.AddWithValue("@ResultReleasedDate", comp.ResultReleasedDate);
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
             //StaffID after executing the INSERT SQL statement
-            aoi.AreaInterestID = (int)cmd.ExecuteScalar();
+            comp.CompetitionID = (int)cmd.ExecuteScalar();
             //A connection should be closed after operations.
             conn.Close();
             //Return id when no error occurs.
-            return aoi.AreaInterestID;
+            return comp.CompetitionID;
         }
-
-        
-            
-            
-
     }
 }
