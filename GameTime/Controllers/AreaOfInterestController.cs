@@ -37,6 +37,7 @@ namespace GameTime.Controllers
             {
                 //Add staff record to database
                 aoi.AreaInterestID = AOIContext.AddAOI(aoi);
+                ViewData["ShowResult"] = true;
                 //Redirect user to Staff/Index view
                 return RedirectToAction("Index");
             }
