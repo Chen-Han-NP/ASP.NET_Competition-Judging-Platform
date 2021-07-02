@@ -30,21 +30,23 @@ namespace GameTime.DAL
 
         public int AddAOI(AreaOfInterest aoi)
         {
+            
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
             cmd.CommandText = @"INSERT INTO AreaInterest (Name)
 OUTPUT INSERTED.AreaInterestID
-VALUES(@Name)";
+VALUES(@name)";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@Name", aoi.Name);
+            cmd.Parameters.AddWithValue("@name", aoi.Name);
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
             //StaffID after executing the INSERT SQL statement
             aoi.AreaInterestID = (int)cmd.ExecuteScalar();
+            
             //A connection should be closed after operations.
             conn.Close();
             //Return id when no error occurs.
@@ -52,8 +54,8 @@ VALUES(@Name)";
         }
 
         
-            
-            
+
+
 
     }
 }

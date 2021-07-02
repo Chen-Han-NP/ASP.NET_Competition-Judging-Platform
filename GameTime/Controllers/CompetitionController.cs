@@ -13,7 +13,7 @@ namespace GameTime.Controllers
     {
         private CompetitionDAL AOIContext = new CompetitionDAL();
         //create form default page
-        public IActionResult CreateComp()
+        public ActionResult CreateComp()
         {
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
@@ -29,7 +29,7 @@ namespace GameTime.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateComp(Competition comp)
+        public ActionResult CreateComp(Competition comp)
         {
             // The aoi object contains user inputs from view
             if (ModelState.IsValid)
