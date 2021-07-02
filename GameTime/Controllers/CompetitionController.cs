@@ -13,14 +13,12 @@ namespace GameTime.Controllers
     {
         private CompetitionDAL AOIContext = new CompetitionDAL();
         //create form default page
-        public ActionResult CreateComp()
+        public ActionResult Createcomp()
         {
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
             // ...need to do 
 
-            //prepare data for view
-            ViewData["ShowResult"] = false;
 
             //create Area of Interest object
             Competition comp = new Competition();
@@ -29,7 +27,7 @@ namespace GameTime.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateComp(Competition comp)
+        public ActionResult Createcomp(Competition comp)
         {
             // The aoi object contains user inputs from view
             if (ModelState.IsValid)
@@ -37,7 +35,7 @@ namespace GameTime.Controllers
                 //Add staff record to database
                 comp.AreaInterestID = AOIContext.AddComp(comp);
                 //Redirect user to Staff/Index view
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
