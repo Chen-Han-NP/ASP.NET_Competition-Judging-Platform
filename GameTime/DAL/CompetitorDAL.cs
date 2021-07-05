@@ -49,5 +49,13 @@ namespace GameTime.DAL
 
             return competitorSignUp.CompetitorID;
         }
+
+        //Add Checks for unique Email
+        public bool isEmailExists(string email, int competitorID)
+        {
+            bool emailFound = false;
+            return (emailFound);
+        }
+
     }
 }
