@@ -9,6 +9,9 @@ namespace GameTime.Models
     public class CompetitorSignUp
     {
         [Required]
+        public int CompetitorID { get; set; }
+
+        [Required]
         [Display(Name = "Your Name:")]
         [StringLength(50, ErrorMessage = "Cannot Exceed 50 characters.")]
         public string CompetitorName { get; set; }
