@@ -15,7 +15,8 @@ namespace GameTime.Controllers
         private AreaOfInterestDAL AOIContext = new AreaOfInterestDAL();
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Home");
+            List<AreaOfInterest> aiList = AOIContext.GetAreaOfInterests();
+            return View(aiList);
         }
         //create form default page
         public ActionResult CreateAOI()
@@ -41,7 +42,7 @@ namespace GameTime.Controllers
                 aoi.AreaInterestID = AOIContext.AddAOI(aoi);
                 //ViewData["ShowResult"] = true;
                 //Redirect user to AOI/Index view
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             else
             {
