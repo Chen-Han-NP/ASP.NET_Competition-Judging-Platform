@@ -13,7 +13,7 @@ namespace GameTime.Controllers
     {
 
         private ViewCompetitionDAL competitionContext = new ViewCompetitionDAL();
-
+        private CompetitorSubmissionDAL competitorContext = new CompetitorSubmissionDAL();
 
         public ActionResult Index()
         {
@@ -22,6 +22,21 @@ namespace GameTime.Controllers
             competitionList = competitionContext.GetAllCompetitions();
 
             return View(competitionList);
+        }
+
+        public ActionResult ViewCompetition(int? competitionId)
+
+        {
+            if (competitionId != null)
+            {
+                List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
+                return View(competitorList);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         
