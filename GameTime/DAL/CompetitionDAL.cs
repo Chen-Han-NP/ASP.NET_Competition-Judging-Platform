@@ -40,7 +40,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@AreaInterestID", comp.AreaInterestID);
-            cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName);
+            cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName); 
             cmd.Parameters.AddWithValue("@StartDate", comp.StartDate);
             cmd.Parameters.AddWithValue("@EndDate", comp.EndDate);
             cmd.Parameters.AddWithValue("@ResultReleasedDate", comp.ResultReleasedDate);
@@ -53,6 +53,40 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             conn.Close();
             //Return id when no error occurs.
             return comp.CompetitionID;
+        }
+
+        public List<Competition> GetAllComp()
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT * FROM Competition ORDER BY CompetitionID";
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a staff list
+            List<Competition> CompetitionList = new List<Competition>();
+            while (reader.Read())
+            {
+                CompetitionList.Add(
+                new Competition
+                {
+                    CompetitionID = reader.GetInt32(0), //0: 1st column
+                    AreaInterestID = reader.GetInt32(1), //1: 2nd column
+                                                           //Get the first character of a string
+                    CompetitionName = reader.GetString(2), //2: 3rd column
+                    StartDate = reader.GetDateTime(3), //3: 4th column
+                    EndDate = reader.GetDateTime(3),
+                    ResultReleasedDate = reader.GetDateTime(3)
+                }
+                );
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return CompetitionList;
         }
     }
 }

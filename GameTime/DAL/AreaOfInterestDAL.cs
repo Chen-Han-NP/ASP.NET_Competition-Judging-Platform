@@ -54,7 +54,35 @@ VALUES(@name)";
         }
 
         
-
+        public List<AreaOfInterest> GetAreaOfInterests()
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT * FROM AreaInterest ORDER BY AreaInterestID";
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a staff list
+            List<AreaOfInterest> aiList = new List<AreaOfInterest>();
+            while (reader.Read())
+            {
+                aiList.Add(
+                new AreaOfInterest
+                {
+                    AreaInterestID = reader.GetInt32(0), //0: 1st column
+                    Name = reader.GetString(1), //1: 2nd column
+                                                
+                }
+                );
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return aiList;
+        }
 
 
     }

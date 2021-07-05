@@ -11,6 +11,7 @@ namespace GameTime.Controllers
         public ActionResult Index()
         {
             return View();
+            //please rename your file it is a bit confusing 
         }
     }
 }

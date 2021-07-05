@@ -11,7 +11,12 @@ namespace GameTime.Controllers
 {
     public class CompetitionController : Controller
     {
-        private CompetitionDAL AOIContext = new CompetitionDAL();
+        private CompetitionDAL compContext = new CompetitionDAL();
+        public ActionResult Index()
+        {
+            List<Competition> compList = compContext.GetAllComp();
+            return View(compList);
+        }
         //create form default page
         public ActionResult Createcomp()
         {
@@ -33,9 +38,9 @@ namespace GameTime.Controllers
             if (ModelState.IsValid)
             {
                 //Add staff record to database
-                comp.AreaInterestID = AOIContext.AddComp(comp);
+                comp.AreaInterestID = compContext.AddComp(comp);
                 //Redirect user to Staff/Index view
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             else
             {
