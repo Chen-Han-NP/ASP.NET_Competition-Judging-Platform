@@ -34,7 +34,7 @@ namespace GameTime.Controllers
                 return View(competitor);
             }
         }
-        public ActionResult JudgeSignUp()
+        public ActionResult CreateJudge(JudgeSignUp judge)
         {
             return View();
         }

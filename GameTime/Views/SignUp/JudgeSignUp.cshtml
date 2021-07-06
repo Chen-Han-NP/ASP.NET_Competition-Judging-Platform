@@ -1,0 +1,74 @@
+﻿@model GameTime.Models.JudgeSignUp
+
+@{
+    ViewData["Title"] = "Judge";
+}
+
+<h1>Judge</h1>
+
+<h4>JudgeSignUp</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JudgeID" class="control-label"></label>
+                <input asp-for="JudgeID" class="form-control" />
+                <span asp-validation-for="JudgeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JudgeName" class="control-label"></label>
+                <input asp-for="JudgeName" class="form-control" />
+                <span asp-validation-for="JudgeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salutation" class="col-form-label"></label>
+                <div class="form-group form-check-inline">
+                    <label class="control-label">
+                        <input asp-for="Salutation" checked class="form-check-input" type="radio" value="Mr" />
+                        <span style="font-weight:normal; padding-right:20px">Mr</span>
+                    </label>
+                    <label class="control-label">
+                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mrs" />
+                        <span style="font-weight:normal; padding-right:20px">Mrs</span>
+                    </label>
+                    <label class="control-label">
+                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Ms" />
+                        <span style="font-weight:normal; padding-right:20px">Ms</span>
+                    </label>
+                    <label class="control-label">
+                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mdm" />
+                        <span style="font-weight:normal; padding-right:20px">Mdm</span>
+                    </label>
+                    <label class="control-label">
+                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Dr" />
+                        <span style="font-weight:normal; padding-right:20px">Dr</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AreaInterestID" class="control-label"></label>
+                <input asp-for="AreaInterestID" class="form-control" />
+                <span asp-validation-for="AreaInterestID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailAddr" class="control-label"></label>
+                <input asp-for="EmailAddr" class="form-control" />
+                <span asp-validation-for="EmailAddr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
