@@ -20,11 +20,7 @@ namespace GameTime.Controllers
         //create form default page
         public ActionResult Createcomp()
         {
-            // Stop accessing the action if not logged in
-            // or account not in the "Administrator" role
-            // ...need to do 
-
-
+            
             //create Area of Interest object
             Competition comp = new Competition();
 
