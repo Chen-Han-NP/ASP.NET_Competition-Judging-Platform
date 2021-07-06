@@ -13,16 +13,19 @@ namespace GameTime.Controllers
         private CompetitorDAL competitorContext = new CompetitorDAL();
         public ActionResult Index()
         {
-            return View("Index");
+            return View("Index", "Home");
         }
 
         public ActionResult CompetitorSignUp()
         {
-            return View();
+
+            CompetitorSignUp competitor = new CompetitorSignUp();
+            return View(competitor);
         }
 
         [HttpPost]
-        public ActionResult CompetitorSignup(CompetitorSignUp competitor)
+        [ValidateAntiForgeryToken]
+        public ActionResult CompetitorSignUp(CompetitorSignUp competitor)
         {
             if (ModelState.IsValid)
             {

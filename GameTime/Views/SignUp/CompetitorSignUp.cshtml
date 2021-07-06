@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CompetitorName" class="control-label"></label>
-                <input asp-for="CompetitorName" class="form-control" required/>
+                <input asp-for="CompetitorName" class="form-control" />
                 <span asp-validation-for="CompetitorName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,17 +44,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="EmailAddr" class="control-label"></label>
-                <input asp-for="EmailAddr" class="form-control" required/>
+                <input asp-for="EmailAddr" class="form-control" />
                 <span asp-validation-for="EmailAddr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" required/>
+                <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="CreateCompetitor" class="btn btn-primary" />
+                <input type="submit" value="CompetitorSignUp" class="btn btn-primary" />
             </div>
+            
         </form>
     </div>
 </div>
