@@ -24,19 +24,19 @@ namespace GameTime.Controllers
             return View(competitionList);
         }
 
-        public ActionResult ViewCompetition(int? competitionId)
+        public ActionResult ViewCompetition(int? competitionId, string competitionName = "")
 
         {
-            if (competitionId != null)
-            {
-                List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
-                return View(competitorList);
-            }
-            else
-            {
-                return View();
-            }
+            List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
+            ViewData["CompetitionName"] = competitionName;
+            return View(competitorList);
 
+        }
+
+        public ActionResult Vote(int? competitorId, int? competitionId)
+        {
+
+            return RedirectToAction("ViewCompetition", new { competitionId = (int)competitionId});
         }
 
         

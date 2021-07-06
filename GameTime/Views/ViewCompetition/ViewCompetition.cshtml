@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<GameTime.Models.CompetitorSubmissionViewModel>
 @{
+}
+<div style="text-align:center">
+    <h2>@ViewData["CompetitionName"]</h2>
+</div>
+
+
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewCompetitors" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Work Submitted</th>
+                    <th>Vote Count</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Salutation @item.CompetitorName</td>
+                        <td><a href = "">@item.FileSubmitted</a></td>
+                        <td>@item.VoteCount.ToString()</td>
+                        <td>
+                            <a asp-action="Vote" asp-controller="ViewCompetition"
+                               asp-route-CompetitorId="@item.CompetitorId",
+                               asp-route-CompetitionId="@item.CompetitionId">Vote</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 }

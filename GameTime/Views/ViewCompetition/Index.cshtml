@@ -46,7 +46,8 @@
 
                     <td>
                         <a asp-action="ViewCompetition" asp-controller="ViewCompetition"
-                           asp-route-id="@item.CompetitionID">View</a>
+                           asp-route-CompetitionId="@item.CompetitionID"
+                           asp-route-CompetitionName="@item.CompetitionName">View</a>
                     </td>
                 </tr>
                 }
