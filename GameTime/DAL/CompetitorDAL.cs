@@ -27,8 +27,38 @@ namespace GameTime.DAL
             //Connection String read.
             conn = new SqlConnection(strConn);
         }
+        public List<Competitor> GetAllCompetitor()
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT * FROM Competitor ORDER BY CompetitorID";
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a staff list
+            List<Competitor> competitorList = new List<Competitor>();
+            while (reader.Read())
+            {
+                competitorList.Add(
+                new Competitor
+                {
+                     CompetitorID = reader.GetInt32(0), 
+                     CompetitorName = reader.GetString(1), 
+                     Salutation = reader.GetString(2),
+                     EmailAddr = reader.GetString(3), 
+                     Password = reader.GetString(4)
+                }
+                );
+            }
+            reader.Close();
+            conn.Close();
 
-        public int Add(CompetitorSignUp competitorSignUp)
+            return competitorList;
+        }
+
+        public int Add(Competitor competitorSignUp)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();

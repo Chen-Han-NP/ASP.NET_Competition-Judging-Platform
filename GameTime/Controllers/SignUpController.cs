@@ -21,13 +21,13 @@ namespace GameTime.Controllers
         public ActionResult CompetitorSignUp()
         {
 
-            CompetitorSignUp competitor = new CompetitorSignUp();
+            Competitor competitor = new Competitor();
             return View(competitor);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CompetitorSignUp(CompetitorSignUp competitor)
+        public ActionResult CompetitorSignUp(Competitor competitor)
         {
             if (ModelState.IsValid)
             {

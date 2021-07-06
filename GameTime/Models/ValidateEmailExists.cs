@@ -14,7 +14,7 @@ namespace GameTime.Models
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             string email = Convert.ToString(value);
-            CompetitorSignUp competitor = (CompetitorSignUp)validationContext.ObjectInstance;
+            Competitor competitor = (Competitor)validationContext.ObjectInstance;
             int competitorID = competitor.CompetitorID;
 
             if (competitorContext.isEmailExists(email, competitorID))

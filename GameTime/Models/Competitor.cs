@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameTime.Models
 {
-    public class CompetitorSignUp
+    public class Competitor
     {
         [Required]
         public int CompetitorID { get; set; }
