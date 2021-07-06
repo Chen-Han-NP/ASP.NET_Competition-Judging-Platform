@@ -20,6 +20,7 @@ namespace GameTime.Controllers
             List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
 
             competitionList = competitionContext.GetAllCompetitions();
+            
 
             return View(competitionList);
         }

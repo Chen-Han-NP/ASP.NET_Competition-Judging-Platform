@@ -30,6 +30,19 @@ namespace GameTime.DAL
 
         public int AddComp(Competition comp)
         {
+            
+            if (comp.StartDate == null)
+            {
+                comp.StartDate = DateTime.Parse("01/01/1753");
+            }
+            if (comp.EndDate == null)
+            {
+                comp.EndDate = DateTime.Parse("01/01/1753");
+            }
+            if (comp.ResultReleasedDate == null)
+            {
+                comp.ResultReleasedDate = DateTime.Parse("01/01/1753");
+            }
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
@@ -69,23 +82,42 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             List<Competition> CompetitionList = new List<Competition>();
             while (reader.Read())
             {
+                
                 CompetitionList.Add(
                 new Competition
                 {
                     CompetitionID = reader.GetInt32(0), //0: 1st column
                     AreaInterestID = reader.GetInt32(1), //1: 2nd column
-                                                           //Get the first character of a string
+                                                         //Get the first character of a string
                     CompetitionName = reader.GetString(2), //2: 3rd column
-                    StartDate = reader.GetDateTime(3), //3: 4th column
-                    EndDate = reader.GetDateTime(3),
-                    ResultReleasedDate = reader.GetDateTime(3)
-                }
+
+                    
+                      StartDate = reader.GetDateTime(3), //3: 4th column
+                      EndDate = reader.GetDateTime(3),
+                      ResultReleasedDate = reader.GetDateTime(3)
+                } 
                 );
+                
             }
             //Close DataReader
             reader.Close();
             //Close the database connection
             conn.Close();
+            for (int i = 0; i < CompetitionList.Count; i++)
+            {
+                if (CompetitionList[i].StartDate == DateTime.Parse("01/01/1753"))
+                {
+                    CompetitionList[i].StartDate = null;
+                }
+                if (CompetitionList[i].EndDate == DateTime.Parse("01/01/1753"))
+                {
+                    CompetitionList[i].EndDate = null;
+                }
+                if (CompetitionList[i].ResultReleasedDate == DateTime.Parse("01/01/1753"))
+                {
+                    CompetitionList[i].ResultReleasedDate = null;
+                }
+            }
             return CompetitionList;
         }
     }

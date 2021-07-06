@@ -46,12 +46,30 @@
                 @Html.DisplayFor(modelItem => item.CompetitionName)
             </td>
             <td>
+                @{
+                    if (item.StartDate == null)
+                    {
+                                <p>No Date Set</p>
+                    }
+                }
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
+                @{
+                    if (item.EndDate == null)
+                    {
+                                <p>No Date Set</p>
+                    }
+                }
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
             <td>
+                @{
+                    if (item.ResultReleasedDate == null)
+                    {
+                                <p>No Date Set</p>
+                    }
+                }
                 @Html.DisplayFor(modelItem => item.ResultReleasedDate)
             </td>
             @*<td>
