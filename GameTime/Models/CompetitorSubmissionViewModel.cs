@@ -25,13 +25,13 @@ namespace GameTime.Models
         public string FileSubmitted { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime DateTimeSubmitted { get; set; }
+        public DateTime? DateTimeSubmitted { get; set; }
 
         public string Appeal { get; set; }
 
         [Required]
         public int VoteCount { get; set; }
 
-        public int Ranking { get; set; }
+        public int? Ranking { get; set; }
     }
 }
