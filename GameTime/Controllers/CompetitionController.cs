@@ -12,6 +12,8 @@ namespace GameTime.Controllers
     public class CompetitionController : Controller
     {
         private CompetitionDAL compContext = new CompetitionDAL();
+        private AreaOfInterestDAL aoiContext = new AreaOfInterestDAL();
+        private List<SelectListItem> sList = new List<SelectListItem>();
         public ActionResult Index()
         {
             List<Competition> compList = compContext.GetAllComp();
@@ -20,7 +22,20 @@ namespace GameTime.Controllers
         //create form default page
         public ActionResult Createcomp()
         {
-            
+            List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
+            for (int i = 0; i < aoiList.Count; i++)
+            {
+                sList.Add(
+                new SelectListItem
+                {
+                    Value = (i+1).ToString(),
+                    Text = aoiList[i].Name.ToString(),
+                });
+            }
+
+            ViewData["ShowResult"] = false;
+            ViewData["aoiList"] = sList;
+
             //create Area of Interest object
             Competition comp = new Competition();
 
@@ -34,7 +49,7 @@ namespace GameTime.Controllers
             if (ModelState.IsValid)
             {
                 //Add staff record to database
-                comp.AreaInterestID = compContext.AddComp(comp);
+                comp.CompetitionID = compContext.AddComp(comp);
                 //Redirect user to Staff/Index view
                 return RedirectToAction("Index");
             }
