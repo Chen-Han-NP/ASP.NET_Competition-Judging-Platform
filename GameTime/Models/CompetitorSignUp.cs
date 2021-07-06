@@ -23,6 +23,7 @@ namespace GameTime.Models
         [Required]
         [Display(Name = "Email Address:")]
         [EmailAddress]
+        [ValidateEmailExists] //Custom Validation Attribute for emails that exists
         public string EmailAddr { get; set; }
 
         

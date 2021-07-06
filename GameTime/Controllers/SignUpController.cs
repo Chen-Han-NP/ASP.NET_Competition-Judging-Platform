@@ -22,7 +22,7 @@ namespace GameTime.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateCompetitor(CompetitorSignUp competitor)
+        public ActionResult CompetitorSignup(CompetitorSignUp competitor)
         {
             if (ModelState.IsValid)
             {
