@@ -6,7 +6,7 @@
 </div>
 
 
-
+<form asp-action="Vote"></form>
 @if (Model.ToList().Count > 0)
 {
     <div class="table-responsive">
@@ -28,8 +28,9 @@
                         <td>@item.VoteCount.ToString()</td>
                         <td>
                             <a asp-action="Vote" asp-controller="ViewCompetition"
-                               asp-route-CompetitorId="@item.CompetitorId",
-                               asp-route-CompetitionId="@item.CompetitionId">Vote</a>
+                               asp-route-CompetitorId="@item.CompetitorId"
+                               asp-route-CompetitionId="@item.CompetitionId"
+                               asp-route-CompetitionName ="@ViewData["CompetitionName"]">Vote</a>
                         </td>
                     </tr>
                 }

@@ -68,5 +68,28 @@ WHERE cs.CompetitionID = @comId";
             conn.Close();
             return competitorList;
         }
+
+        public int UpdateVoteCount(CompetitorSubmissionViewModel competitor)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"UPDATE CompetitionSubmission
+SET VoteCount = @newVoteCount
+WHERE CompetitionID = @competitionId AND CompetitorID = @competitorId";
+
+
+            cmd.Parameters.AddWithValue("@newVoteCount", competitor.VoteCount += 1);
+            cmd.Parameters.AddWithValue("@competitionId", competitor.CompetitionId);
+            cmd.Parameters.AddWithValue("@competitorId", competitor.CompetitorId);
+
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
+
+
     }
 }

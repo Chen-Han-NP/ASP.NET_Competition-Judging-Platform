@@ -11,6 +11,7 @@ namespace GameTime.Models
         [Required]
         public int CompetitionId { get; set; }
 
+
         [Required]
         public int CompetitorId { get; set; }
 

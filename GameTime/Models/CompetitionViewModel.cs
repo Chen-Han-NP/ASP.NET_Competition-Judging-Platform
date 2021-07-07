@@ -12,6 +12,8 @@ namespace GameTime.Models
         [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; }
 
+       
+
         [Required(ErrorMessage = "Area of Interest ID is required.")]
         [Display(Name = "Area Of Interest ID")]
         public int AreaInterestID { get; set; }

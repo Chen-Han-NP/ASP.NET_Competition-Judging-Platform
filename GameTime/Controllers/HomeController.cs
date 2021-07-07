@@ -81,6 +81,8 @@ namespace GameTime.Controllers
         }
         public IActionResult Index()
         {
+            
+            HttpContext.Session.SetString("votedTo", "");
             return View();
         }
 
