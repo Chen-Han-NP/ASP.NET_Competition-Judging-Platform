@@ -93,8 +93,8 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
                     
                       StartDate = reader.GetDateTime(3), //3: 4th column
-                      EndDate = reader.GetDateTime(3),
-                      ResultReleasedDate = reader.GetDateTime(3)
+                      EndDate = reader.GetDateTime(4),
+                      ResultReleasedDate = reader.GetDateTime(5)
                 } 
                 );
                 
