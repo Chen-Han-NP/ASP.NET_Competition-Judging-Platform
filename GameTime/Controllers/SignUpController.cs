@@ -42,12 +42,13 @@ namespace GameTime.Controllers
 
         public ActionResult JudgeSignUp()
         {
+            Judge judge = new Judge();
             ViewData["GetAOI"] = GetAOI();
-            return View();
+            return View(judge);
         }
 
         [HttpPost]
-        public ActionResult JudgeSignUp(JudgeSignUp judge)
+        public ActionResult JudgeSignUp(Judge judge)
         {
             if (ModelState.IsValid)
             {
