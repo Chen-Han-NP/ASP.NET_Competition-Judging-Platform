@@ -57,6 +57,7 @@ namespace GameTime.Controllers
             }
             else
             {
+                ViewData["GetAOI"] = GetAOI();
                 return View(judge);
             }
         }
@@ -66,12 +67,21 @@ namespace GameTime.Controllers
             AreaOfInterestDAL AOIcontext = new AreaOfInterestDAL();
             List<AreaOfInterest> AOI = AOIcontext.GetAreaOfInterests();
             List<SelectListItem> SelectList = new List<SelectListItem>();
+
+            SelectList.Add(new SelectListItem
+            {
+                Value = "default",
+                Text = "-- select option --",
+                Selected = true
+            });
+
             for (int i = 0; i < AOI.Count(); i++)
             {
                 SelectList.Add(new SelectListItem
                 {
-                    Value = i.ToString(),
-                    Text = AOI[i].ToString()
+                    Value = (i+1).ToString(),
+                    Text = AOI[i].Name.ToString(),
+                    Selected = false
                 });
             }
             ViewData["AOIList"] = SelectList;
