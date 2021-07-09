@@ -44,6 +44,7 @@ namespace GameTime.Controllers
         {
             Judge judge = new Judge();
             ViewData["GetAOI"] = GetAOI();
+            ViewData["GetJudgeID"] = GetJudgeID(); 
             return View(judge);
         }
 
@@ -58,6 +59,7 @@ namespace GameTime.Controllers
             else
             {
                 ViewData["GetAOI"] = GetAOI();
+                ViewData["GetJudgeID"] = GetJudgeID();
                 return View(judge);
             }
         }
@@ -86,6 +88,24 @@ namespace GameTime.Controllers
             }
             ViewData["AOIList"] = SelectList;
             return SelectList;
+        }
+
+        private int GetJudgeID()
+        {
+            JudgeDAL JudgeContext = new JudgeDAL();
+            List<Judge> JudgeList = JudgeContext.GetAllJudge();
+            for(int i = 0; i<JudgeList.Count(); i++) // Check if there is space and fills in ID so that judge ID will be filled and not empty
+            {
+                if (JudgeList[i].JudgeID == i+1)
+                {
+                    continue;
+                } 
+                else
+                {
+                    return i;
+                }
+            }
+            return JudgeList.Count()+1;
         }
     }
 }

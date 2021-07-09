@@ -12,9 +12,7 @@
         <form asp-action="JudgeSignUp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="JudgeID" class="control-label"></label>
-                <input asp-for="JudgeID" class="form-control" />
-                <span asp-validation-for="JudgeID" class="text-danger"></span>
+                <input asp-for="JudgeID" class="form-control" value="@ViewData["GetJudgeID"]" hidden/>
             </div>
             <div class="form-group">
                 <label asp-for="JudgeName" class="control-label"></label>
