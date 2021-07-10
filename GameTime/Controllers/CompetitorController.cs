@@ -12,6 +12,9 @@ namespace GameTime.Controllers
     public class CompetitorController : Controller
     {
         private ViewCompetitionDAL competitionContext = new ViewCompetitionDAL();
+        private CompetitorDAL competitorContext = new CompetitorDAL();
+        private CompetitorSubmissionDAL competitorSubmissionContext = new CompetitorSubmissionDAL();
+
         // GET: CompetitorController
         public ActionResult Index()
         {
@@ -21,7 +24,10 @@ namespace GameTime.Controllers
         public ActionResult CompetitorViewCompetition()
         {
             List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
-
+            if ((HttpContext.Session.GetString("Role") == null) || (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             competitionList = competitionContext.GetAllCompetitions();
             return View(competitionList);
         }
@@ -49,9 +55,27 @@ namespace GameTime.Controllers
             return View(showCriteriaList);
         }
 
-        public ActionResult JoinCompetition()
+        public ActionResult JoinCompetition(int competitionID)
         {
-            return RedirectToAction("CompetitorViewCompetition");
+            CompetitorSubmissionViewModel competitorSubmission = new CompetitorSubmissionViewModel();
+            Competition competition = new Competition();
+
+            //if (DateTime.Today.AddDays(3) < competition.StartDate)
+            //{
+
+            //}
+
+
+            int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
+            competitorSubmission.CompetitionId = competitionID;
+            competitorSubmission.CompetitorId = id;
+            competitorSubmission.FileSubmitted = "replaceThis.pdf";
+            competitorSubmission.DateTimeSubmitted = DateTime.Today;
+            competitorSubmission.Appeal = "";
+            competitorSubmission.VoteCount = 0;
+            competitorSubmission.Ranking = -1;
+            competitorSubmissionContext.JoinCompetition(competitorSubmission);
+            return RedirectToAction("Competitor", "Home");
         }
 
 

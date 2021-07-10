@@ -53,9 +53,8 @@
                            asp-route-CompetitionId="@item.CompetitionID">Criteria</a>
                     </td>
                     <td>
-                        <a asp-action="JoinCompetition" asp-controller="ViewCompetition"
-                           asp-route-CompetitionId="@item.CompetitionID"
-                           asp-route-CompetitionName="@item.CompetitionName">Join</a>
+                        <a asp-action="JoinCompetition" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Join</a>
                     </td>
                 </tr>
                 }

@@ -67,11 +67,12 @@ namespace GameTime.Controllers
             {
                 for (int i = 0; i < competitorContext.GetAllCompetitor().Count; i++)
                 {
-                    HttpContext.Session.SetString("Competitor", "true");
+                    HttpContext.Session.SetString("Role", "Competitor");
                     string checkEmail = competitorContext.GetAllCompetitor()[i].EmailAddr;
                     string checkPassword = competitorContext.GetAllCompetitor()[i].Password;
                     if (checkEmail == email && checkPassword == password)
                     {
+                        HttpContext.Session.SetString("CompetitorID", competitorContext.GetAllCompetitor()[i].CompetitorID.ToString());
                         return RedirectToAction("Competitor", "Home");
                     }
                 }
