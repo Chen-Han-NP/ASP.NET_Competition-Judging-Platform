@@ -48,7 +48,7 @@ namespace GameTime.Controllers
 
             if (email == "admin1@lcu.edu.sg" && password == "p@55Admin")
             {
-
+                HttpContext.Session.SetString("Role", "Admin");
                 return RedirectToAction("Admin", "Home");
             }
             else if (check == "lcu.edu.sg" && isJudge == true)

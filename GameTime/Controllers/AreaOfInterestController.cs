@@ -15,6 +15,11 @@ namespace GameTime.Controllers
         private AreaOfInterestDAL AOIContext = new AreaOfInterestDAL();
         public ActionResult Index()
         {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             List<AreaOfInterest> aiList = AOIContext.GetAreaOfInterests();
             return View(aiList);
         }
@@ -24,8 +29,12 @@ namespace GameTime.Controllers
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
             // ...need to do 
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-           
             //create Area of Interest object
             AreaOfInterest aoi = new AreaOfInterest();
             

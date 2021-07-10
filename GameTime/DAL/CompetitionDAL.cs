@@ -120,5 +120,86 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             }
             return CompetitionList;
         }
+        public Competition GetDetails(int competitionId)
+        {
+            Competition Competition = new Competition();
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a staff record.
+            cmd.CommandText = @"SELECT * FROM Competition WHERE CompetitionID = @selectedCompetitionID";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “staffId”.
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    // Fill staff object with values from the data reader
+                    Competition.CompetitionID = competitionId;
+                    Competition.AreaInterestID = reader.GetInt32(1);
+                    Competition.CompetitionName = reader.GetString(2);
+                    Competition.StartDate = !reader.IsDBNull(3) ?
+                    reader.GetDateTime(3) : (DateTime?)null;
+                    Competition.EndDate = !reader.IsDBNull(4) ?
+                    reader.GetDateTime(4) : (DateTime?)null;
+                    Competition.ResultReleasedDate = !reader.IsDBNull(5) ?
+                    reader.GetDateTime(5) : (DateTime?)null;
+                    
+                }
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return Competition;
+        }
+
+        public int Update(Competition competition)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE Competition SET AreaInterestID = @AreaInterestID, CompetitionName=@CompetitionName, StartDate=@StartDate, EndDate=@EndDate, ResultReleasedDate=@ResultReleasedDate WHERE CompetitionID = @selectedCompetitionID";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@AreaInterestID", competition.AreaInterestID);
+            cmd.Parameters.AddWithValue("@CompetitionName", competition.CompetitionName);
+            cmd.Parameters.AddWithValue("@StartDate", competition.StartDate);
+            cmd.Parameters.AddWithValue("@EndDate", competition.EndDate);
+            cmd.Parameters.AddWithValue("@ResultReleasedDate", competition.ResultReleasedDate);
+           
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competition.CompetitionID);
+            //Open a database connection
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            cmd.ExecuteNonQuery();
+            int count = 0;
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
+
+        public int Delete(Competition competition)
+        {
+            
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM Competition WHERE CompetitionID = @selectCompetitionID";
+            cmd.Parameters.AddWithValue("@selectCompetitionID", competition.CompetitionID);
+            //Open a database connection
+            conn.Open();
+            int rowAffected;
+            //Execute the DELETE SQL to remove the staff record
+            rowAffected = cmd.ExecuteNonQuery();
+            //Close database connection
+            conn.Close();
+            //Return number of row of staff record updated or deleted
+            return rowAffected;
+        }
     }
 }
