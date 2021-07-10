@@ -63,5 +63,39 @@ namespace GameTime.Controllers
             
 
         }
+
+        public ActionResult Delete(int? id)
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Staff" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("Index");
+            }
+            AreaOfInterest aoi = AOIContext.GetDetails(id.Value);
+
+            if (aoi == null || AOIContext.GetCompetitorCount(id.Value) != 0)
+            {
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("Index");
+            }
+            return View(aoi);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult Delete(AreaOfInterest aoi)
+        {
+            // Delete the staff record from database
+            AOIContext.Delete(aoi);
+            return RedirectToAction("Index");
+        }
+
     }
 }
