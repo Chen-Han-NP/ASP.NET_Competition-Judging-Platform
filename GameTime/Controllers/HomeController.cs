@@ -75,7 +75,7 @@ namespace GameTime.Controllers
                     }
                 }
             }
-            TempData["wrongE"] = "Wrong Email";
+            TempData["invalidLogin"] = "Invalid Email or Password.";
             return RedirectToAction("Login", "Home");
             
         }
