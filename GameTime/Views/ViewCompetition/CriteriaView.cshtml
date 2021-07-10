@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GameTime.Models.Criteria>
+
+@{
+    ViewData["Title"] = "CriteriaView";
+}
+
+<h1>CriteriaView</h1>
+
+<fieldset class="FormContent">
+    @*<div class="form-group row">
+        <label asp-for="CompetitionID" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("CompetitionID")
+        </div>
+    </div>*@
+    <div class="table-responsive">
+        <table id="viewCompetitors" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Criteria ID</th>
+                    <th>Criteria</th>
+                    <th>Weightage</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CriteriaID</td>
+                        <td>@item.CriteriaName</td>
+                        <td>@item.Weightage</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+        @*<div class="form-group row">
+            <label asp-for="CriteriaName" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.Display("CriteriaName")
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Weightage" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.Display("Weightage")
+            </div>
+        </div>*@
+</fieldset>
