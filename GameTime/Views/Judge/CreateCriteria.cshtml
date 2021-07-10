@@ -1,0 +1,44 @@
+﻿@model GameTime.Models.Criteria
+
+@{
+    ViewData["Title"] = "CreateCriteria";
+}
+
+<h1>CreateCriteria</h1>
+
+<h4>Criteria</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCriteria">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CriteriaID" class="control-label"></label>
+                <input asp-for="CriteriaID" class="form-control" />
+                <span asp-validation-for="CriteriaID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitionID" class="control-label"></label>
+                <input asp-for="CompetitionID" class="form-control" />
+                <span asp-validation-for="CompetitionID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CriteriaName" class="control-label"></label>
+                <input asp-for="CriteriaName" class="form-control" />
+                <span asp-validation-for="CriteriaName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weightage" class="control-label"></label>
+                <input asp-for="Weightage" class="form-control" />
+                <span asp-validation-for="Weightage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CreateCriteria" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

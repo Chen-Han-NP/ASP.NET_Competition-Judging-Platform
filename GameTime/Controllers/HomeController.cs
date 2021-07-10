@@ -59,7 +59,7 @@ namespace GameTime.Controllers
                     string checkPassword = judgeContext.GetAllJudge()[i].Password;
                     if (checkEmail == email && checkPassword == password)
                     {
-                        return RedirectToAction("Judge", "Home");
+                        return RedirectToAction("Index", "Judge");
                     }
                 }
             }

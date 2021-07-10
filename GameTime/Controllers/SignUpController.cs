@@ -49,12 +49,13 @@ namespace GameTime.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult JudgeSignUp(Judge judge)
         {
             if (ModelState.IsValid)
             {
                 judge.JudgeID = judgeContext.Add(judge);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Judge", judge);
             }
             else
             {
