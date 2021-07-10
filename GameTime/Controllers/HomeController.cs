@@ -67,6 +67,7 @@ namespace GameTime.Controllers
             {
                 for (int i = 0; i < competitorContext.GetAllCompetitor().Count; i++)
                 {
+                    HttpContext.Session.SetString("Competitor", "true");
                     string checkEmail = competitorContext.GetAllCompetitor()[i].EmailAddr;
                     string checkPassword = competitorContext.GetAllCompetitor()[i].Password;
                     if (checkEmail == email && checkPassword == password)
