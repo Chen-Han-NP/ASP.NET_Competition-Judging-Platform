@@ -28,6 +28,40 @@ namespace GameTime.DAL
             conn = new SqlConnection(strConn);
         }
 
+        public Judge GetJudge(int judgeID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT * FROM Judge ORDER BY JudgeID";
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                if (judgeID == reader.GetInt32(0))
+                {
+                    Judge judge = new Judge
+                    {
+                        JudgeID = reader.GetInt32(0),
+                        JudgeName = reader.GetString(1),
+                        Salutation = reader.GetString(2),
+                        AreaInterestID = reader.GetInt32(3),
+                        EmailAddr = reader.GetString(4),
+                        Password = reader.GetString(5)
+                    };
+                    reader.Close();
+                    conn.Close();
+                    return judge;
+                }
+            }
+            reader.Close();
+            conn.Close();
+            return null;
+        }
+
         public List<Judge> GetAllJudge()
         {
             //Create a SqlCommand object from connection object
