@@ -57,23 +57,30 @@ namespace GameTime.Controllers
 
         public ActionResult JoinCompetition(int competitionID)
         {
-            CompetitorSubmissionViewModel competitorSubmission = new CompetitorSubmissionViewModel();
+            
             Competition competition = new Competition();
 
             //if (DateTime.Today.AddDays(3) < competition.StartDate)
             //{
 
             //}
-
-
             int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
-            competitorSubmission.CompetitionId = competitionID;
-            competitorSubmission.CompetitorId = id;
-            competitorSubmission.FileSubmitted = "replaceThis.pdf";
-            competitorSubmission.DateTimeSubmitted = DateTime.Today;
-            competitorSubmission.Appeal = "";
-            competitorSubmission.VoteCount = 0;
-            competitorSubmission.Ranking = -1;
+            CompetitorSubmissionViewModel competitorSubmission = new CompetitorSubmissionViewModel
+            { 
+                CompetitionId = (int) competitionID,
+                CompetitorId = id,
+                VoteCount = 0
+            };
+
+
+            
+            //competitorSubmission.CompetitionId = competitionID;
+            //competitorSubmission.CompetitorId = id;
+            //competitorSubmission.FileSubmitted = "replaceThis.pdf";
+            //competitorSubmission.DateTimeSubmitted = DateTime.Today;
+            //competitorSubmission.Appeal = "";
+            //competitorSubmission.VoteCount = 0;
+            //competitorSubmission.Ranking = -1;
             competitorSubmissionContext.JoinCompetition(competitorSubmission);
             return RedirectToAction("Competitor", "Home");
         }
