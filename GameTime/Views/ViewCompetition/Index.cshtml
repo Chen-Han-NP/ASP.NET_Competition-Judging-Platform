@@ -26,12 +26,13 @@
         <table id="viewCompetitions" class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>Competition ID</th>
+                    <th>ID</th>
                     <th>Competition Name</th>
                     <th>Area of Interest</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Result Release Date</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -45,6 +46,14 @@
                     <td>@Convert.ToDateTime(item.StartDate).ToShortDateString()</td>
                     <td>@Convert.ToDateTime(item.EndDate).ToShortDateString()</td>
                     <td>@Convert.ToDateTime(item.ResultReleasedDate).ToShortDateString()</td>
+                    @if (DateTime.Compare((DateTime)item.ResultReleasedDate, DateTime.Now) > 0)
+                    {
+                        <td>On-going</td>
+                    }
+                    else
+                    {
+                        <td>Over</td>
+                    }
 
                     <td>
                         <a asp-action="ViewCompetition" asp-controller="ViewCompetition"

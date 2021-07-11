@@ -47,7 +47,9 @@
                     {
                         <tr>
                             <td>@item.Salutation @item.CompetitorName</td>
-                            <td><a href="">@item.FileSubmitted</a></td>
+                            <td><a asp-action="DownloadFile"
+                                   asp-route-path="@item.FileSubmitted">@item.FileSubmitted</a>
+                            </td>
                             <td>@item.VoteCount.ToString()</td>
                             <td>
 

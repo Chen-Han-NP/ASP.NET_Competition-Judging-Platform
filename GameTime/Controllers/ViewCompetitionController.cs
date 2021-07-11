@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameTime.DAL;
 using GameTime.Models;
+using System.IO;]
+//using MimeKit; ->For file downloading
 
 namespace GameTime.Controllers
 {
@@ -21,6 +23,7 @@ namespace GameTime.Controllers
 
             competitionList = competitionContext.GetAllCompetitions();
             ViewData["SuccessfulSearch"] = true;
+
 
             return View(competitionList);
         }
@@ -85,15 +88,12 @@ namespace GameTime.Controllers
 
         }
 
-
-        public ActionResult CompetitorViewCompetition()
+        /* To download the competitor's file
+        public IActionResult DownloadFile(string filePath)
         {
-            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
-
-            competitionList = competitionContext.GetAllCompetitions();
-            return View(competitionList);
+            return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath), Path.GetFileName(filePath));
         }
-
+        */
 
         public ActionResult Vote(int? competitorId, string competitorName, int? competitionId)
         {
@@ -137,9 +137,6 @@ namespace GameTime.Controllers
             return RedirectToAction("ViewCompetition", new { competitionId = (int)competitionId});
         }
 
-        
 
-
-        
     }
 }
