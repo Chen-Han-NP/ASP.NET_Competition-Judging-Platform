@@ -40,7 +40,7 @@ namespace GameTime.Controllers
                 sList.Add(
                 new SelectListItem
                 {
-                    Value = (i+1).ToString(),
+                    Value = aoiList[i].AreaInterestID.ToString(),
                     Text = aoiList[i].Name.ToString(),
                 });
             }
