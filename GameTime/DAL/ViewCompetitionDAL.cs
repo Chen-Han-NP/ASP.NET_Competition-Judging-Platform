@@ -104,6 +104,7 @@ WHERE CompetitionID = @comId";
         }
 
 
+
         public List<Criteria> GetAllCriteria()
         {
 
@@ -174,6 +175,7 @@ WHERE CompetitionID = @comId";
             SqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = @"INSERT INTO Comment(CompetitionID, Description, DateTimePosted)
+OUTPUT INSERTED.CommentID
 VALUES(@comId, @description, @datetime)";
 
 
