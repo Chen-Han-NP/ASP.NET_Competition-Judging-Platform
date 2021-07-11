@@ -67,6 +67,52 @@ ON c.AreaInterestID = a.AreaInterestID";
             return competitionList;
         }
 
+        public List<CompetitionViewModel> GetAllAvailableCompetitions(int competitorId)
+        {
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
+FROM Competition c
+INNER JOIN AreaInterest a
+ON c.AreaInterestID = a.AreaInterestID
+where c.CompetitionID not in (select c.CompetitionID 
+from Competition c
+Inner join CompetitionSubmission cs
+on c.CompetitionID = cs.CompetitionID
+where cs.CompetitorID = @competitorId
+)";
+
+            cmd.Parameters.AddWithValue("@competitorId", competitorId);
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                new CompetitionViewModel
+                {
+                    CompetitionID = reader.GetInt32(0),
+                    AreaInterestID = reader.GetInt32(1),
+                    AreaInterestName = reader.GetString(2),
+                    CompetitionName = reader.GetString(3),
+                    StartDate = !reader.IsDBNull(4) ?
+                                  reader.GetDateTime(4) : (DateTime?)null,
+                    EndDate = !reader.IsDBNull(5) ?
+                                  reader.GetDateTime(5) : (DateTime?)null,
+                    ResultReleasedDate = !reader.IsDBNull(6) ?
+                                  reader.GetDateTime(6) : (DateTime?)null
+                });
+            }
+
+            reader.Close();
+
+            conn.Close();
+            return competitionList;
+        }
+
         public Competition getCompetitionDetails(int competitionId)
         {
 

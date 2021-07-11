@@ -15,12 +15,6 @@ namespace GameTime.Controllers
         private CompetitorDAL competitorContext = new CompetitorDAL();
         private CompetitorSubmissionDAL competitorSubmissionContext = new CompetitorSubmissionDAL();
 
-        // GET: CompetitorController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult CompetitorViewCompetition()
         {
             List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
@@ -28,9 +22,15 @@ namespace GameTime.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            competitionList = competitionContext.GetAllCompetitions();
+           
+            int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
+
+            //Check whether the current competitor has alr join a competition
+            competitionList = competitionContext.GetAllAvailableCompetitions(id);
+
             return View(competitionList);
         }
+        
 
         public ActionResult CriteriaView(int? CompetitionID)
         {

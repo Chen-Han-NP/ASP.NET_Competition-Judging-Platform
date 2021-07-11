@@ -44,34 +44,6 @@ namespace GameTime.Controllers
         }
 
 
-        public ActionResult CriteriaView(int? CompetitionID)
-        {
-            List<Criteria> criteriaList = new List<Criteria>();
-            List<Criteria> showCriteriaList = new List<Criteria>();
-            criteriaList = competitionContext.GetAllCriteria();
-            for (int i = 0; i < criteriaList.Count(); i++)
-            {
-               if (criteriaList[i].CompetitionID == CompetitionID)
-                {
-                    //criteriaVM.CriteriaList.Add(criteriaList[i]);
-                    //criteriaVM = new Criteria
-                    //{
-                    //    CriteriaID = criteriaList[i].CriteriaID,
-                    //    CompetitionID = criteriaList[i].CompetitionID,
-                    //    CriteriaName = criteriaList[i].CriteriaName,
-                    //    Weightage = criteriaList[i].Weightage
-                    //};
-                    showCriteriaList.Add(criteriaList[i]);
-                }
-            }
-            return View(showCriteriaList);
-        }
-
-        public ActionResult JoinCompetition()
-        {
-            return RedirectToAction("CompetitorViewCompetition");
-        }
-
         public ActionResult ViewCompetition(int? competitionId)
         {
 
@@ -109,9 +81,6 @@ namespace GameTime.Controllers
                 TempData["votedTo"] = HttpContext.Session.GetString(sessionCompetitionId);
             }
 
-
-
-            
             return View(competitionCommentVM);
 
         }
