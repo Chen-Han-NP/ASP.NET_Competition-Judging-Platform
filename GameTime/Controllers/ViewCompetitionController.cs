@@ -64,34 +64,46 @@ namespace GameTime.Controllers
         public ActionResult ViewCompetition(int? competitionId, string competitionName = " ")
 
         {
-            /*
-            if (HttpContext.Session.GetString("hasVoted") == null)
+            string sessionCompetitionId = "competition" + competitionId.ToString();
+
+            if (HttpContext.Session.GetString(sessionCompetitionId) == null)
             {
                 TempData["hasVoted"] = "false";
-
+                
             }
             else
             {
                 TempData["hasVoted"] = "true";
-                TempData["votedTo"] = HttpContext.Session.GetString("votedTo");
-
+                TempData["votedTo"] = HttpContext.Session.GetString(sessionCompetitionId);
             }
-            */
+
             List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
+
             ViewData["CompetitionName"] = competitionName;
             return View(competitorList);
 
         }
 
        
-        public ActionResult Vote(int? competitorId, int? competitionId, string competitionName = "" )
+        public ActionResult Vote(int? competitorId, string competitorName, int? competitionId, string competitionName)
         {
-            //HttpContext.Session.SetString("hasVoted", "true");
             List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
 
-            CompetitorSubmissionViewModel competitor = competitorList.Find(obj => obj.CompetitorId == (int)competitorId);
+           
+            string sessionCompetitionId = "competition" + competitionId.ToString();
 
-            competitorContext.UpdateVoteCount(competitor);
+            //If have not voted
+            if (HttpContext.Session.GetString(sessionCompetitionId) == null)
+            {
+                HttpContext.Session.SetString(sessionCompetitionId, competitorName);
+
+                CompetitorSubmissionViewModel competitor = competitorList.Find(obj => obj.CompetitorId == (int)competitorId);
+
+                competitorContext.UpdateVoteCount(competitor);
+            }
+
+
+            
             return RedirectToAction("ViewCompetition", new { competitionId = (int)competitionId, competitionName = competitionName});
         }
 
