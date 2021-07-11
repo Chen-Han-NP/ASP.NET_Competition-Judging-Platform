@@ -37,7 +37,7 @@ FROM CompetitionSubmission cs
 INNER JOIN Competitor c
 ON cs.CompetitorID = c.CompetitorID
 WHERE cs.CompetitionID = @comId
-ORDER BY cs.VoteCount desc" ;
+ORDER BY cs.VoteCount desc";
 
             cmd.Parameters.AddWithValue("@comId", competitionId);
 
@@ -69,6 +69,8 @@ ORDER BY cs.VoteCount desc" ;
             conn.Close();
             return competitorList;
         }
+
+
 
         public int UpdateVoteCount(CompetitorSubmissionViewModel competitor)
         {
@@ -114,6 +116,9 @@ WHERE CompetitionID = @competitionId AND CompetitorID = @competitorId";
 
             return true;
         }
+
+
+
 
     }
 }

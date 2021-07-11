@@ -61,7 +61,7 @@ namespace GameTime.Controllers
             return RedirectToAction("CompetitorViewCompetition");
         }
 
-        public ActionResult ViewCompetition(int? competitionId, string competitionName = " ")
+        public ActionResult ViewCompetition(int? competitionId)
 
         {
             string sessionCompetitionId = "competition" + competitionId.ToString();
@@ -77,15 +77,19 @@ namespace GameTime.Controllers
                 TempData["votedTo"] = HttpContext.Session.GetString(sessionCompetitionId);
             }
 
-            List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
 
-            ViewData["CompetitionName"] = competitionName;
-            return View(competitorList);
+            CompetitionCommentViewModel competitionCommentVM = new CompetitionCommentViewModel();
+            competitionCommentVM.competitorList = competitorContext.getAllCompetitor((int)competitionId);
+            competitionCommentVM.commentList = competitionContext.getAllComments((int)competitionId);
+            competitionCommentVM.competition = competitionContext.getCompetitionDetails((int)competitionId);
+
+            
+            return View(competitionCommentVM);
 
         }
 
        
-        public ActionResult Vote(int? competitorId, string competitorName, int? competitionId, string competitionName)
+        public ActionResult Vote(int? competitorId, string competitorName, int? competitionId)
         {
             List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
 
@@ -104,8 +108,19 @@ namespace GameTime.Controllers
 
 
             
-            return RedirectToAction("ViewCompetition", new { competitionId = (int)competitionId, competitionName = competitionName});
+            return RedirectToAction("ViewCompetition", new { competitionId = (int)competitionId});
         }
+
+
+
+        [HttpPost]
+        public ActionResult AddComment(Comment newComment)
+        {
+            newComment.CommentID = competitionContext.AddComment(newComment);
+            return RedirectToAction("ViewCompetition", new { competitionId = (int)newComment.CompetitionID});
+        }
+
+        
 
 
         

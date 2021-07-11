@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameTime.Models
 {
+    
     public class CompetitorSubmissionViewModel
     {
         [Required]
@@ -34,5 +35,6 @@ namespace GameTime.Models
         public int VoteCount { get; set; }
 
         public int? Ranking { get; set; }
+
     }
 }
