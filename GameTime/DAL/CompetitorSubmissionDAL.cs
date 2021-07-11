@@ -36,7 +36,8 @@ namespace GameTime.DAL
 FROM CompetitionSubmission cs
 INNER JOIN Competitor c
 ON cs.CompetitorID = c.CompetitorID
-WHERE cs.CompetitionID = @comId";
+WHERE cs.CompetitionID = @comId
+ORDER BY cs.VoteCount desc" ;
 
             cmd.Parameters.AddWithValue("@comId", competitionId);
 

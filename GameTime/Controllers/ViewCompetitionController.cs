@@ -78,6 +78,7 @@ namespace GameTime.Controllers
             }
 
             List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);
+
             ViewData["CompetitionName"] = competitionName;
             return View(competitorList);
 
