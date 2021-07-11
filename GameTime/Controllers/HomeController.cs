@@ -48,7 +48,7 @@ namespace GameTime.Controllers
 
             if (email == "admin1@lcu.edu.sg" && password == "p@55Admin")
             {
-
+                HttpContext.Session.SetString("Role", "Admin");
                 return RedirectToAction("Admin", "Home");
             }
             else if (check == "lcu.edu.sg" && isJudge == true)
@@ -59,7 +59,7 @@ namespace GameTime.Controllers
                     string checkPassword = judgeContext.GetAllJudge()[i].Password;
                     if (checkEmail == email && checkPassword == password)
                     {
-                        return RedirectToAction("Judge", "Home");
+                        return RedirectToAction("Index", "Judge");
                     }
                 }
             }
@@ -67,15 +67,17 @@ namespace GameTime.Controllers
             {
                 for (int i = 0; i < competitorContext.GetAllCompetitor().Count; i++)
                 {
+                    HttpContext.Session.SetString("Role", "Competitor");
                     string checkEmail = competitorContext.GetAllCompetitor()[i].EmailAddr;
                     string checkPassword = competitorContext.GetAllCompetitor()[i].Password;
                     if (checkEmail == email && checkPassword == password)
                     {
+                        HttpContext.Session.SetString("CompetitorID", competitorContext.GetAllCompetitor()[i].CompetitorID.ToString());
                         return RedirectToAction("Competitor", "Home");
                     }
                 }
             }
-            TempData["wrongE"] = "Wrong Email";
+            TempData["invalidLogin"] = "Invalid Email or Password.";
             return RedirectToAction("Login", "Home");
             
         }

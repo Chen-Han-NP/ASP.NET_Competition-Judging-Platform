@@ -83,7 +83,99 @@ VALUES(@name)";
             conn.Close();
             return aiList;
         }
+        public int Delete(AreaOfInterest areaOfInterest)
+        {
 
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM AreaInterest WHERE AreaInterestID = @selectAreaInterestID";
+            cmd.Parameters.AddWithValue("@selectAreaInterestID", areaOfInterest.AreaInterestID);
+            //Open a database connection
+            conn.Open();
+            int rowAffected;
+            //Execute the DELETE SQL to remove the staff record
+            rowAffected = cmd.ExecuteNonQuery();
+            //Close database connection
+            conn.Close();
+            //Return number of row of staff record updated or deleted
+            return rowAffected;
+        }
+
+        public int GetCompetitorCount(int aoiId)
+        {
+            //Competition Competition = new Competition();
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a staff record.
+            cmd.CommandText = @"SELECT * FROM Competition WHERE AreaInterestID = @selectedaoiId";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “staffId”.
+            cmd.Parameters.AddWithValue("@selectedaoiId", aoiId);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Competition> compList = new List<Competition>();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    Competition Competition = new Competition();
+                    // Fill staff object with values from the data reader
+                    Competition.CompetitionID = aoiId;
+                    Competition.AreaInterestID = reader.GetInt32(1);
+                    Competition.CompetitionName = reader.GetString(2);
+                    Competition.StartDate = !reader.IsDBNull(3) ?
+                    reader.GetDateTime(3) : (DateTime?)null;
+                    Competition.EndDate = !reader.IsDBNull(4) ?
+                    reader.GetDateTime(4) : (DateTime?)null;
+                    Competition.ResultReleasedDate = !reader.IsDBNull(5) ?
+                    reader.GetDateTime(5) : (DateTime?)null;
+                    compList.Add(Competition);
+
+                }
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return compList.Count;
+        }
+
+        public AreaOfInterest GetDetails(int aoiID)
+        {
+
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"SELECT * FROM AreaInterest WHERE AreaInterestID = @selectredaoiid";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@selectredaoiid", aoiID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            AreaOfInterest aoi = new AreaOfInterest();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    // Fill staff object with values from the data reader
+                    aoi.AreaInterestID = aoiID;
+                    aoi.Name = reader.GetString(1);
+                    
+                }
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return aoi;
+        }
 
     }
 }

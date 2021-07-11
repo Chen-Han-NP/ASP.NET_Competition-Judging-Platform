@@ -90,6 +90,29 @@ WHERE CompetitionID = @competitionId AND CompetitorID = @competitorId";
             return count;
         }
 
+        public bool JoinCompetition(CompetitorSubmissionViewModel competitor)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"INSERT INTO CompetitionSubmission (CompetitionID, CompetitorID, FileSubmitted, DateTimeFileUpload,
+                                Appeal, VoteCount, Ranking)
+                                VALUES(@competitionID, @competitorID, @fileSubmitted, @dateTimeFileUpload,
+                                @appeal, @voteCount, @ranking)";
+            cmd.Parameters.AddWithValue("@competitionID", competitor.CompetitionId);
+            cmd.Parameters.AddWithValue("@competitorID", competitor.CompetitorId);
+            cmd.Parameters.AddWithValue("@fileSubmitted", competitor.FileSubmitted);
+            cmd.Parameters.AddWithValue("@dateTimeFileUpload", competitor.DateTimeSubmitted);
+            cmd.Parameters.AddWithValue("@appeal", competitor.Appeal);
+            cmd.Parameters.AddWithValue("@voteCount", competitor.VoteCount);
+            cmd.Parameters.AddWithValue("@ranking", competitor.Ranking);
+
+            conn.Open();
+            cmd.ExecuteScalar();
+            conn.Close();
+
+            return true;
+        }
 
     }
 }

@@ -42,20 +42,25 @@ namespace GameTime.Controllers
 
         public ActionResult JudgeSignUp()
         {
+            Judge judge = new Judge();
             ViewData["GetAOI"] = GetAOI();
-            return View();
+            ViewData["GetJudgeID"] = GetJudgeID(); 
+            return View(judge);
         }
 
         [HttpPost]
-        public ActionResult JudgeSignUp(JudgeSignUp judge)
+        [ValidateAntiForgeryToken]
+        public ActionResult JudgeSignUp(Judge judge)
         {
             if (ModelState.IsValid)
             {
                 judge.JudgeID = judgeContext.Add(judge);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Judge", judge);
             }
             else
             {
+                ViewData["GetAOI"] = GetAOI();
+                ViewData["GetJudgeID"] = GetJudgeID();
                 return View(judge);
             }
         }
@@ -65,16 +70,43 @@ namespace GameTime.Controllers
             AreaOfInterestDAL AOIcontext = new AreaOfInterestDAL();
             List<AreaOfInterest> AOI = AOIcontext.GetAreaOfInterests();
             List<SelectListItem> SelectList = new List<SelectListItem>();
+
+            SelectList.Add(new SelectListItem
+            {
+                Value = "default",
+                Text = "-- select option --",
+                Selected = true
+            });
+
             for (int i = 0; i < AOI.Count(); i++)
             {
                 SelectList.Add(new SelectListItem
                 {
-                    Value = i.ToString(),
-                    Text = AOI[i].ToString()
+                    Value = (i+1).ToString(),
+                    Text = AOI[i].Name.ToString(),
+                    Selected = false
                 });
             }
             ViewData["AOIList"] = SelectList;
             return SelectList;
+        }
+
+        private int GetJudgeID()
+        {
+            JudgeDAL JudgeContext = new JudgeDAL();
+            List<Judge> JudgeList = JudgeContext.GetAllJudge();
+            for(int i = 0; i<JudgeList.Count(); i++) // Check if there is space and fills in ID so that judge ID will be filled and not empty
+            {
+                if (JudgeList[i].JudgeID == i+1)
+                {
+                    continue;
+                } 
+                else
+                {
+                    return i;
+                }
+            }
+            return JudgeList.Count()+1;
         }
     }
 }

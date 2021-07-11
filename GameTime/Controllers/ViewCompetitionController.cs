@@ -25,6 +25,42 @@ namespace GameTime.Controllers
             return View(competitionList);
         }
 
+        public ActionResult CompetitorViewCompetition()
+        {
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+
+            competitionList = competitionContext.GetAllCompetitions();
+            return View(competitionList);
+        }
+
+        public ActionResult CriteriaView(int? CompetitionID)
+        {
+            List<Criteria> criteriaList = new List<Criteria>();
+            List<Criteria> showCriteriaList = new List<Criteria>();
+            criteriaList = competitionContext.GetAllCriteria();
+            for (int i = 0; i < criteriaList.Count(); i++)
+            {
+               if (criteriaList[i].CompetitionID == CompetitionID)
+                {
+                    //criteriaVM.CriteriaList.Add(criteriaList[i]);
+                    //criteriaVM = new Criteria
+                    //{
+                    //    CriteriaID = criteriaList[i].CriteriaID,
+                    //    CompetitionID = criteriaList[i].CompetitionID,
+                    //    CriteriaName = criteriaList[i].CriteriaName,
+                    //    Weightage = criteriaList[i].Weightage
+                    //};
+                    showCriteriaList.Add(criteriaList[i]);
+                }
+            }
+            return View(showCriteriaList);
+        }
+
+        public ActionResult JoinCompetition()
+        {
+            return RedirectToAction("CompetitorViewCompetition");
+        }
+
         public ActionResult ViewCompetition(int? competitionId, string competitionName = " ")
 
         {

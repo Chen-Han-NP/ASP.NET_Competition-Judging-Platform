@@ -23,6 +23,8 @@ namespace GameTime.Models
 
         [Required]
         [StringLength(50, ErrorMessage = "Cannot Exceed 50 characters.")]
+        [RegularExpression(@".+\@lcu\.edu\.sg", ErrorMessage = "Not Lion City University Staff")]
+        [ValidateJudgeEmailExists]
         public string EmailAddr { get; set; }
 
         [Required]

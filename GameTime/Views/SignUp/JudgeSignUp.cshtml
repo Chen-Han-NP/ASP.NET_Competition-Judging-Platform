@@ -1,4 +1,4 @@
-﻿@model GameTime.Models.JudgeSignUp
+﻿@model GameTime.Models.Judge
 @{
     ViewData["Title"] = "Judge";
 }
@@ -9,12 +9,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="View">
+        <form asp-action="JudgeSignUp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="JudgeID" class="control-label"></label>
-                <input asp-for="JudgeID" class="form-control" />
-                <span asp-validation-for="JudgeID" class="text-danger"></span>
+                <input asp-for="JudgeID" class="form-control" value="@ViewData["GetJudgeID"]" hidden/>
             </div>
             <div class="form-group">
                 <label asp-for="JudgeName" class="control-label"></label>
@@ -48,8 +46,6 @@
             </div>
             <div class="form-group">
                 <label asp-for="AreaInterestID" class="control-label"></label>
-                <input asp-for="AreaInterestID" class="form-control" />
-                <span asp-validation-for="AreaInterestID" class="text-danger"></span>
                 <select asp-for="AreaInterestID" asp-items="@ViewData["AOIList"] as List<SelectListItem>"></select>
             </div>
             <div class="form-group">
@@ -63,7 +59,7 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="JudgeSignUp" class="btn btn-primary" />
             </div>
         </form>
     </div>

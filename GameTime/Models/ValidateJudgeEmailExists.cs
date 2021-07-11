@@ -7,16 +7,17 @@ using GameTime.DAL;
 
 namespace GameTime.Models
 {
-    public class ValidateJudgeEmailExists : ValidationAttribute
+    public class ValidateEmailExists : ValidationAttribute
     {
+        private CompetitorDAL competitorContext = new CompetitorDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             string email = Convert.ToString(value);
-            Judge judge = (Judge)validationContext.ObjectInstance;
-            int judgeID = judge.JudgeID;
+            Competitor competitor = (Competitor)validationContext.ObjectInstance;
+            int competitorID = competitor.CompetitorID;
 
-            if (judgeContext.isEmailExists(email, judgeID))
+            if (competitorContext.isEmailExists(email, competitorID))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");

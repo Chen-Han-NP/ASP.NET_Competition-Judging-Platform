@@ -3,9 +3,6 @@
     ViewData["Title"] = "Login";
 }
 
-<p>
-    @TempData["wrongE"]
-    </p>
     
 <div>
     <form method="post" action="~/Home/Login">
@@ -21,7 +18,7 @@
             <input type="submit" id="btnStaffLogin"
                    class="myButton" value="Login" />
             <br />
-            <span style="color:red;">@TempData["Message"]</span>
+            <span style="color:red;">@TempData["invalidLogin"]</span>
         </fieldset>
     </form>
 </div>

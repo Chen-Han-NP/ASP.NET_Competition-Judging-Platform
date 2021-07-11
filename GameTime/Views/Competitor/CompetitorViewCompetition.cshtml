@@ -1,0 +1,65 @@
+﻿@model IEnumerable<GameTime.Models.CompetitionViewModel>
+
+@{
+    ViewData["Title"] = "CompetitorViewCompetition";
+}
+
+<div style="text-align:center">
+    <h1>Competitions</h1>
+</div>
+<br />
+
+<div class="input-group rounded">
+    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+           aria-describedby="search-addon" />
+    <span class="input-group-text" id="search-addon">
+        <i class="fas fa-search"></i>
+    </span>
+</div>
+
+<div style="text-align:center">
+    <h2>Competitions</h2>
+</div>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewCompetitions" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Competition ID</th>
+                    <th>Competition Name</th>
+                    <th>Area of Interest</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Result Release Date</th>
+                    <th>Competition Criteria</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.CompetitionID.ToString()</td>
+                    <td>@item.CompetitionName</td>
+                    <td>@item.AreaInterestName</td>
+                    <td>@Convert.ToDateTime(item.StartDate)</td>
+                    <td>@Convert.ToDateTime(item.EndDate)</td>
+                    <td>@Convert.ToDateTime(item.ResultReleasedDate)</td>
+
+                    <td>
+                        <a asp-action="CriteriaView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Criteria</a>
+                    </td>
+                    <td>
+                        <a asp-action="JoinCompetition" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Join</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}

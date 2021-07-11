@@ -60,7 +60,7 @@ namespace GameTime.DAL
             return judgeList;
         }
 
-        public int Add(JudgeSignUp judgeSignUp)
+        public int Add(Judge judgeSignUp)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
