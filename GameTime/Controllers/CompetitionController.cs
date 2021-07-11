@@ -67,16 +67,16 @@ namespace GameTime.Controllers
             }
             else
             {
-                //List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
-                //for (int i = 0; i < aoiList.Count; i++)
-                //{
-                //    sList.Add(
-                //    new SelectListItem
-                //    {
-                //        Value = aoiList[i].AreaInterestID.ToString(),
-                //        Text = aoiList[i].Name.ToString(),
-                //    });
-                //}
+                List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
+                for (int i = 0; i < aoiList.Count; i++)
+                {
+                    sList.Add(
+                    new SelectListItem
+                    {
+                        Value = aoiList[i].AreaInterestID.ToString(),
+                        Text = aoiList[i].Name.ToString(),
+                    });
+                }
                 //Input validation fails, return to the Create view
                 //to display error message
                 ViewData["ShowResult"] = false;
