@@ -31,18 +31,18 @@ namespace GameTime.DAL
         public int AddComp(Competition comp)
         {
             
-            if (comp.StartDate == null)
-            {
-                comp.StartDate = DateTime.Parse("01/01/1753");
-            }
-            if (comp.EndDate == null)
-            {
-                comp.EndDate = DateTime.Parse("01/01/1753");
-            }
-            if (comp.ResultReleasedDate == null)
-            {
-                comp.ResultReleasedDate = DateTime.Parse("01/01/1753");
-            }
+            //if (comp.StartDate == null)
+            //{
+            //    comp.StartDate = DateTime.Parse("01/01/1753");
+            //}
+            //if (comp.EndDate == null)
+            //{
+            //    comp.EndDate = DateTime.Parse("01/01/1753");
+            //}
+            //if (comp.ResultReleasedDate == null)
+            //{
+            //    comp.ResultReleasedDate = DateTime.Parse("01/01/1753");
+            //}
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
@@ -53,10 +53,34 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@AreaInterestID", comp.AreaInterestID);
-            cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName); 
-            cmd.Parameters.AddWithValue("@StartDate", comp.StartDate);
-            cmd.Parameters.AddWithValue("@EndDate", comp.EndDate);
-            cmd.Parameters.AddWithValue("@ResultReleasedDate", comp.ResultReleasedDate);
+            cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName);
+            if (comp.StartDate == null)
+            {
+                cmd.Parameters.AddWithValue("@StartDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@StartDate", comp.StartDate);
+            }
+            if (comp.EndDate == null)
+            {
+                cmd.Parameters.AddWithValue("@EndDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@EndDate", comp.EndDate);
+            }
+            if (comp.ResultReleasedDate == null)
+            {
+                cmd.Parameters.AddWithValue("@ResultReleasedDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@ResultReleasedDate", comp.ResultReleasedDate);
+            }
+            //cmd.Parameters.AddWithValue("@StartDate", comp.StartDate);
+            //cmd.Parameters.AddWithValue("@EndDate", comp.EndDate);
+            //cmd.Parameters.AddWithValue("@ResultReleasedDate", comp.ResultReleasedDate);
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
@@ -70,6 +94,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
         public List<Competition> GetAllComp()
         {
+            
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement
@@ -82,22 +107,46 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             List<Competition> CompetitionList = new List<Competition>();
             while (reader.Read())
             {
-                
-                CompetitionList.Add(
-                new Competition
+                Competition competition = new Competition();
+                competition.CompetitionID = reader.GetInt32(0);
+                competition.AreaInterestID = reader.GetInt32(1);
+                competition.CompetitionName = reader.GetString(2);
+                if (!reader.IsDBNull(3))
                 {
-                    CompetitionID = reader.GetInt32(0), //0: 1st column
-                    AreaInterestID = reader.GetInt32(1), //1: 2nd column
-                                                         //Get the first character of a string
-                    CompetitionName = reader.GetString(2), //2: 3rd column
+                    competition.StartDate = reader.GetDateTime(3); //3: 4th column
+                    //competition.EndDate = reader.GetDateTime(4);
+                    //competition.ResultReleasedDate = reader.GetDateTime(5);
+                }
+                if (!reader.IsDBNull(4))
+                {
+                    //competition.StartDate = reader.GetDateTime(3); //3: 4th column
+                    competition.EndDate = reader.GetDateTime(4);
+                   // competition.ResultReleasedDate = reader.GetDateTime(5);
+                }
+                if (!reader.IsDBNull(5))
+                {
+                   // competition.StartDate = reader.GetDateTime(3); //3: 4th column
+                   // competition.EndDate = reader.GetDateTime(4);
+                    competition.ResultReleasedDate = reader.GetDateTime(5);
+                }
 
-                    
-                      StartDate = reader.GetDateTime(3), //3: 4th column
-                      EndDate = reader.GetDateTime(4),
-                      ResultReleasedDate = reader.GetDateTime(5)
-                } 
-                );
+                CompetitionList.Add(competition);
                 
+       //             CompetitionList.Add(
+       //new Competition
+       //{
+       //    CompetitionID = reader.GetInt32(0), //0: 1st column
+       //             AreaInterestID = reader.GetInt32(1), //1: 2nd column
+       //                                                  //Get the first character of a string
+       //             CompetitionName = reader.GetString(2), //2: 3rd column
+
+
+       //             StartDate = reader.GetDateTime(3), //3: 4th column
+       //             EndDate = reader.GetDateTime(4),
+       //    ResultReleasedDate = reader.GetDateTime(5)
+       //}
+       
+
             }
             //Close DataReader
             reader.Close();
@@ -170,10 +219,31 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@AreaInterestID", competition.AreaInterestID);
             cmd.Parameters.AddWithValue("@CompetitionName", competition.CompetitionName);
-            cmd.Parameters.AddWithValue("@StartDate", competition.StartDate);
-            cmd.Parameters.AddWithValue("@EndDate", competition.EndDate);
-            cmd.Parameters.AddWithValue("@ResultReleasedDate", competition.ResultReleasedDate);
-           
+            if (competition.StartDate == null)
+            {
+                cmd.Parameters.AddWithValue("@StartDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@StartDate", competition.StartDate);
+            }
+            if (competition.EndDate == null)
+            {
+                cmd.Parameters.AddWithValue("@EndDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@EndDate", competition.EndDate);
+            }
+            if (competition.ResultReleasedDate == null)
+            {
+                cmd.Parameters.AddWithValue("@ResultReleasedDate", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@ResultReleasedDate", competition.ResultReleasedDate);
+            }
+
             cmd.Parameters.AddWithValue("@selectedCompetitionID", competition.CompetitionID);
             //Open a database connection
             conn.Open();
