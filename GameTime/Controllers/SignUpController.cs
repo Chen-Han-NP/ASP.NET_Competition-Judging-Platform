@@ -55,7 +55,8 @@ namespace GameTime.Controllers
             if (ModelState.IsValid)
             {
                 judge.JudgeID = judgeContext.Add(judge);
-                return RedirectToAction("Index", "Judge", judge);
+
+                return RedirectToAction("Index", "Judge");
             }
             else
             {
