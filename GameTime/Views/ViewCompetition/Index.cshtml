@@ -42,9 +42,9 @@
                     <td>@item.CompetitionID.ToString()</td>
                     <td>@item.CompetitionName</td>
                     <td>@item.AreaInterestName</td>
-                    <td>@Convert.ToDateTime(item.StartDate)</td>
-                    <td>@Convert.ToDateTime(item.EndDate)</td>
-                    <td>@Convert.ToDateTime(item.ResultReleasedDate)</td>
+                    <td>@Convert.ToDateTime(item.StartDate).ToShortDateString()</td>
+                    <td>@Convert.ToDateTime(item.EndDate).ToShortDateString()</td>
+                    <td>@Convert.ToDateTime(item.ResultReleasedDate).ToShortDateString()</td>
 
                     <td>
                         <a asp-action="ViewCompetition" asp-controller="ViewCompetition"

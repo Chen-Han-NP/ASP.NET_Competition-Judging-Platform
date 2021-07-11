@@ -44,15 +44,6 @@ namespace GameTime.Controllers
         }
 
 
-
-        public ActionResult CompetitorViewCompetition()
-        {
-            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
-
-            competitionList = competitionContext.GetAllCompetitions();
-            return View(competitionList);
-        }
-
         public ActionResult CriteriaView(int? CompetitionID)
         {
             List<Criteria> criteriaList = new List<Criteria>();
@@ -82,8 +73,29 @@ namespace GameTime.Controllers
         }
 
         public ActionResult ViewCompetition(int? competitionId)
-
         {
+
+            //mapping competition details, competitor details and comment sections together
+            CompetitionCommentViewModel competitionCommentVM = new CompetitionCommentViewModel();
+            competitionCommentVM.competitorList = competitorContext.getAllCompetitor((int)competitionId);
+            competitionCommentVM.commentList = competitionContext.getAllComments((int)competitionId);
+            competitionCommentVM.competition = competitionContext.getCompetitionDetails((int)competitionId);
+
+            //check whether the competition is over or not
+            if (DateTime.Compare((DateTime)competitionCommentVM.competition.ResultReleasedDate, DateTime.Now ) > 0 )
+            {
+                ViewData["Status"] = "on-going";
+
+            }
+            else
+            {
+                ViewData["Status"] = "over";
+                //If its over, sort the competitionList according to the ranking, and only pass the first 3 values to the view.
+                List<CompetitorSubmissionViewModel> sortedCompetitor = competitionCommentVM.competitorList.OrderBy(x => x.Ranking).ToList();
+                competitionCommentVM.competitorList = sortedCompetitor;
+            }
+            
+            //For voting checks
             string sessionCompetitionId = "competition" + competitionId.ToString();
 
             if (HttpContext.Session.GetString(sessionCompetitionId) == null)
@@ -98,17 +110,22 @@ namespace GameTime.Controllers
             }
 
 
-            CompetitionCommentViewModel competitionCommentVM = new CompetitionCommentViewModel();
-            competitionCommentVM.competitorList = competitorContext.getAllCompetitor((int)competitionId);
-            competitionCommentVM.commentList = competitionContext.getAllComments((int)competitionId);
-            competitionCommentVM.competition = competitionContext.getCompetitionDetails((int)competitionId);
 
             
             return View(competitionCommentVM);
 
         }
 
-       
+
+        public ActionResult CompetitorViewCompetition()
+        {
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+
+            competitionList = competitionContext.GetAllCompetitions();
+            return View(competitionList);
+        }
+
+
         public ActionResult Vote(int? competitorId, string competitorName, int? competitionId)
         {
             List<CompetitorSubmissionViewModel> competitorList = competitorContext.getAllCompetitor((int)competitionId);

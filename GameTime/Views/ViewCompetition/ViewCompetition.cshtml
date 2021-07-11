@@ -7,71 +7,110 @@
     <h2>@Model.competition.CompetitionName</h2>
 </div>
 
+<div class="competitionDetails">
+    <h5>Current Status: The competition is @ViewData["Status"] </h5>
+    <h7>Result Release date: @Model.competition.ResultReleasedDate</h7>
+</div>
+
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 
-
-@if (Model.competitorList.ToList().Count > 0)
+@if (ViewData["Status"].ToString() == "on-going")
 {
 
-    @if ((string)TempData["hasVoted"] == "false")
+    @if (Model.competitorList.ToList().Count > 0)
     {
-        <h4>You have 1 vote</h4>
+
+        @if ((string)TempData["hasVoted"] == "false")
+        {
+            <h4>You have 1 vote</h4>
+        }
+        else
+        {
+            <h4>You have voted to @TempData["votedTo"].</h4>
+        }
+        <div class="table-responsive">
+            <table id="viewCompetitors" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Work Submitted</th>
+                        <th>Vote Count</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.competitorList)
+                    {
+                        <tr>
+                            <td>@item.Salutation @item.CompetitorName</td>
+                            <td><a href="">@item.FileSubmitted</a></td>
+                            <td>@item.VoteCount.ToString()</td>
+                            <td>
+
+                                @if ((string)TempData["hasVoted"] == "false")
+                                {
+                                    <a asp-action="Vote" asp-controller="ViewCompetition"
+                                       asp-route-CompetitorId="@item.CompetitorId"
+                                       asp-route-CompetitorName="@item.CompetitorName"
+                                       asp-route-CompetitionId="@item.CompetitionId">
+                                        Vote
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a>Vote</a>
+                                }
+
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
     }
+
+
     else
     {
-        <h4>You have voted to @TempData["votedTo"].</h4>
+        <h3>Currently no competitor taking part in this competition yet!</h3>
     }
+
+}
+
+//For competition that is OVER
+else
+{
     <div class="table-responsive">
+        <h5>Top 3 competitors</h5>
         <table id="viewCompetitors" class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
+                    <th>Rank</th>
                     <th>Name</th>
                     <th>Work Submitted</th>
                     <th>Vote Count</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.competitorList)
+                @foreach (var item in Model.competitorList.Take(3))
                 {
                     <tr>
+                        <td>@item.Ranking</td>
                         <td>@item.Salutation @item.CompetitorName</td>
                         <td><a href="">@item.FileSubmitted</a></td>
                         <td>@item.VoteCount.ToString()</td>
-                        <td>
-
-                            @if ((string)TempData["hasVoted"] == "false")
-                            {
-                                <a asp-action="Vote" asp-controller="ViewCompetition"
-                                   asp-route-CompetitorId="@item.CompetitorId"
-                                   asp-route-CompetitorName="@item.CompetitorName"
-                                   asp-route-CompetitionId="@item.CompetitionId">
-                                    Vote
-                                </a>
-                            }
-                            else
-                            {
-                                <a>Vote</a>
-                            }
-
-
-
-                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
-}
-
-
-else
-{
-    <h3>Currently no competitor taking part in this competition yet!</h3>
 }
 
 
@@ -97,7 +136,6 @@ else
     </table>
 </div>
 
-
 <form asp-action="AddComment" asp-controller="ViewCompetition">
 
     <div class="form-group">
@@ -110,7 +148,7 @@ else
             <input class="form-control" type="text" name="Description" aria-label="commentInput" placeholder="max. 255 characters" maxlength="255" />
             <input type="submit" value="POST" class="btn btn-primary">
         </div>
-        
+
     </div>
 </form>
 
