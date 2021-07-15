@@ -16,6 +16,8 @@ namespace GameTime.Controllers
         private AreaOfInterestDAL aoiContext = new AreaOfInterestDAL();
         private CompetitorSubmissionDAL competitorContext = new CompetitorSubmissionDAL();
         private List<SelectListItem> sList = new List<SelectListItem>();
+        private List<SelectListItem> jList = new List<SelectListItem>();
+        JudgeDAL judgeContext = new JudgeDAL();
         public ActionResult Index()
         {
             if ((HttpContext.Session.GetString("Role") == null) ||
@@ -166,6 +168,90 @@ namespace GameTime.Controllers
         {
             // Delete the staff record from database
             compContext.Delete(competition);
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult AddJudge(int? id)
+        {
+            List<Judge> judgeList = judgeContext.GetAllJudge();
+            // Stop accessing the action if not logged in
+            // or account not in the "Administrator" role
+            // ...need to do 
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("Index");
+            }
+            Competition comp = compContext.GetDetails(id.Value);
+            if(DateTime.Now > comp.EndDate)
+            {
+                return RedirectToAction("Index");
+            }
+
+           
+            for (int i = 0; i < judgeList.Count; i++)
+            {
+                if (judgeList[i].AreaInterestID == comp.AreaInterestID)
+                {
+                    jList.Add(
+                new SelectListItem
+                {
+                    Value = judgeList[i].JudgeID.ToString(),
+                    Text = judgeList[i].JudgeName.ToString(),
+                });
+                }
+
+            }
+
+            ViewData["ShowResult"] = false;
+            ViewData["judgeList"] = jList;
+            CompetitionJudge compjudge = new CompetitionJudge();
+            compjudge.CompetitionID = (int)id;
+
+            return View(compjudge);
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult AddJudge(CompetitionJudge compJudge)
+        {
+            List<CompetitionJudge> selectedJudges = compContext.getJudges(compJudge.CompetitionID);
+           
+            if (selectedJudges.Count == 0)
+            {
+                compContext.AddJudge(compJudge);
+                return RedirectToAction("Index");
+
+            }
+            else
+            {
+                //do validation
+                //for (int i = 0; i < selectedJudges.Count; i++)
+                //{
+                //    if (selectedJudges[i].JudgeID == compJudge.JudgeID)
+                //    {
+                //        return RedirectToAction("Index");
+                       
+                //    }
+                //    else
+                //    {
+                //        compContext.AddJudge(compJudge);
+                //        break;
+                //    }
+
+                //}
+            }
+
+
             return RedirectToAction("Index");
         }
 

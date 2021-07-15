@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameTime.DAL;
 using GameTime.Models;
-using System.IO;]
+using System.IO;
 //using MimeKit; ->For file downloading
 
 namespace GameTime.Controllers

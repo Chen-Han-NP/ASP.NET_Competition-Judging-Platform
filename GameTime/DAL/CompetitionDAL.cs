@@ -30,7 +30,7 @@ namespace GameTime.DAL
 
         public int AddComp(Competition comp)
         {
-            
+
             //if (comp.StartDate == null)
             //{
             //    comp.StartDate = DateTime.Parse("01/01/1753");
@@ -94,7 +94,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
         public List<Competition> GetAllComp()
         {
-            
+
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement
@@ -121,31 +121,31 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
                 {
                     //competition.StartDate = reader.GetDateTime(3); //3: 4th column
                     competition.EndDate = reader.GetDateTime(4);
-                   // competition.ResultReleasedDate = reader.GetDateTime(5);
+                    // competition.ResultReleasedDate = reader.GetDateTime(5);
                 }
                 if (!reader.IsDBNull(5))
                 {
-                   // competition.StartDate = reader.GetDateTime(3); //3: 4th column
-                   // competition.EndDate = reader.GetDateTime(4);
+                    // competition.StartDate = reader.GetDateTime(3); //3: 4th column
+                    // competition.EndDate = reader.GetDateTime(4);
                     competition.ResultReleasedDate = reader.GetDateTime(5);
                 }
 
                 CompetitionList.Add(competition);
-                
-       //             CompetitionList.Add(
-       //new Competition
-       //{
-       //    CompetitionID = reader.GetInt32(0), //0: 1st column
-       //             AreaInterestID = reader.GetInt32(1), //1: 2nd column
-       //                                                  //Get the first character of a string
-       //             CompetitionName = reader.GetString(2), //2: 3rd column
+
+                //             CompetitionList.Add(
+                //new Competition
+                //{
+                //    CompetitionID = reader.GetInt32(0), //0: 1st column
+                //             AreaInterestID = reader.GetInt32(1), //1: 2nd column
+                //                                                  //Get the first character of a string
+                //             CompetitionName = reader.GetString(2), //2: 3rd column
 
 
-       //             StartDate = reader.GetDateTime(3), //3: 4th column
-       //             EndDate = reader.GetDateTime(4),
-       //    ResultReleasedDate = reader.GetDateTime(5)
-       //}
-       
+                //             StartDate = reader.GetDateTime(3), //3: 4th column
+                //             EndDate = reader.GetDateTime(4),
+                //    ResultReleasedDate = reader.GetDateTime(5)
+                //}
+
 
             }
             //Close DataReader
@@ -199,7 +199,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
                     reader.GetDateTime(4) : (DateTime?)null;
                     Competition.ResultReleasedDate = !reader.IsDBNull(5) ?
                     reader.GetDateTime(5) : (DateTime?)null;
-                    
+
                 }
             }
             //Close DataReader
@@ -257,7 +257,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
         public int Delete(Competition competition)
         {
-            
+
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"DELETE FROM Competition WHERE CompetitionID = @selectCompetitionID";
             cmd.Parameters.AddWithValue("@selectCompetitionID", competition.CompetitionID);
@@ -270,6 +270,66 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             conn.Close();
             //Return number of row of staff record updated or deleted
             return rowAffected;
+        }
+
+
+        public void AddJudge(CompetitionJudge judge)
+        {
+
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"INSERT INTO CompetitionJudge (CompetitionID, JudgeID)
+VALUES(@CompetitionID, @JudgeID)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@CompetitionID", judge.CompetitionID);
+            cmd.Parameters.AddWithValue("@JudgeID", judge.JudgeID);
+            conn.Close();
+            conn.Open();
+            //ExecuteScalar is used to retrieve the auto-generated
+            //StaffID after executing the INSERT SQL statement
+            cmd.ExecuteScalar();
+            //A connection should be closed after operations.
+            conn.Close();
+            //Return id when no error occurs.
+
+        }
+
+        public List<CompetitionJudge> getJudges(int competitionId)
+        {
+            
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a staff record.
+            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “staffId”.
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionJudge> judgeList = new List<CompetitionJudge>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    judgeList.Add(
+                    new CompetitionJudge
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        JudgeID = reader.GetInt32(1),
+                       
+                    }
+                    );
+                }
+                reader.Close();
+                conn.Close();
+            }
+            return judgeList;
+
         }
     }
 }
