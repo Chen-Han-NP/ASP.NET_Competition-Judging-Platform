@@ -18,6 +18,7 @@ namespace GameTime.Controllers
         private List<SelectListItem> sList = new List<SelectListItem>();
         private List<SelectListItem> jList = new List<SelectListItem>();
         JudgeDAL judgeContext = new JudgeDAL();
+
         public ActionResult Index()
         {
             if ((HttpContext.Session.GetString("Role") == null) ||
@@ -171,7 +172,7 @@ namespace GameTime.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //List<Judge> judgeList = judgeContext.GetAllJudge();
         public ActionResult AddJudge(int? id)
         {
             List<Judge> judgeList = judgeContext.GetAllJudge();
@@ -222,37 +223,42 @@ namespace GameTime.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddJudge(CompetitionJudge compJudge)
         {
-            List<CompetitionJudge> selectedJudges = compContext.getJudges(compJudge.CompetitionID);
+            //List<CompetitionJudge> selectedJudges = compContext.getJudges(compJudge.CompetitionID);
            
-            if (selectedJudges.Count == 0)
+
+            if (ModelState.IsValid)
             {
                 compContext.AddJudge(compJudge);
                 return RedirectToAction("Index");
-
             }
             else
             {
-                //do validation
-                //for (int i = 0; i < selectedJudges.Count; i++)
-                //{
-                //    if (selectedJudges[i].JudgeID == compJudge.JudgeID)
-                //    {
-                //        return RedirectToAction("Index");
-                       
-                //    }
-                //    else
-                //    {
-                //        compContext.AddJudge(compJudge);
-                //        break;
-                //    }
+                List<Judge> judgeList = judgeContext.GetAllJudge();
+                Competition comp = compContext.GetDetails(compJudge.CompetitionID);
 
-                //}
+                for (int i = 0; i < judgeList.Count; i++)
+                {
+                    if (judgeList[i].AreaInterestID == comp.AreaInterestID)
+                    {
+                        jList.Add(
+                    new SelectListItem
+                    {
+                        Value = judgeList[i].JudgeID.ToString(),
+                        Text = judgeList[i].JudgeName.ToString(),
+                    });
+                    }
+
+                }
+
+                ViewData["ShowResult"] = false;
+                ViewData["judgeList"] = jList;
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(compJudge);
             }
-
-
-            return RedirectToAction("Index");
         }
 
 

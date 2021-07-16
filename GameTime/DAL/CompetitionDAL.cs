@@ -285,7 +285,7 @@ VALUES(@CompetitionID, @JudgeID)";
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@CompetitionID", judge.CompetitionID);
             cmd.Parameters.AddWithValue("@JudgeID", judge.JudgeID);
-            conn.Close();
+            //conn.Close();
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
             //StaffID after executing the INSERT SQL statement
@@ -296,39 +296,38 @@ VALUES(@CompetitionID, @JudgeID)";
 
         }
 
-        public List<CompetitionJudge> getJudges(int competitionId)
+        public bool checkJudgeAdded(int Judgeid, int competitionid)
         {
-            
+            bool judgeFound = false;
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
             //retrieves all attributes of a staff record.
-            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID";
+            cmd.CommandText = @"SELECT JudgeID FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID AND JudgeID = @selectedJudgeID";
             //Define the parameter used in SQL statement, value for the
             //parameter is retrieved from the method parameter “staffId”.
-            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionid);
+            cmd.Parameters.AddWithValue("@selectedJudgeID", Judgeid);
             //Open a database connection
             conn.Open();
-            //Execute SELCT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            List<CompetitionJudge> judgeList = new List<CompetitionJudge>();
             if (reader.HasRows)
-            {
+            { //Records found
                 while (reader.Read())
                 {
-                    judgeList.Add(
-                    new CompetitionJudge
-                    {
-                        CompetitionID = reader.GetInt32(0),
-                        JudgeID = reader.GetInt32(1),
-                       
-                    }
-                    );
+                    if (reader.GetInt32(0) == Judgeid)
+                        //The email address is used by another staff
+                        judgeFound = true;
                 }
-                reader.Close();
-                conn.Close();
             }
-            return judgeList;
+            else
+            { //No record
+                judgeFound = false; // The email address given does not exist
+            }
+            reader.Close();
+            conn.Close();
+
+            return judgeFound;
 
         }
     }
