@@ -261,6 +261,56 @@ namespace GameTime.Controllers
             }
         }
 
+        public ActionResult RemoveJudge(int? id) 
+        {
+            List<Judge> judgeList = judgeContext.GetAllJudge();
+            // Stop accessing the action if not logged in
+            // or account not in the "Administrator" role
+            // ...need to do 
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("Index");
+            }
+            Competition comp = compContext.GetDetails(id.Value);
+            if (DateTime.Now > comp.EndDate)
+            {
+                return RedirectToAction("Index");
+            }
+
+            List<int> judgeidList = compContext.getJudgesinCompetition(id.Value);
+            if (judgeidList.Count == 0)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("Index");
+            }
+            for (int i = 0; i < judgeidList.Count; i++)
+            {
+                   jList.Add(
+                new SelectListItem
+                {
+                    Value = judgeidList[i].ToString(),
+                    Text = judgeContext.GetJudge(judgeidList[i]).JudgeName,
+                });
+               
+            }
+            ViewData["ShowResult"] = false;
+            ViewData["jidList"] = jList;
+            CompetitionJudge compjudge = new CompetitionJudge();
+            compjudge.CompetitionID = (int)id;
+            return View(compjudge);
+        }
+        [HttpPost]
+        public ActionResult RemoveJudge(CompetitionJudge competitionJudge)
+        {
+            compContext.RemoveJudge(competitionJudge);
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -330,5 +330,58 @@ VALUES(@CompetitionID, @JudgeID)";
             return judgeFound;
 
         }
+
+        public List<int> getJudgesinCompetition(int id)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a staff record.
+            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “staffId”.
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", id);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<int> judgesID = new List<int>();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    judgesID.Add(reader.GetInt32(1));
+
+                }
+            }
+            
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return judgesID;
+        }
+
+        public void RemoveJudge(CompetitionJudge judge)
+        {
+
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @CompetitionID AND JudgeID = @JudgeID";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@CompetitionID", judge.CompetitionID);
+            cmd.Parameters.AddWithValue("@JudgeID", judge.JudgeID);
+            //conn.Close();
+            conn.Open();
+            //ExecuteScalar is used to retrieve the auto-generated
+            //StaffID after executing the INSERT SQL statement
+            cmd.ExecuteNonQuery();
+            //A connection should be closed after operations.
+            conn.Close();
+            //Return id when no error occurs.
+        }
     }
 }
