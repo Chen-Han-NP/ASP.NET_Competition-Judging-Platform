@@ -80,7 +80,12 @@ where c.CompetitionID not in (select c.CompetitionID
 from Competition c
 Inner join CompetitionSubmission cs
 on c.CompetitionID = cs.CompetitionID
-where cs.CompetitorID = @competitorId
+where cs.CompetitorID = @competitorId)
+and c.CompetitionID in
+(select COUNT(CompetitionID)
+from CompetitionJudge
+GROUP BY CompetitionID
+HAVING COUNT(JudgeID) >= 2
 )";
 
             cmd.Parameters.AddWithValue("@competitorId", competitorId);
