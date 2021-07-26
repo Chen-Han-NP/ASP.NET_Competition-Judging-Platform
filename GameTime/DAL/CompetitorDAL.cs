@@ -211,6 +211,107 @@ WHERE cs.CompetitorID = @competitorId
 
             return (emailFound);
         }
-        
+
+        public int UpdateCompetitorFile(CompetitorSubmissionViewModel competitor)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+UPDATE CompetitionSubmission
+SET FileSubmitted = @fileSubmitted, DateTimeFileUpload = @DateTimeFileUpload
+WHERE CompetitionID = @CompetitionID AND CompetitorID = @CompetitorID
+";
+            cmd.Parameters.AddWithValue("@fileSubmitted", competitor.FileSubmitted);
+            cmd.Parameters.AddWithValue("@DateTimeFileUpload", competitor.DateTimeSubmitted);
+            cmd.Parameters.AddWithValue("@CompetitionID", competitor.CompetitionId);
+            cmd.Parameters.AddWithValue("@CompetitorID", competitor.CompetitorId);
+
+            conn.Open();
+            int count = cmd.ExecuteNonQuery();
+            conn.Close();
+            return count;
+        }
+
+        public int UpdateCompetitorAppeal(CompetitorSubmissionViewModel competitor)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+UPDATE CompetitionSubmission
+SET Appeal = @appeal
+WHERE CompetitionID = @CompetitionID AND CompetitorID = @CompetitorID
+";
+            cmd.Parameters.AddWithValue("@appeal", competitor.Appeal);
+            cmd.Parameters.AddWithValue("@CompetitionID", competitor.CompetitionId);
+            cmd.Parameters.AddWithValue("@CompetitorID", competitor.CompetitorId);
+
+            conn.Open();
+            int count = cmd.ExecuteNonQuery();
+            conn.Close();
+            return count;
+        }
+
+        public List<CriteriaScoreAppealViewModel> getAllCriteriaScore(int competitorId, int competitionId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT DISTINCT c.CriteriaID, c.CriteriaName, c.Weightage, cscore.Score
+FROM Criteria c
+INNER JOIN CompetitionScore cscore
+ON c.CriteriaID = cscore.CriteriaID AND c.CompetitionID = cscore.CompetitionID
+WHERE cscore.CompetitionID = @competitionID AND cscore.CompetitorID = @competitorID
+";
+
+            cmd.Parameters.AddWithValue("@competitorID", competitorId);
+            cmd.Parameters.AddWithValue("@competitionID", competitionId);
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CriteriaScoreAppealViewModel> scoreList = new List<CriteriaScoreAppealViewModel>();
+            while (reader.Read())
+            {
+                scoreList.Add(
+                new CriteriaScoreAppealViewModel
+                {
+                    CriteriaID = reader.GetInt32(0),
+                    CriteriaName = reader.GetString(1),
+                    Weightage = reader.GetInt32(2),
+                    Score = reader.GetInt32(3)
+                });
+            }
+
+            reader.Close();
+
+            conn.Close();
+            return scoreList;
+        }
+
+        public string getAppeal(int competitorId, int competitionId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT Appeal
+FROM CompetitionSubmission
+WHERE CompetitionID = @competitionID AND CompetitorID = @competitorID
+";
+
+            cmd.Parameters.AddWithValue("@competitorID", competitorId);
+            cmd.Parameters.AddWithValue("@competitionID", competitionId);
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            string appeal = "";
+            while (reader.Read())
+            {
+                appeal = !reader.IsDBNull(0) ?
+                                  reader.GetString(0) : (string)null;
+            };
+
+            reader.Close();
+
+            conn.Close();
+            return appeal;
+        }
+
     }
 }

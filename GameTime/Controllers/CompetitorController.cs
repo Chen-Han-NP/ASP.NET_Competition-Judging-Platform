@@ -91,7 +91,7 @@ namespace GameTime.Controllers
                 CompetitorId = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID")),
                 CompetitionId = (int)competitionID
             };
-
+            
             return View(competitor);
         }
 
@@ -124,7 +124,10 @@ namespace GameTime.Controllers
                     {
                         await competitorVM.FileUpload.CopyToAsync(fileSteam);
                     }
+
                     competitorVM.FileSubmitted = uploadedFile;
+                    competitorVM.DateTimeSubmitted = DateTime.Now;
+                    competitorContext.UpdateCompetitorFile(competitorVM);
                     ViewData["Message"] = "File uploaded successfully.";
                 }
                 catch (IOException)
@@ -139,6 +142,46 @@ namespace GameTime.Controllers
             }
             return View(competitorVM);
 
+        }
+
+        public ActionResult ViewScore(int? competitionID)
+        {
+           
+            if ((HttpContext.Session.GetString("Role") == null) || (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
+            List<CriteriaScoreAppealViewModel> scoreList = competitorContext.getAllCriteriaScore(id, (int)competitionID);
+            if (scoreList.Count > 0)
+            {
+                scoreList[0].Appeal = competitorContext.getAppeal(id, (int)competitionID);
+            }
+
+            ViewData["CompetitionID"] = ((int)competitionID).ToString();
+
+            return View(scoreList);
+        }
+
+
+        [HttpPost]
+        public ActionResult AddAppeal(IFormCollection formData)
+        {
+            int competitionId = Convert.ToInt32(formData["CompetitionID"]);
+            int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
+            string description = formData["Description"];
+
+            CompetitorSubmissionViewModel competitor = new CompetitorSubmissionViewModel
+            {
+                CompetitionId = competitionId,
+                CompetitorId = id,
+                Appeal = description
+            };
+
+            competitorContext.UpdateCompetitorAppeal(competitor);
+            ViewData["Message"] = "Appeal uploaded successfully.";
+           
+            return RedirectToAction("ViewScore", new { competitionId = competitionId });
         }
 
     }

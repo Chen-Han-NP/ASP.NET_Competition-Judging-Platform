@@ -26,38 +26,59 @@
                     <th>Result Release Date</th>
                     <th>Competition Criteria</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.CompetitionID.ToString()</td>
-                        <td>@item.CompetitionName</td>
-                        <td>@item.AreaInterestName</td>
-                        <td>@Convert.ToDateTime(item.StartDate)</td>
-                        <td>@Convert.ToDateTime(item.EndDate)</td>
-                        <td>@Convert.ToDateTime(item.ResultReleasedDate)</td>
+                <tr>
+                    <td>@item.CompetitionID.ToString()</td>
+                    <td>@item.CompetitionName</td>
+                    <td>@item.AreaInterestName</td>
+                    <td>@Convert.ToDateTime(item.StartDate)</td>
+                    <td>@Convert.ToDateTime(item.EndDate)</td>
+                    <td>@Convert.ToDateTime(item.ResultReleasedDate)</td>
 
-                        <td>
-                            <a asp-action="CriteriaView" asp-controller="Competitor"
-                               asp-route-CompetitionId="@item.CompetitionID">Criteria</a>
-                        </td>
-                        @if (DateTime.Today.AddDays(3) < item.StartDate)
-                        {
-                            <td>
-                                <a asp-action="UploadView" asp-controller="Competitor"
-                                   asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                Competition Over
-                            </td>
-                        }
+                    <td>
+                        <a asp-action="CriteriaView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Criteria</a>
+                    </td>
+                    @*@if ((DateTime.Today > item.StartDate) && (DateTime.Today < item.EndDate))
+        {
+                    <td>
+                        <a asp-action="UploadView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+                    </td>
+                                            <td>
+                        <a asp-action="UploadView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+                    </td>
+                }
+                else if (DateTime.Today < item.StartDate)
+                {
+                    <td>
+                        Compeition Not Started
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Compeition Ended
+                    </td>
+                }*@
+                    <td>
+                        <a asp-action="UploadView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+                    </td>
 
-                    </tr>
+                    <td>
+                        <a asp-action="ViewScore" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">View Score</a>
+                    </td>
+
+
+                </tr>
                 }
             </tbody>
         </table>
