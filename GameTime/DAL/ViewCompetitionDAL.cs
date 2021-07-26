@@ -72,21 +72,29 @@ ON c.AreaInterestID = a.AreaInterestID";
 
             SqlCommand cmd = conn.CreateCommand();
 
+            // SQL 1st subquery checks for previously joined competitions
+            // 2nd subquery checks for competitions with 2 or more judges
+            // 3rd subquery checks for competitions with 3 or more days left to join
             cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
 FROM Competition c
 INNER JOIN AreaInterest a
 ON c.AreaInterestID = a.AreaInterestID
-where c.CompetitionID not in (select c.CompetitionID 
-from Competition c
-Inner join CompetitionSubmission cs
-on c.CompetitionID = cs.CompetitionID
-where cs.CompetitorID = @competitorId)
-and c.CompetitionID in
-(select COUNT(CompetitionID)
-from CompetitionJudge
+WHERE c.CompetitionID NOT IN
+(SELECT c.CompetitionID
+FROM Competition c
+INNER JOIN CompetitionSubmission cs
+ON c.CompetitionID = cs.CompetitionID
+WHERE cs.CompetitorID = @competitorId)
+AND c.CompetitionID IN
+(SELECT CompetitionID
+FROM CompetitionJudge
 GROUP BY CompetitionID
-HAVING COUNT(JudgeID) >= 2
-)";
+HAVING (COUNT(JudgeID) >= 2))
+AND c.CompetitionID NOT IN
+(SELECT CompetitionID
+FROM Competition
+WHERE GETDATE() > DATEADD(DAY, -3, StartDate))
+";
 
             cmd.Parameters.AddWithValue("@competitorId", competitorId);
             conn.Open();

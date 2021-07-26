@@ -40,20 +40,10 @@
                             <a asp-action="CriteriaView" asp-controller="Competitor"
                                asp-route-CompetitionId="@item.CompetitionID">Criteria</a>
                         </td>
-                        @if (DateTime.Today.AddDays(3) < item.StartDate)
-                        {
-                            <td>
-                                <a asp-action="JoinCompetition" asp-controller="Competitor"
-                                   asp-route-CompetitionId="@item.CompetitionID">Join</a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                Not Joinable
-                            </td>
-                        }
-
+                        <td>
+                            <a asp-action="JoinCompetition" asp-controller="Competitor"
+                                asp-route-CompetitionId="@item.CompetitionID">Join</a>
+                        </td>
                     </tr>
                 }
             </tbody>
