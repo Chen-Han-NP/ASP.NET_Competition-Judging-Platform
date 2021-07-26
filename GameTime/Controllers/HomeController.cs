@@ -81,6 +81,14 @@ namespace GameTime.Controllers
             return RedirectToAction("Login", "Home");
             
         }
+        public ActionResult LogOut()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+            // Call the Index action of Home controller
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Index()
         {
             
