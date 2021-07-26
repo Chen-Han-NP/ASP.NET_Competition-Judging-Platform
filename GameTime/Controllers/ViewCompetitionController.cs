@@ -17,6 +17,7 @@ namespace GameTime.Controllers
         private ViewCompetitionDAL competitionContext = new ViewCompetitionDAL();
         private CompetitorSubmissionDAL competitorContext = new CompetitorSubmissionDAL();
 
+        // View all the competitions
         public ActionResult Index()
         {
             List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
@@ -28,6 +29,7 @@ namespace GameTime.Controllers
             return View(competitionList);
         }
 
+        //For the search bar
         [HttpPost]
         public ActionResult Index(IFormCollection formData)
         {
@@ -46,7 +48,7 @@ namespace GameTime.Controllers
             return View(competitionList);
         }
 
-
+        // View details of a competition
         public ActionResult ViewCompetition(int? competitionId)
         {
 

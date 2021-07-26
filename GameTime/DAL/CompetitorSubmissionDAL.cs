@@ -45,24 +45,24 @@ ORDER BY cs.VoteCount desc";
             SqlDataReader reader = cmd.ExecuteReader();
 
             List<CompetitorSubmissionViewModel> competitorList = new List<CompetitorSubmissionViewModel>();
-            //while (reader.Read())
-            //{
-            //    competitorList.Add(new CompetitorSubmissionViewModel
-            //    {
-            //        CompetitionId = reader.GetInt32(0),
-            //        CompetitorId = reader.GetInt32(1),
-            //        CompetitorName = reader.GetString(2),
-            //        Salutation = !reader.IsDBNull(3) ?
-            //                      reader.GetString(3) : (string)null,
-            //        FileSubmitted = !reader.IsDBNull(4) ?
-            //                      reader.GetString(4) : (string)null,
-            //        DateTimeSubmitted = !reader.IsDBNull(5) ?
-            //                      reader.GetDateTime(5) : (DateTime?)null,
-            //        VoteCount = reader.GetInt32(6),
-            //        Ranking = !reader.IsDBNull(7) ?
-            //                      reader.GetInt32(7) : (int?)null
-            //    });
-            //}
+            while (reader.Read())
+            {
+                competitorList.Add(new CompetitorSubmissionViewModel
+                {
+                    CompetitionId = reader.GetInt32(0),
+                    CompetitorId = reader.GetInt32(1),
+                    CompetitorName = reader.GetString(2),
+                    Salutation = !reader.IsDBNull(3) ?
+                                  reader.GetString(3) : (string)null,
+                    FileSubmitted = !reader.IsDBNull(4) ?
+                                  reader.GetString(4) : (string)null,
+                    DateTimeSubmitted = !reader.IsDBNull(5) ?
+                                  reader.GetDateTime(5) : (DateTime?)null,
+                    VoteCount = reader.GetInt32(6),
+                  Ranking = !reader.IsDBNull(7) ?
+                                  reader.GetInt32(7) : (int?)null
+                });
+            }
             //Close DataReader
             reader.Close();
             //Close the database connection

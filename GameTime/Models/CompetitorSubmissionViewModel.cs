@@ -25,7 +25,7 @@ namespace GameTime.Models
         public string Salutation { get; set; }
 
         //Type will be changed to iFormFile
-        public IFormFile FileSubmitted { get; set; }
+        public string FileSubmitted { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? DateTimeSubmitted { get; set; }
