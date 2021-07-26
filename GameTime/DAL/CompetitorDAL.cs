@@ -80,6 +80,108 @@ namespace GameTime.DAL
             return competitorSignUp.CompetitorID;
         }
 
+        public List<CompetitionViewModel> GetAllAvailableCompetitions(int competitorId)
+        {
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            // SQL 1st subquery checks for previously joined competitions
+            // 2nd subquery checks for competitions with 2 or more judges
+            // 3rd subquery checks for competitions with 3 or more days left to join
+            cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
+FROM Competition c
+INNER JOIN AreaInterest a
+ON c.AreaInterestID = a.AreaInterestID
+WHERE c.CompetitionID NOT IN
+(SELECT c.CompetitionID
+FROM Competition c
+INNER JOIN CompetitionSubmission cs
+ON c.CompetitionID = cs.CompetitionID
+WHERE cs.CompetitorID = @competitorId)
+AND c.CompetitionID IN
+(SELECT CompetitionID
+FROM CompetitionJudge
+GROUP BY CompetitionID
+HAVING (COUNT(JudgeID) >= 2))
+AND c.CompetitionID NOT IN
+(SELECT CompetitionID
+FROM Competition
+WHERE GETDATE() > DATEADD(DAY, -3, StartDate))
+";
+
+            cmd.Parameters.AddWithValue("@competitorId", competitorId);
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                new CompetitionViewModel
+                {
+                    CompetitionID = reader.GetInt32(0),
+                    AreaInterestID = reader.GetInt32(1),
+                    AreaInterestName = reader.GetString(2),
+                    CompetitionName = reader.GetString(3),
+                    StartDate = !reader.IsDBNull(4) ?
+                                  reader.GetDateTime(4) : (DateTime?)null,
+                    EndDate = !reader.IsDBNull(5) ?
+                                  reader.GetDateTime(5) : (DateTime?)null,
+                    ResultReleasedDate = !reader.IsDBNull(6) ?
+                                  reader.GetDateTime(6) : (DateTime?)null
+                });
+            }
+
+            reader.Close();
+
+            conn.Close();
+            return competitionList;
+        }
+        public List<CompetitionViewModel> GetJoinedCompetitions(int competitorId)
+        {
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
+FROM Competition c
+INNER JOIN AreaInterest a
+ON c.AreaInterestID = a.AreaInterestID
+INNER JOIN CompetitionSubmission cs
+ON cs.CompetitionID = c.CompetitionID
+WHERE cs.CompetitorID = @competitorId
+";
+
+            cmd.Parameters.AddWithValue("@competitorId", competitorId);
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                new CompetitionViewModel
+                {
+                    CompetitionID = reader.GetInt32(0),
+                    AreaInterestID = reader.GetInt32(1),
+                    AreaInterestName = reader.GetString(2),
+                    CompetitionName = reader.GetString(3),
+                    StartDate = !reader.IsDBNull(4) ?
+                                  reader.GetDateTime(4) : (DateTime?)null,
+                    EndDate = !reader.IsDBNull(5) ?
+                                  reader.GetDateTime(5) : (DateTime?)null,
+                    ResultReleasedDate = !reader.IsDBNull(6) ?
+                                  reader.GetDateTime(6) : (DateTime?)null
+                });
+            }
+
+            reader.Close();
+
+            conn.Close();
+            return competitionList;
+        }
+
         //Add Checks for unique Email
         public bool isEmailExists(string email, int competitorID)
         {

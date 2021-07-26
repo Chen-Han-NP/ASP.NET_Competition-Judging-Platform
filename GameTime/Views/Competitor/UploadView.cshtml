@@ -1,0 +1,61 @@
+﻿@model GameTime.Models.CompetitorSubmissionViewModel
+
+@{
+    ViewData["Title"] = "UploadView";
+}
+
+<h1>UploadView</h1>
+<form asp-action="UploadView" enctype="multipart/form-data">
+    <fieldset class="FormContent">
+        <div class="form-group row">
+            <label asp-for="CompetitionId"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="CompetitionId" readonly
+                       class="form-control-plaintext" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CompetitorId"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="CompetitorId" readonly
+                       class="form-control-plaintext" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="FileSubmitted"
+                   class="col-sm-3 col-form-label"></label>
+
+        </div>
+        <div class="form-group row">
+            <label asp-for="FileUpload"
+                   class="col-sm-3 col-form-label">
+                Upload Work Here
+            </label>
+            <div class="col-sm-9">
+                <input asp-for="FileUpload" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="DateTimeSubmitted"
+                   class="col-sm-3 col-form-label">
+                Date Time Submitted
+            </label>
+            <div class="col-sm-9">
+                <input asp-for="DateTimeSubmitted" readonly />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Upload"
+                       class="btn btn-primary" />
+                <span style="color:red;">@ViewData["Message"]</span>
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </fieldset>
+</form>

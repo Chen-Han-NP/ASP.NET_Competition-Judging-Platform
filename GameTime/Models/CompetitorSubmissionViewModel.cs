@@ -37,5 +37,7 @@ namespace GameTime.Models
 
         public int? Ranking { get; set; }
 
+        public IFormFile FileUpload { get; set; }
+
     }
 }

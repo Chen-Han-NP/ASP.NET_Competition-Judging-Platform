@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<GameTime.Models.CompetitionViewModel>
 
 @{
-    ViewData["Title"] = "CompetitorViewCompetition";
+    ViewData["Title"] = "JoinedCompetitions";
 }
 
 <div style="text-align:center">
-    <h1>Competitions</h1>
+    <h1>Competitions Entered</h1>
 </div>
 <br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @if (Model.ToList().Count >= 0)
 {
@@ -43,14 +46,14 @@
                         @if (DateTime.Today.AddDays(3) < item.StartDate)
                         {
                             <td>
-                                <a asp-action="JoinCompetition" asp-controller="Competitor"
-                                   asp-route-CompetitionId="@item.CompetitionID">Join</a>
+                                <a asp-action="UploadView" asp-controller="Competitor"
+                                   asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
                             </td>
                         }
                         else
                         {
                             <td>
-                                Not Joinable
+                                Competition Over
                             </td>
                         }
 

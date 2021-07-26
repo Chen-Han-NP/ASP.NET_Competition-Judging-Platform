@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameTime.DAL;
 using GameTime.Models;
+using System.IO;
 
 namespace GameTime.Controllers
 {
@@ -26,7 +27,7 @@ namespace GameTime.Controllers
             int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
 
             //Check whether the current competitor has alr join a competition
-            competitionList = competitionContext.GetAllAvailableCompetitions(id);
+            competitionList = competitorContext.GetAllAvailableCompetitions(id);
 
             return View(competitionList);
         }
@@ -41,29 +42,16 @@ namespace GameTime.Controllers
             {
                 if (criteriaList[i].CompetitionID == CompetitionID)
                 {
-                    //criteriaVM.CriteriaList.Add(criteriaList[i]);
-                    //criteriaVM = new Criteria
-                    //{
-                    //    CriteriaID = criteriaList[i].CriteriaID,
-                    //    CompetitionID = criteriaList[i].CompetitionID,
-                    //    CriteriaName = criteriaList[i].CriteriaName,
-                    //    Weightage = criteriaList[i].Weightage
-                    //};
                     showCriteriaList.Add(criteriaList[i]);
                 }
             }
             return View(showCriteriaList);
         }
 
-        public ActionResult JoinCompetition(int competitionID)
+        public ActionResult JoinCompetition(int? competitionID)
         {
             
             Competition competition = new Competition();
-
-            //if (DateTime.Today.AddDays(3) < competition.StartDate)
-            //{
-
-            //}
             int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
             CompetitorSubmissionViewModel competitorSubmission = new CompetitorSubmissionViewModel
             { 
@@ -71,88 +59,87 @@ namespace GameTime.Controllers
                 CompetitorId = id,
                 VoteCount = 0
             };
-
-
-            
-            //competitorSubmission.CompetitionId = competitionID;
-            //competitorSubmission.CompetitorId = id;
-            //competitorSubmission.FileSubmitted = "replaceThis.pdf";
-            //competitorSubmission.DateTimeSubmitted = DateTime.Today;
-            //competitorSubmission.Appeal = "";
-            //competitorSubmission.VoteCount = 0;
-            //competitorSubmission.Ranking = -1;
             competitorSubmissionContext.JoinCompetition(competitorSubmission);
+            return RedirectToAction("CompetitorViewCompetition", "Competitor");
+        }
+
+        public ActionResult JoinedCompetitions()
+        {
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            if ((HttpContext.Session.GetString("Role") == null) || (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            int id = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID"));
+
+            //Check whether the current competitor has alr join a competition
+            competitionList = competitorContext.GetJoinedCompetitions(id);
+
+            return View(competitionList);
+        }
+
+        public ActionResult UploadView(int? competitionID)
+        {
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            if ((HttpContext.Session.GetString("Role") == null) || (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            CompetitorSubmissionViewModel competitor = new CompetitorSubmissionViewModel
+            {
+                CompetitorId = Convert.ToInt32(HttpContext.Session.GetString("CompetitorID")),
+                CompetitionId = (int)competitionID
+            };
+
+            return View(competitor);
+        }
+
+        public ActionResult Index()
+        {
             return RedirectToAction("Competitor", "Home");
         }
 
-
-        // GET: CompetitorController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: CompetitorController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> UploadView(CompetitorSubmissionViewModel competitorVM)
         {
-            try
+            if ( competitorVM.FileUpload != null &&
+ competitorVM.FileUpload.Length > 0)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    // Find the filename extension of the file to be uploaded.
+                    string fileExt = Path.GetExtension(
+                     competitorVM.FileUpload.FileName);
+                    // Rename the uploaded file with the staff’s name.
+                    string uploadedFile = "File_" + competitorVM.CompetitorId + "_" + competitorVM.CompetitionId + fileExt;
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                     Directory.GetCurrentDirectory(),
+                     "wwwroot\\competitorSubmissions", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                     savePath, FileMode.Create))
+                    {
+                        await competitorVM.FileUpload.CopyToAsync(fileSteam);
+                    }
+                    competitorVM.FileSubmitted = uploadedFile;
+                    ViewData["Message"] = "File uploaded successfully.";
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["Message"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["Message"] = ex.Message;
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(competitorVM);
+
         }
 
-        // GET: CompetitorController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompetitorController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
