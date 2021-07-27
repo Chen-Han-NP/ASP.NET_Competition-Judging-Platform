@@ -57,6 +57,29 @@ namespace GameTime.DAL
             return criteriaList;
         }
 
+        public int GetTotalCriteria(int competitionId)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT CompetitionID, SUM(Weightage)
+FROM Criteria
+WHERE CompetitionID = @competitionID
+GROUP BY CompetitionID";
+            cmd.Parameters.AddWithValue("@competitionID", competitionId);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            reader.Read();
+            int TotalCriteria = reader.GetInt32(1);
+
+            reader.Close();
+            conn.Close();
+            return TotalCriteria;
+        }
+
         public int Add(Criteria createCriteria)
         {
             //Create a SqlCommand object from connection object
@@ -71,7 +94,15 @@ namespace GameTime.DAL
 
             conn.Open();
 
-            createCriteria.CriteriaID = (int)cmd.ExecuteScalar();
+            try
+            {
+                createCriteria.CriteriaID = (int)cmd.ExecuteScalar();
+            }
+            catch (SqlException)
+            {
+
+                return 0;
+            }
 
             conn.Close();
 

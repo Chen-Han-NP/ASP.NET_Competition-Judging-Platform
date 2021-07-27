@@ -37,7 +37,24 @@ namespace GameTime.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (criteriaContext.GetTotalCriteria(criteria.CompetitionID) >= 100) // Check if competition already have 100% weightage
+                {
+                    ViewBag.Error = "Criteria already has 100% weightage";
+                    return View();
+                }
+                else if (criteria.Weightage + criteriaContext.GetTotalCriteria(criteria.CompetitionID) > 100) // Check if total weightage exceeds 100%
+                {
+                    ViewBag.Error = "Criteria exceeds 100% weightage";
+                    return View();
+                }
+
                 criteria.CriteriaID = criteriaContext.Add(criteria);
+
+                if (criteria.CriteriaID == 0)
+                {
+                    ViewBag.Error = "Competition ID does not exist";
+                    return View();
+                }
 
                 return RedirectToAction("Index", "Judge");
             }
