@@ -90,12 +90,7 @@ namespace GameTime.Controllers
 
         }
 
-        /* To download the competitor's file
-        public IActionResult DownloadFile(string filePath)
-        {
-            return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath), Path.GetFileName(filePath));
-        }
-        */
+
 
         public ActionResult Vote(int? competitorId, string competitorName, int? competitionId)
         {
