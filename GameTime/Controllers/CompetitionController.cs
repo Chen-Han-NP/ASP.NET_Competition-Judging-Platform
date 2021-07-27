@@ -56,8 +56,10 @@ namespace GameTime.Controllers
 
             return View(comp);
         }
-
+        
+        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Createcomp(Competition comp)
         {
             // The aoi object contains user inputs from view
@@ -86,10 +88,10 @@ namespace GameTime.Controllers
                 ViewData["aoiList"] = sList;
                 return View(comp);
             }
-
-
-
+           
         }
+
+       
 
         public ActionResult Update(int? id)
         {
