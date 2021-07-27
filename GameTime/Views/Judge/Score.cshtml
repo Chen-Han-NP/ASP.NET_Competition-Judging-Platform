@@ -1,0 +1,47 @@
+﻿@model GameTime.Models.CompetitionScore
+
+@{
+    ViewData["Title"] = "Edit Score";
+}
+
+<h1>Edit Score</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Score">
+            <div class="form-group">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <label asp-for="CompetitionID" class="control-label"></label>
+                <input asp-for="CompetitionID" class="form-control" readonly />
+                <span asp-validation-for="CompetitionID" class="text-danger"></span>
+            </div>
+                <div class="form-group">
+                    <label asp-for="CompetitorID" class="control-label"></label>
+                    <input asp-for="CompetitorID" class="form-control" readonly />
+                    <span asp-validation-for="CompetitorID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CriteriaID" class="control-label"></label>
+                    <input asp-for="CriteriaID" class="form-control" readonly />
+                    <span asp-validation-for="CriteriaID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Score" class="control-label"></label>
+                    <input asp-for="Score" class="form-control" />
+                    <span asp-validation-for="Score" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <input type="submit" value="Score" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ViewSubmission">Back to Submission View</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -25,7 +25,7 @@ namespace GameTime.DAL
             "GameTimeConnectionString");
             //Instantiate a SqlConnection object with the
             //Connection String read.
-            conn = new SqlConnection(strConn);
+            conn = new SqlConnection(strConn);  
         }
 
         public List<CompetitorSubmissionViewModel> getAllCompetitor(int competitionId)
@@ -111,7 +111,47 @@ WHERE CompetitionID = @competitionId AND CompetitorID = @competitorId";
             return true;
         }
 
+        public CompetitorSubmissionViewModel getCompetitorSubmission(int competitionID, int competitorID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
 
+            cmd.CommandText = @"SELECT cs.CompetitionID, cs.CompetitorID, c.CompetitorName, c.Salutation, cs.FileSubmitted, cs.DateTimeFileUpload, cs.VoteCount, cs.Ranking
+FROM CompetitionSubmission cs
+INNER JOIN Competitor c
+ON cs.CompetitorID = c.CompetitorID
+WHERE (cs.CompetitionID = @competitionID) AND (cs.CompetitorID = @competitorID)";
+
+            cmd.Parameters.AddWithValue("@competitionID", competitorID);
+            cmd.Parameters.AddWithValue("@competitorID", competitorID);
+
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            CompetitorSubmissionViewModel competitorSubmission;
+            reader.Read();
+
+            competitorSubmission = new CompetitorSubmissionViewModel
+            {
+                CompetitionId = reader.GetInt32(0),
+                CompetitorId = reader.GetInt32(1),
+                CompetitorName = reader.GetString(2),
+                Salutation = !reader.IsDBNull(3) ?
+                                  reader.GetString(3) : (string)null,
+                FileSubmitted = !reader.IsDBNull(4) ?
+                                  reader.GetString(4) : (string)null,
+                DateTimeSubmitted = !reader.IsDBNull(5) ?
+                                  reader.GetDateTime(5) : (DateTime?)null,
+                VoteCount = reader.GetInt32(6),
+                Ranking = !reader.IsDBNull(7) ?
+                                  reader.GetInt32(7) : (int?)null
+            };
+
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return competitorSubmission;
+        }
 
 
     }

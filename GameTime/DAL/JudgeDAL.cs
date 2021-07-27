@@ -144,5 +144,28 @@ namespace GameTime.DAL
 
             return (emailFound);
         }
+
+        public List<int> getCompetitions(int judgeID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE JudgeID = @judgeID";
+            cmd.Parameters.AddWithValue("@judgeID", judgeID);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a staff list
+            List<int> competitionIDList = new List<int>();
+            while (reader.Read())
+            {
+                competitionIDList.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+            conn.Close();
+
+            return competitionIDList;
+        }
     }
 }

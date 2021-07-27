@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameTime.Models;
 using GameTime.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 
 namespace GameTime.Controllers
 {
@@ -44,7 +45,8 @@ namespace GameTime.Controllers
         {
             Judge judge = new Judge();
             ViewData["GetAOI"] = GetAOI();
-            ViewData["GetJudgeID"] = GetJudgeID(); 
+            ViewData["GetJudgeID"] = GetJudgeID();
+            HttpContext.Session.SetInt32("JudgeID", GetJudgeID());
             return View(judge);
         }
 
@@ -55,6 +57,7 @@ namespace GameTime.Controllers
             if (ModelState.IsValid)
             {
                 judge.JudgeID = judgeContext.Add(judge);
+                HttpContext.Session.SetInt32("JudgeID", judge.JudgeID);
 
                 return RedirectToAction("Index", "Judge");
             }

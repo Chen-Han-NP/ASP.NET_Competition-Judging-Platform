@@ -57,8 +57,10 @@ namespace GameTime.Controllers
                 {
                     string checkEmail = judgeContext.GetAllJudge()[i].EmailAddr;
                     string checkPassword = judgeContext.GetAllJudge()[i].Password;
+                    int judgeID = judgeContext.GetAllJudge()[i].JudgeID;
                     if (checkEmail == email && checkPassword == password)
                     {
+                        HttpContext.Session.SetInt32("JudgeID", judgeID);
                         return RedirectToAction("Index", "Judge");
                     }
                 }

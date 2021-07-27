@@ -1,0 +1,98 @@
+﻿@model IEnumerable<GameTime.Models.CompetitorScoreViewModel>
+
+@{
+    ViewData["Title"] = "View Submission";
+}
+
+<h1>View Competitor Submission</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetitorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetitionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetitorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.C1Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.C2Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.C3Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.C4Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appeal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ranking)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompetitorID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompetitionID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompetitorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Score)
+            </td>
+            <td>
+                @Html.ActionLink(item.C1Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",1" })
+            </td>
+            <td>
+                @Html.ActionLink(item.C2Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",2" })
+            </td>
+            <td>
+                @Html.ActionLink(item.C3Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",3" })
+            </td>
+            <td>
+                @Html.ActionLink(item.C4Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",4" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileSubmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeSubmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Appeal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ranking)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
