@@ -92,17 +92,17 @@ namespace GameTime.Controllers
             return View(Model);
         }
 
-        public ActionResult Score(string id)
+        public ActionResult Score(string id) // gets CompetitorID,CompetitionID,CriteriaID
         {
             CompetitionScore Model;
 
-            string[] idList = id.Split(',');
+            string[] idList = id.Split(','); // ["CompetitorID","CompetitionID","CriteriaID"]
 
-            if (scoreContext.hasScore(Int32.Parse(idList[0]), Int32.Parse(idList[1]), Int32.Parse(idList[2])))
+            if (scoreContext.hasScore(Int32.Parse(idList[0]), Int32.Parse(idList[1]), Int32.Parse(idList[2]))) // Check if Criteria previously has score to get
             {
-                Model = scoreContext.getCompetitorScore(Int32.Parse(idList[0]), Int32.Parse(idList[1]), Int32.Parse(idList[2]));
+                Model = scoreContext.getCompetitorScore(Int32.Parse(idList[0]), Int32.Parse(idList[1]), Int32.Parse(idList[2])); // Yes : get Score to Model
             }
-            else
+            else // No : create new Score
             {
                 Model = new CompetitionScore
                 {
@@ -135,6 +135,52 @@ namespace GameTime.Controllers
             else
             {
                 return View(cs);
+            }
+        }
+
+        public ActionResult Rank(string id) // gets CompetitorID,CompetitionID
+        {
+            string[] idList = id.Split(','); // ["CompetitorID","CompetitionID"]
+
+            CompetitorSubmissionViewModel submission = submissionContext.getCompetitorSubmission(Int32.Parse(idList[0]), Int32.Parse(idList[1])); // .getCompetitorSubmission(CompetitorID,CompetitionID)
+            return View(submission);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Rank(CompetitorSubmissionViewModel submission)
+        {
+            if (ModelState.IsValid)
+            {
+                if(submissionContext.UpdateRank(submission))
+                {
+                    List<CompetitorSubmissionViewModel> submissionList = submissionContext.getAllCompetitor(submission.CompetitionId); // Get all competitors in competition that the competitor was in
+                    int? rankToPush = submission.Ranking; // Other Competitors of this ranking will be pushed up by 1 Rank
+                    CompetitorSubmissionViewModel check = submission; // Original competitor's submission to check
+
+                    for (int i = 0; i < submissionList.Count(); i++)
+                    {
+                        if (submissionList[i].Ranking == rankToPush && submissionList[i] != check) // If Rank is same as rank to push and is not original competitor, update new ranking
+                        {
+                            submissionList[i].Ranking += 1; // Update new ranking
+                            submissionContext.UpdateRank(submissionList[i]); // Upload new ranking
+                            rankToPush += 1;    // Check new ranking for duplicates
+                            check = submissionList[i];  // Set check to new submission
+                            i = 0;  // Reset loop
+                        }
+                    }
+
+                    return RedirectToAction("ViewSubmission", "Judge");
+                }
+                else
+                {
+                    ViewBag.Error = "Please put a Ranking";
+                    return View(submission);
+                }
+            }
+            else
+            {
+                return View(submission);
             }
         }
 

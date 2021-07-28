@@ -90,7 +90,7 @@
                 @Html.DisplayFor(modelItem => item.VoteCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ranking)
+                @Html.ActionLink(item.Ranking != null ? item.Ranking.ToString() : "N/A", "Rank", new { id = item.CompetitorID + "," + item.CompetitionID + ",4" })
             </td>
         </tr>
 }

@@ -1,0 +1,69 @@
+﻿@model GameTime.Models.CompetitorSubmissionViewModel
+
+@{
+    ViewData["Title"] = "Rank";
+}
+
+<h1>Rank</h1>
+
+<h4>CompetitorSubmissionViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Rank">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CompetitionId" class="control-label"></label>
+                <input asp-for="CompetitionId" class="form-control" readonly/>
+                <span asp-validation-for="CompetitionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitorId" class="control-label"></label>
+                <input asp-for="CompetitorId" class="form-control" readonly/>
+                <span asp-validation-for="CompetitorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitorName" class="control-label"></label>
+                <input asp-for="CompetitorName" class="form-control" readonly/>
+                <span asp-validation-for="CompetitorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Salutation" class="form-control" hidden/>
+                <span asp-validation-for="Salutation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="FileSubmitted" class="form-control" hidden/>
+                <span asp-validation-for="FileSubmitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="DateTimeSubmitted" class="form-control" hidden/>
+                <span asp-validation-for="DateTimeSubmitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Appeal" class="form-control" hidden/>
+                <span asp-validation-for="Appeal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="VoteCount" class="form-control" hidden/>
+                <span asp-validation-for="VoteCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ranking" class="control-label"></label>
+                <input asp-for="Ranking" class="form-control" />
+                <span asp-validation-for="Ranking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <span class="text-danger">@ViewBag.Error</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

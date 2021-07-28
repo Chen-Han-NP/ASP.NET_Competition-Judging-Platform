@@ -111,7 +111,7 @@ WHERE CompetitionID = @competitionId AND CompetitorID = @competitorId";
             return true;
         }
 
-        public CompetitorSubmissionViewModel getCompetitorSubmission(int competitionID, int competitorID)
+        public CompetitorSubmissionViewModel getCompetitorSubmission(int competitorID, int competitionID)
         {
             SqlCommand cmd = conn.CreateCommand();
 
@@ -153,6 +153,32 @@ WHERE (cs.CompetitionID = @competitionID) AND (cs.CompetitorID = @competitorID)"
             return competitorSubmission;
         }
 
+        public bool UpdateRank(CompetitorSubmissionViewModel submission)
+        {
+            SqlCommand cmd = conn.CreateCommand();
 
+            cmd.CommandText = @"UPDATE CompetitionSubmission
+SET Ranking = @newRank
+WHERE (CompetitionID = @competitionID) AND (CompetitorID = @competitorID)";
+
+            cmd.Parameters.AddWithValue("@competitionID", submission.CompetitionId);
+            cmd.Parameters.AddWithValue("@competitorID", submission.CompetitorId);
+            cmd.Parameters.AddWithValue("@newRank", submission.Ranking);
+
+            conn.Open();
+            try // catches if SQL fails, return false to inform controller that no ranking is put
+            {
+                cmd.ExecuteScalar();
+            }
+            catch (Exception)
+            {
+                conn.Close();
+
+                return false;
+            }
+            conn.Close();
+
+            return true;
+        }
     }
 }
