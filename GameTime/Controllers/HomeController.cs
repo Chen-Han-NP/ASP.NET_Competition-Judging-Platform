@@ -109,6 +109,12 @@ namespace GameTime.Controllers
 
         public ActionResult Admin()
         {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage", "Competition");
+            }
             return View();
         }
         public ActionResult Judge()

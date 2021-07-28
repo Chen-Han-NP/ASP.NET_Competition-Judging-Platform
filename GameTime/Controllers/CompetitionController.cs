@@ -30,6 +30,21 @@ namespace GameTime.Controllers
             List<Competition> compList = compContext.GetAllComp();
             return View(compList);
         }
+        public ActionResult ErrorPage()
+        {
+            if (TempData.ContainsKey("ErrorCompetitors"))
+            {
+                ViewData["Error"] = TempData["ErrorCompetitors"].ToString();
+            }
+            else if (TempData.ContainsKey("NotAdmin"))
+            {
+                ViewData["Error"] = TempData["NotAdmin"].ToString();
+            }
+            return View();
+        }
+        
+        
+
         //create form default page
         public ActionResult Createcomp()
         {
@@ -152,16 +167,18 @@ namespace GameTime.Controllers
             if (id == null)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                ViewData["Error"] = "Invalid Competition ID";
+                return RedirectToAction("ErrorPage");
             }
             //ViewData["BranchList"] = GetAllBranches();
-            
+
             Competition comp = compContext.GetDetails(id.Value);
             int countCompetitors = competitorContext.getAllCompetitor(id.Value).Count();
             if (comp == null || countCompetitors != 0)
             {
+                TempData["ErrorCompetitors"] = "COMPETITION ALR GOT COMPETITORS ALR LAH";
                 //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                return RedirectToAction("ErrorPage");
             }
             return View(comp);
         }
