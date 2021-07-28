@@ -16,6 +16,7 @@ namespace GameTime.Controllers
         CriteriaDAL criteriaContext = new CriteriaDAL();
         CompetitorSubmissionDAL submissionContext = new CompetitorSubmissionDAL();
         CompetitionScoreDAL scoreContext = new CompetitionScoreDAL();
+        CompetitionDAL compContext = new CompetitionDAL();
 
         // GET: JudgeController
         public ActionResult Index(Judge judge)
@@ -44,6 +45,8 @@ namespace GameTime.Controllers
                 List<CompetitorSubmissionViewModel> c = submissionContext.getAllCompetitor(i);
                 foreach (CompetitorSubmissionViewModel m in c)
                 {
+                    if (compContext.GetDetails(m.CompetitionId).EndDate <= DateTime.Now) break;
+
                     CompetitorScoreViewModel s = new CompetitorScoreViewModel();
                     s.CompetitorID = m.CompetitorId;
                     s.CompetitionID = m.CompetitionId;
