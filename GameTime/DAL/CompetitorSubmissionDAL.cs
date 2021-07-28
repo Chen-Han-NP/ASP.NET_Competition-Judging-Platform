@@ -121,7 +121,7 @@ INNER JOIN Competitor c
 ON cs.CompetitorID = c.CompetitorID
 WHERE (cs.CompetitionID = @competitionID) AND (cs.CompetitorID = @competitorID)";
 
-            cmd.Parameters.AddWithValue("@competitionID", competitorID);
+            cmd.Parameters.AddWithValue("@competitionID", competitionID);
             cmd.Parameters.AddWithValue("@competitorID", competitorID);
 
             conn.Open();
