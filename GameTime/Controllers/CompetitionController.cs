@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using GameTime.Models;
 using GameTime.DAL;
 using Microsoft.AspNetCore.Http;
@@ -62,8 +63,54 @@ namespace GameTime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Createcomp(Competition comp)
         {
+            ValidateCompetitionDate validateCompetitionDate = new ValidateCompetitionDate();
             // The aoi object contains user inputs from view
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    //Add staff record to database
+            //    comp.CompetitionID = compContext.AddComp(comp);
+            //    //Redirect user to Staff/Index view
+            //    return RedirectToAction("Index");
+            //}
+            //else if (!validateCompetitionDate.IsValid(comp))
+            //{
+            //    List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
+            //    for (int i = 0; i < aoiList.Count; i++)
+            //    {
+            //        sList.Add(
+            //        new SelectListItem
+            //        {
+            //            Value = aoiList[i].AreaInterestID.ToString(),
+            //            Text = aoiList[i].Name.ToString(),
+            //        });
+            //    }
+            //    //Input validation fails, return to the Create view
+            //    //to display error message
+            //    ViewData["ShowResult"] = false;
+            //    ViewData["aoiList"] = sList;
+            //    return View(comp);
+            //}
+
+
+            if (validateCompetitionDate.GetValidationResult(comp, new ValidationContext(comp)) != ValidationResult.Success)
+            {
+                List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
+                for (int i = 0; i < aoiList.Count; i++)
+                {
+                    sList.Add(
+                    new SelectListItem
+                    {
+                        Value = aoiList[i].AreaInterestID.ToString(),
+                        Text = aoiList[i].Name.ToString(),
+                    });
+                }
+                //Input validation fails, return to the Create view
+                //to display error message
+                ViewData["ShowResult"] = false;
+                ViewData["aoiList"] = sList;
+                return View(comp);
+            }
+            else if (ModelState.IsValid)
             {
                 //Add staff record to database
                 comp.CompetitionID = compContext.AddComp(comp);
@@ -88,7 +135,7 @@ namespace GameTime.Controllers
                 ViewData["aoiList"] = sList;
                 return View(comp);
             }
-           
+            
         }
 
        

@@ -8,6 +8,7 @@ namespace GameTime.Models
 {
     public class Competition
     {
+        
         [Required]
         [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; }
@@ -23,15 +24,20 @@ namespace GameTime.Models
 
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
+        [ValidateCompetitionDate]
         public DateTime? StartDate { get; set; }
 
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
+        [ValidateCompetitionDate]
         public DateTime? EndDate { get; set; }
+       
 
         [Display(Name = "Result Released Date")]
         [DataType(DataType.Date)]
+        [ValidateCompetitionDate]
         public DateTime? ResultReleasedDate { get; set; }
 
     }
+   
 }
