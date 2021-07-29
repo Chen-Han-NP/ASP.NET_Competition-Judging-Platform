@@ -45,7 +45,7 @@ namespace GameTime.DAL
                 new Competitor
                 {
                      CompetitorID = reader.GetInt32(0), 
-                     CompetitorName = reader.GetString(1), 
+                     CompetitorName = reader.GetString(1),
                      Salutation = reader.GetString(2),
                      EmailAddr = reader.GetString(3), 
                      Password = reader.GetString(4)
@@ -67,9 +67,19 @@ namespace GameTime.DAL
                                 OUTPUT INSERTED.CompetitorID
                                 VALUES(@competitorName, @salutation, @emailAddr, @password)";
             cmd.Parameters.AddWithValue("@competitorName", competitorSignUp.CompetitorName);
-            cmd.Parameters.AddWithValue("@salutation", competitorSignUp.Salutation);
+            //cmd.Parameters.AddWithValue("@salutation", competitorSignUp.Salutation);
+            if (competitorSignUp.Salutation == null)
+            {
+                cmd.Parameters.AddWithValue("@salutation", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@salutation", competitorSignUp.Salutation);
+            }
             cmd.Parameters.AddWithValue("@emailAddr", competitorSignUp.EmailAddr);
             cmd.Parameters.AddWithValue("@password", competitorSignUp.Password);
+
+            
 
             conn.Open();
 

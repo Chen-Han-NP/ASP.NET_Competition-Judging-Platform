@@ -8,6 +8,13 @@ using GameTime.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Google.Apis.Auth;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GameTime.Controllers
 {
@@ -83,8 +90,62 @@ namespace GameTime.Controllers
             return RedirectToAction("Login", "Home");
             
         }
-        public ActionResult LogOut()
+
+        [Authorize]
+        public async Task<ActionResult> CompetitorLogin()
         {
+            // The user is already authenticated, so this call won't
+            // trigger login, but it allows us to access token related values.
+            AuthenticateResult auth = await HttpContext.AuthenticateAsync();
+            string idToken = auth.Properties.GetTokenValue(
+             OpenIdConnectParameterNames.IdToken);
+            try
+            {
+                // Verify the current user logging in with Google server
+                // if the ID is invalid, an exception is thrown
+                Payload currentUser = await
+                GoogleJsonWebSignature.ValidateAsync(idToken);
+                string userName = currentUser.Name;
+                string eMail = currentUser.Email;
+                for (int i = 0; i < competitorContext.GetAllCompetitor().Count; i++)
+                {
+                    if (eMail == competitorContext.GetAllCompetitor()[i].EmailAddr)
+                    {
+                        HttpContext.Session.SetString("CompetitorID", competitorContext.GetAllCompetitor()[i].CompetitorID.ToString());
+                        HttpContext.Session.SetString("Role", "Competitor");
+                        return RedirectToAction("Competitor", "Home");
+                    }
+                    
+                }
+                TempData["userName"] = userName;
+                TempData["eMail"] = eMail;
+                return RedirectToAction("GoogleSignUp", "SignUp");
+            }
+            catch (Exception)
+            {
+                // Token ID is may be tempered with, force user to logout
+                return RedirectToAction("LogOut");
+            }
+        }
+
+        //[HttpPost]
+        //public ActionResult AddCompetitor(string email, string username)
+        //{
+        //    Competitor competitor = new Competitor();
+        //    competitor.EmailAddr = email;
+        //    competitor.CompetitorName = username;
+        //    competitor.Salutation = "";
+        //    competitor.Password = "";
+        //    competitor.CompetitorID = competitorContext.Add(competitor);
+        //    return RedirectToAction("Index","Home");
+
+        //}
+
+        public async Task<ActionResult> LogOut()
+        {
+            // Clear authentication cookie
+            await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
             // Clear all key-values pairs stored in session state
             HttpContext.Session.Clear();
             // Call the Index action of Home controller
