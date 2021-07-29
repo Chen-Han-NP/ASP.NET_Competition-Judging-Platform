@@ -41,16 +41,29 @@ namespace GameTime.DAL
             List<Competitor> competitorList = new List<Competitor>();
             while (reader.Read())
             {
-                competitorList.Add(
-                new Competitor
+                //competitorList.Add(
+                //new Competitor
+                //{
+                //     CompetitorID = reader.GetInt32(0), 
+                //     CompetitorName = reader.GetString(1),
+                //     Salutation = reader.GetString(2),
+                //     EmailAddr = reader.GetString(3), 
+                //     Password = reader.GetString(4)
+                //}
+                //);
+                Competitor competitor = new Competitor();
+                competitor.CompetitorID = reader.GetInt32(0);
+                competitor.CompetitorName = reader.GetString(1);
+                if (reader.IsDBNull(2))
                 {
-                     CompetitorID = reader.GetInt32(0), 
-                     CompetitorName = reader.GetString(1),
-                     Salutation = reader.GetString(2),
-                     EmailAddr = reader.GetString(3), 
-                     Password = reader.GetString(4)
+                    competitor.Salutation = "NA";
                 }
-                );
+                else
+                    competitor.Salutation = reader.GetString(2);
+                competitor.EmailAddr = reader.GetString(3);
+                competitor.Password = reader.GetString(4);
+                competitorList.Add(competitor);
+                
             }
             reader.Close();
             conn.Close();

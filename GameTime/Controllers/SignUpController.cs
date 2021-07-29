@@ -26,7 +26,7 @@ namespace GameTime.Controllers
             Competitor competitor = new Competitor();
             competitor.EmailAddr = TempData["eMail"].ToString();
             competitor.CompetitorName = TempData["userName"].ToString();
-            competitor.Salutation = "Mr"; //cant be set to null because of GetAllCompetitor()
+            competitor.Salutation = null; //cant be set to null because of GetAllCompetitor()
             competitor.Password = "";
             competitor.CompetitorID = competitorContext.Add(competitor);
             HttpContext.Session.SetString("Role", "Competitor");
@@ -55,23 +55,6 @@ namespace GameTime.Controllers
                 return View(competitor);
             }
         }
-        //private int GetCompetitorID()
-        //{
-        //    CompetitorDAL CompetitorContext = new CompetitorDAL();
-        //    List<Competitor> CompetitorList = CompetitorContext.GetAllCompetitor();
-        //    for (int i = 0; i < CompetitorList.Count(); i++)
-        //    {
-        //        if (CompetitorList[i].CompetitorID == i + 1)
-        //        {
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            return i;
-        //        }
-        //    }
-        //    return CompetitorList.Count() + 1;
-        //}
 
         public ActionResult JudgeSignUp()
         {
