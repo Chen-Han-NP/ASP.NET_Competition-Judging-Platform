@@ -14,7 +14,6 @@ namespace GameTime.Controllers
     {
         private CompetitorDAL competitorContext = new CompetitorDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
-        //remove 
        
         public ActionResult Index()
         {
@@ -24,17 +23,12 @@ namespace GameTime.Controllers
         
         public ActionResult GoogleSignUp()
         {
-
-            //Competitor competitor = new Competitor();
             Competitor competitor = new Competitor();
             competitor.EmailAddr = TempData["eMail"].ToString();
             competitor.CompetitorName = TempData["userName"].ToString();
             competitor.Salutation = "Mr"; //cant be set to null because of GetAllCompetitor()
             competitor.Password = "";
             competitor.CompetitorID = competitorContext.Add(competitor);
-            //ViewData["GetCompetitorID"] = GetCompetitorID();
-            //HttpContext.Session.SetInt32("CompetitorID", GetCompetitorID());
-            //return View(competitor);
             HttpContext.Session.SetString("Role", "Competitor");
             return RedirectToAction("Competitor", "Home");
         }

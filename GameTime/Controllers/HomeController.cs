@@ -128,19 +128,6 @@ namespace GameTime.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult AddCompetitor(string email, string username)
-        //{
-        //    Competitor competitor = new Competitor();
-        //    competitor.EmailAddr = email;
-        //    competitor.CompetitorName = username;
-        //    competitor.Salutation = "";
-        //    competitor.Password = "";
-        //    competitor.CompetitorID = competitorContext.Add(competitor);
-        //    return RedirectToAction("Index","Home");
-
-        //}
-
         public async Task<ActionResult> LogOut()
         {
             // Clear authentication cookie

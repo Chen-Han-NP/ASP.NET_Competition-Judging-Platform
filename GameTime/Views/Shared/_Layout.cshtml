@@ -9,47 +9,18 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GameTime</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Features">Features</a>
-
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ViewCompetition" asp-action="Index">Competitions</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SignUp" asp-action="Index">Sign Up</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                        </li>
-                        <!--One idea: We can add a label below the nav bar showing the status of the viewer (e.g. Guest/Admin/Competitor/Judge)-->
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @if (Context.Session.GetString("Role") == "Competitor")
+        {
+            @await Html.PartialAsync("_CompetitorMenu.cshtml");
+        }
+        else if (Context.Session.GetString("Role") == "Admin")
+        {
+            @await Html.PartialAsync("_AdminMenu.cshtml");
+        }
+        else
+        {
+            @await Html.PartialAsync("_PublicMenu.cshtml");
+        }
     </header>
     <div class="container">
         <main role="main" class="pb-3">
