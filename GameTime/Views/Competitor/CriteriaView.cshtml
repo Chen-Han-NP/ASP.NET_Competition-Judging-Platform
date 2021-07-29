@@ -3,10 +3,19 @@
 @{
     ViewData["Title"] = "View Score";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>CriteriaView</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">CriteriaView</h1>
 <div>
-    <a asp-action="Index">Back to Home</a>
+    <a class="btn btn-primary" asp-action="Index">Back to Home</a>
 </div>
 
 <fieldset class="FormContent">
@@ -25,7 +34,7 @@
                     <th>Weightage</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color:snow;">
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -37,16 +46,4 @@
             </tbody>
         </table>
     </div>
-    @*<div class="form-group row">
-            <label asp-for="CriteriaName" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.Display("CriteriaName")
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Weightage" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.Display("Weightage")
-            </div>
-        </div>*@
 </fieldset>

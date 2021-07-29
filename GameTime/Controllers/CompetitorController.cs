@@ -184,5 +184,10 @@ namespace GameTime.Controllers
             return RedirectToAction("ViewScore", new { competitionId = competitionId });
         }
 
+        public ActionResult ErrorPage()
+        {
+            return View();
+        }
+
     }
 }

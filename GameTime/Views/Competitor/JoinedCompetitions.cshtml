@@ -4,12 +4,22 @@
     ViewData["Title"] = "JoinedCompetitions";
 }
 
-<div style="text-align:center">
+<style>
+    body {
+        background-color: darkviolet;
+    }
+
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<div style="text-align:center;" class="whiteText">
     <h1>Competitions Entered</h1>
 </div>
 <br />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 
 @if (Model.ToList().Count >= 0)
@@ -29,7 +39,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color:snow;">
                 @foreach (var item in Model)
                 {
                 <tr>

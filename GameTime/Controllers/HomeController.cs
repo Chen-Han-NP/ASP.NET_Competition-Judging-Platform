@@ -81,6 +81,7 @@ namespace GameTime.Controllers
                     string checkPassword = competitorContext.GetAllCompetitor()[i].Password;
                     if (checkEmail == email && checkPassword == password)
                     {
+                        HttpContext.Session.SetString("CompetitorName", competitorContext.GetAllCompetitor()[i].CompetitorName);
                         HttpContext.Session.SetString("CompetitorID", competitorContext.GetAllCompetitor()[i].CompetitorID.ToString());
                         return RedirectToAction("Competitor", "Home");
                     }
@@ -171,6 +172,20 @@ namespace GameTime.Controllers
         }
         public ActionResult Competitor()
         {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                TempData["NotCompetitor"] = "You haven't logged in yet!";
+                return RedirectToAction("ErrorPage", "Competitor");
+            }
+            for (int i = 0; i < competitorContext.GetAllCompetitor().Count; i++)
+            {
+                if (HttpContext.Session.GetString("CompetitorID") == competitorContext.GetAllCompetitor()[i].CompetitorID.ToString())
+                {
+                    ViewData["CompetitorName"] = competitorContext.GetAllCompetitor()[i].CompetitorName;
+                }
+            }
+
             return View();
         }
 

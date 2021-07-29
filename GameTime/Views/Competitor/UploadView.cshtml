@@ -3,16 +3,26 @@
 @{
     ViewData["Title"] = "UploadView";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>UploadView</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+
+<h1 class="whiteText">UploadView</h1>
 <form asp-action="UploadView" enctype="multipart/form-data">
-    <fieldset class="FormContent">
+    <fieldset class="FormContent whiteText">
         <div class="form-group row">
             <label asp-for="CompetitionId"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 col-md-5">
                 <input asp-for="CompetitionId" readonly
-                       class="form-control-plaintext" />
+                       class="form-control-plaintext" style="background-color:snow"/>
             </div>
         </div>
         <div class="form-group row">
@@ -20,7 +30,7 @@
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 col-md-5">
                 <input asp-for="CompetitorId" readonly
-                       class="form-control-plaintext" />
+                       class="form-control-plaintext" style="background-color:snow"/>
             </div>
         </div>
         <div class="form-group row">
@@ -40,7 +50,7 @@
             </div>
         </div>
         <div>
-            <a asp-action="JoinedCompetitions">Back to List</a>
+            <a class="btn btn-primary" asp-action="JoinedCompetitions">Back to List</a>
         </div>
     </fieldset>
 </form>

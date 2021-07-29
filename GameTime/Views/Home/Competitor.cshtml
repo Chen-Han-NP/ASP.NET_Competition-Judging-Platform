@@ -2,13 +2,25 @@
 @{
     ViewData["Title"] = "Competitor";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>Welcome, Competitor @ViewData["CompetitorName"]</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
 
-<h2>Join a Competition!</h2>
-
-<a asp-action="CompetitorViewCompetition" asp-controller="Competitor">View All Competitions</a>
-
-<h2>Competitions You have Joined.</h2>
-
-<a asp-action="JoinedCompetitions" asp-controller="Competitor">Competitions Entered</a>
+<div class="whiteText text-center">
+    <h2>Welcome, @ViewData["CompetitorName"].</h2>
+    <br />
+    <h3>Join a Competition!</h3>
+    <p>Click below to view all aailable competitions to join!</p>
+    <a class="btn btn-primary" asp-action="CompetitorViewCompetition" asp-controller="Competitor">View All Competitions</a>
+    <br />
+    
+    <h3>Competitions You have Joined.</h3>
+    <p>Click below to view the progress of the competitions you have joined!</p>
+    <a class="btn btn-primary" asp-action="JoinedCompetitions" asp-controller="Competitor">Competitions Entered</a>
+</div>

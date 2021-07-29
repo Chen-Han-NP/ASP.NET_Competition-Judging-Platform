@@ -4,10 +4,20 @@
     ViewData["Title"] = "View Score";
 }
 
-<h1>CriteriaView</h1>
+<style>
+    body {
+        background-color: darkviolet;
+    }
+
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">CriteriaView</h1>
 <br />
 <div>
-    <a asp-action="JoinedCompetitions">Back to List</a>
+    <a class="btn btn-primary" asp-action="JoinedCompetitions">Back to List</a>
 </div>
 @if (Model.ToList().Count > 0)
 {
@@ -22,7 +32,7 @@
                         <th>Score</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color:snow;">
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -55,8 +65,8 @@
             }
             else
             {
-                <h5>You have an appeal</h5>
-                <label>@Model.ToList()[0].Appeal</label>
+                <h5 class="whiteText">You have an appeal</h5>
+                <label class="whiteText">@Model.ToList()[0].Appeal</label>
             }
 
         </div>
@@ -66,5 +76,5 @@
 
 else
 {
-    <h5>No score is being awarded yet</h5>
+    <h5 class="whiteText">No score is being awarded yet</h5>
 }
