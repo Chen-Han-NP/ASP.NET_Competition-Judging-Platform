@@ -23,6 +23,11 @@ namespace GameTime.Controllers
             List<AreaOfInterest> aiList = AOIContext.GetAreaOfInterests();
             return View(aiList);
         }
+        public ActionResult ErrorPage()
+        {
+            ViewData["Error"] = TempData["Error"].ToString();
+            return View();
+        }
         //create form default page
         public ActionResult CreateAOI()
         {
@@ -32,7 +37,8 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                TempData["Error"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage");
             }
 
             //create Area of Interest object
@@ -71,19 +77,23 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
-            }
-            if (id == null)
-            { //Query string parameter not provided
-              //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["Error"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage");
             }
             AreaOfInterest aoi = AOIContext.GetDetails(id.Value);
+            if (aoi.AreaInterestID == 0 || aoi == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                TempData["Error"] = "Invalid Area of Interest ID.";
+                return RedirectToAction("ErrorPage");
+            }
+            
 
-            if (aoi == null || AOIContext.GetCompetitorCount(id.Value) != 0)
+            if (AOIContext.GetCompetitorCount(id.Value) != 0)
             {
                 //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["Error"] = "You are not allowed to delete this Area of Interest as competitors exist in this Area of Interest.";
+                return RedirectToAction("ErrorPage");
             }
             return View(aoi);
         }

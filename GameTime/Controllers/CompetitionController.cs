@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GameTime.DAL;
+using GameTime.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using GameTime.Models;
-using GameTime.DAL;
-using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace GameTime.Controllers
 {
@@ -25,7 +24,8 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage");
             }
             List<Competition> compList = compContext.GetAllComp();
             return View(compList);
@@ -40,6 +40,22 @@ namespace GameTime.Controllers
             {
                 ViewData["Error"] = TempData["NotAdmin"].ToString();
             }
+            else if (TempData.ContainsKey("ErrorID"))
+            {
+                ViewData["Error"] = TempData["ErrorID"].ToString();
+            }
+            else if (TempData.ContainsKey("ErrorNoJudges"))
+            {
+                ViewData["Error"] = TempData["ErrorNoJudges"].ToString();
+            }
+            else if (TempData.ContainsKey("ErrorCompetitionStart"))
+            {
+                ViewData["Error"] = TempData["ErrorCompetitionStart"].ToString();
+            }
+            else
+            {
+
+            }
             return View();
         }
         
@@ -51,7 +67,8 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage");
             }
             List<AreaOfInterest> aoiList = aoiContext.GetAreaOfInterests();
             for (int i = 0; i < aoiList.Count; i++)
@@ -162,19 +179,21 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage", "Competition");
             }
-            if (id == null)
+            Competition comp = compContext.GetDetails(id.Value);
+            if (id == null || comp.CompetitionID == 0)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
-                ViewData["Error"] = "Invalid Competition ID";
+                TempData["ErrorID"] = "Invalid Competition ID";
                 return RedirectToAction("ErrorPage");
             }
             //ViewData["BranchList"] = GetAllBranches();
 
-            Competition comp = compContext.GetDetails(id.Value);
+            
             int countCompetitors = competitorContext.getAllCompetitor(id.Value).Count();
-            if (comp == null || countCompetitors != 0)
+            if (countCompetitors != 0)
             {
                 TempData["ErrorCompetitors"] = "COMPETITION ALR GOT COMPETITORS ALR LAH";
                 //Return to listing page, not allowed to edit
@@ -212,19 +231,22 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
-            }
-            if (id == null)
-            { //Query string parameter not provided
-              //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage", "Competition");
             }
             Competition comp = compContext.GetDetails(id.Value);
+            if (id == null || comp.CompetitionID == 0)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                TempData["ErrorID"] = "Invalid Competition ID";
+                return RedirectToAction("ErrorPage");
+            }
+            
             int countCompetitors = competitorContext.getAllCompetitor(id.Value).Count();
             if (comp == null || countCompetitors != 0)
             {
-                //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["ErrorCompetitors"] = "Not allowed to delete competition. Competitors have already joined.";
+                return RedirectToAction("ErrorPage");
             }
             return View(comp);
         }
@@ -248,18 +270,21 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (id == null)
-            { //Query string parameter not provided
-              //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage", "Competition");
             }
             Competition comp = compContext.GetDetails(id.Value);
+            if (id == null || comp.CompetitionID == 0)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                TempData["ErrorID"] = "Invalid Competition ID";
+                return RedirectToAction("ErrorPage"); 
+            }
+           
             if(DateTime.Now > comp.EndDate)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorCompetitionStart"] = "Not allowed to add judges. Competition has started.";
+                return RedirectToAction("ErrorPage");
             }
 
            
@@ -336,25 +361,29 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (id == null)
-            { //Query string parameter not provided
-              //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                return RedirectToAction("ErrorPage", "Competition");
             }
             Competition comp = compContext.GetDetails(id.Value);
+            if (id == null || comp.CompetitionID == 0)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                TempData["ErrorID"] = "Invalid Competition ID";
+                return RedirectToAction("ErrorPage");
+            }
+            
             if (DateTime.Now > comp.EndDate)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorCompetitionStart"] = "Not allowed to remove judges. Competition has started.";
+                return RedirectToAction("ErrorPage");
             }
 
             List<int> judgeidList = compContext.getJudgesinCompetition(id.Value);
             if (judgeidList.Count == 0)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
-                return RedirectToAction("Index");
+                TempData["ErrorNoJudges"] = "There are no judges to remove.";
+                return RedirectToAction("ErrorPage");
             }
             for (int i = 0; i < judgeidList.Count; i++)
             {
