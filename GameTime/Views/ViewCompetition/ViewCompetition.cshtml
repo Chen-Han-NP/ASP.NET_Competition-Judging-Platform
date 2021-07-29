@@ -146,7 +146,7 @@ else
             </div>
             <input class="form-control" type="text" name="CompetitionID" value="@Model.competition.CompetitionID" hidden />
             <input class="form-control" type="datetime" name="DateTimePosted" value="@DateTime.Now" hidden />
-            <input class="form-control" type="text" name="Description" aria-label="commentInput" placeholder="max. 255 characters" maxlength="255" />
+            <input required class="form-control" type="text" name="Description" aria-label="commentInput" placeholder="max. 255 characters" maxlength="255" />
             <input type="submit" value="POST" class="btn btn-primary">
         </div>
 
