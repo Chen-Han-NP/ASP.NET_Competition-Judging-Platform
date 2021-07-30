@@ -161,7 +161,7 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                TempData["NotAdmin"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                TempData["Error"] = "You are not authorised to enter this page.";
                 return RedirectToAction("ErrorPage", "Competition");
             }
             return View();
