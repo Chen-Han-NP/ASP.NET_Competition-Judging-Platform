@@ -10,6 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @ViewData["noJudgesAvailable"]
         <form asp-action="AddJudge">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -25,7 +26,7 @@
                 <span asp-validation-for="CompetitionID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add Judge" class="btn btn-primary" />
             </div>
         </form>
     </div>

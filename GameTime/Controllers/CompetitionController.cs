@@ -243,9 +243,9 @@ namespace GameTime.Controllers
             }
             
             int countCompetitors = competitorContext.getAllCompetitor(id.Value).Count();
-            if (comp == null || countCompetitors != 0)
+            if (comp == null || countCompetitors != 0 || compContext.getJudgesinCompetition(id.Value).Count != 0)
             {
-                TempData["ErrorCompetitors"] = "Not allowed to delete competition. Competitors have already joined.";
+                TempData["ErrorCompetitors"] = "Not allowed to delete competition. Competitors and Judges have already joined.";
                 return RedirectToAction("ErrorPage");
             }
             return View(comp);
@@ -292,12 +292,25 @@ namespace GameTime.Controllers
             {
                 if (judgeList[i].AreaInterestID == comp.AreaInterestID)
                 {
-                    jList.Add(
-                new SelectListItem
-                {
-                    Value = judgeList[i].JudgeID.ToString(),
-                    Text = judgeList[i].JudgeName.ToString(),
-                });
+                   
+                    if (compContext.getJudgeCompetition(judgeList[i].JudgeID) == 0)
+                    {
+                        jList.Add(
+                        new SelectListItem
+                        {
+                            Value = judgeList[i].JudgeID.ToString(),
+                            Text = judgeList[i].JudgeName.ToString(),
+                        });
+                    }
+                    if (jList.Count() == 0)
+                    {
+                        ViewData["noJudgesAvailable"] = "No Judges is available.";
+                    }
+                    else
+                    {
+                        ViewData["noJudgesAvailable"] = "";
+                    }
+
                 }
 
             }
@@ -332,7 +345,8 @@ namespace GameTime.Controllers
 
                 for (int i = 0; i < judgeList.Count; i++)
                 {
-                    if (judgeList[i].AreaInterestID == comp.AreaInterestID)
+                   
+                    if (judgeList[i].AreaInterestID == comp.AreaInterestID && compContext.getJudgeCompetition(judgeList[i].JudgeID) == 0)
                     {
                         jList.Add(
                     new SelectListItem
@@ -341,7 +355,8 @@ namespace GameTime.Controllers
                         Text = judgeList[i].JudgeName.ToString(),
                     });
                     }
-
+                   
+                    
                 }
 
                 ViewData["ShowResult"] = false;

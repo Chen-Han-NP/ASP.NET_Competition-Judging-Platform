@@ -383,5 +383,41 @@ VALUES(@CompetitionID, @JudgeID)";
             conn.Close();
             //Return id when no error occurs.
         }
+
+        public int getJudgeCompetition(int id)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a staff record.
+            cmd.CommandText = @"SELECT COUNT(c.CompetitionID) FROM CompetitionJudge j
+INNER JOIN Competition c
+ON j.CompetitionID = c.CompetitionID 
+WHERE j.JudgeID = @selectedJudgeID AND c.EndDate > GETDATE() ";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “staffId”.
+            cmd.Parameters.AddWithValue("@selectedJudgeID", id);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            int count = new int();
+            if (reader.HasRows)
+            {
+                
+                //Read the record from database
+                while (reader.Read())
+                {
+                     count = reader.GetInt32(0);
+                }
+                
+            }
+
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
     }
 }
