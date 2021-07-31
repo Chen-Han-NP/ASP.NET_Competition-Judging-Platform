@@ -28,33 +28,64 @@ namespace GameTime.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public List<Criteria> GetAllCriterias()
+        public List<Criteria> GetAllCriteria(int competitionID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT CriteriaID, CompetitionID, CriteriaName, Weightage
+FROM Criteria
+WHERE CompetitionID = @competitionID";
+            cmd.Parameters.AddWithValue("@competitionID", competitionID);
+
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<Criteria> cList = new List<Criteria>();
+
+            while (reader.Read())
+            {
+                cList.Add(new Criteria
+                {
+                    CriteriaID = reader.GetInt32(0),
+                    CompetitionID = reader.GetInt32(1),
+                    CriteriaName = reader.GetString(2),
+                    Weightage = reader.GetInt32(3)
+                });
+            }
+
+            reader.Close();
+            conn.Close();
+
+            return cList;
+        }
+
+        public Criteria GetCriteria(int competitionID, int criteriaID)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement
-            cmd.CommandText = @"SELECT * FROM Judge ORDER BY JudgeID";
+            cmd.CommandText = @"SELECT CriteriaName, Weightage
+FROM Criteria
+WHERE (CompetitionID = @competitionID) AND (CriteriaID = @criteriaID)";
+            cmd.Parameters.AddWithValue("@competitionID", competitionID);
+            cmd.Parameters.AddWithValue("@criteriaID", criteriaID);
             //Open a database connection
             conn.Open();
             //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            //Read all records until the end, save data into a staff list
-            List<Criteria> criteriaList = new List<Criteria>();
 
-            while (reader.Read())
-            {
-                criteriaList.Add(
-                    new Criteria
-                    { 
-                        CriteriaID = reader.GetInt32(0),
-                        CompetitionID = reader.GetInt32(1),
-                        CriteriaName = reader.GetString(2),
-                        Weightage = reader.GetInt32(3)
-                    });
-            }
+            reader.Read();
+            Criteria criteria = new Criteria {
+                CompetitionID = competitionID,
+                CriteriaID = criteriaID,
+                CriteriaName = reader.GetString(0),
+                Weightage = reader.GetInt32(1)
+            };
+
             reader.Close();
             conn.Close();
-            return criteriaList;
+            return criteria;
         }
 
         public int GetTotalCriteria(int competitionId)

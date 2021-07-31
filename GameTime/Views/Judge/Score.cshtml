@@ -6,6 +6,10 @@
 
 <h1>Edit Score</h1>
 
+<h4>Criteria: @TempData["CriteriaName"]</h4>
+<h4>Weightage: @TempData["CriteriaWeightage"]%</h4>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,21 +20,21 @@
                 <input asp-for="CompetitionID" class="form-control" readonly />
                 <span asp-validation-for="CompetitionID" class="text-danger"></span>
             </div>
-                <div class="form-group">
-                    <label asp-for="CompetitorID" class="control-label"></label>
-                    <input asp-for="CompetitorID" class="form-control" readonly />
-                    <span asp-validation-for="CompetitorID" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CriteriaID" class="control-label"></label>
-                    <input asp-for="CriteriaID" class="form-control" readonly />
-                    <span asp-validation-for="CriteriaID" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Score" class="control-label"></label>
-                    <input asp-for="Score" class="form-control" />
-                    <span asp-validation-for="Score" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="CompetitorID" class="control-label"></label>
+                <input asp-for="CompetitorID" class="form-control" readonly />
+                <span asp-validation-for="CompetitorID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CriteriaID" class="control-label"></label>
+                <input asp-for="CriteriaID" class="form-control" readonly />
+                <span asp-validation-for="CriteriaID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Score" class="btn btn-primary" />
             </div>
