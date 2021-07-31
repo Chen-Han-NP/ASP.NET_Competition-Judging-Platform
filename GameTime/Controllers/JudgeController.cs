@@ -19,8 +19,10 @@ namespace GameTime.Controllers
         CompetitionDAL compContext = new CompetitionDAL();
 
         // GET: JudgeController
-        public ActionResult Index(Judge judge)
+        public ActionResult Index()
         {
+            int judgeId = HttpContext.Session.GetInt32("JudgeID") ?? default(int);
+            Judge judge = judgeContext.GetJudge(judgeId);
             return View(judge);
         }
 
