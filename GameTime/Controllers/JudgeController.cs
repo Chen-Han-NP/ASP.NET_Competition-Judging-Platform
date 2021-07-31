@@ -86,7 +86,7 @@ namespace GameTime.Controllers
             int judgeID = (int)HttpContext.Session.GetInt32("JudgeID");
             foreach (int i in judgeContext.getCompetitions(judgeID))
             {
-                List<CompetitorSubmissionViewModel> c = submissionContext.getAllCompetitor(i);
+                List<CompetitorSubmissionViewModel> c = submissionContext.getAllCompetitorForJudge(i);
                 foreach (CompetitorSubmissionViewModel m in c)
                 {
                     if (compContext.GetDetails(m.CompetitionId).EndDate <= DateTime.Now) break; // If competition ended, don't display
@@ -97,10 +97,18 @@ namespace GameTime.Controllers
                     s.CompetitorName = m.CompetitorName;
                     s.FileSubmitted = m.FileSubmitted;
                     s.DateTimeSubmitted = m.DateTimeSubmitted;
-                    s.Appeal = m.Appeal;
                     s.VoteCount = m.VoteCount;
                     s.Ranking = m.Ranking;
                     s.FileUpload = m.FileUpload;
+
+                    if (m.Appeal != null)   // Allow Judges to view if appeal exists
+                    {
+                        s.Appeal = "View";
+                    }
+                    else
+                    {
+                        s.Appeal = "";  // Set to empty string so it doesn't return exception
+                    }
 
                     string n = "N/A";   // default text for each criteria score
 
@@ -229,6 +237,18 @@ namespace GameTime.Controllers
             {
                 return View(submission);
             }
+        }
+
+        public ActionResult Appeal(string id)
+        {
+            string[] idList = id.Split(','); // ["CompetitorID","CompetitionID","CriteriaID"]
+
+            int competitorID = Int32.Parse(idList[0]);
+            int competitionID = Int32.Parse(idList[1]);
+
+            AppealViewModel appeal = submissionContext.GetAppeal(competitorID, competitionID);
+
+            return View(appeal);
         }
 
         public bool isJudge()

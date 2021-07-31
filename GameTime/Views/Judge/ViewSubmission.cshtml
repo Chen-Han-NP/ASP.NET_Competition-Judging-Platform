@@ -84,7 +84,7 @@
                 @Html.DisplayFor(modelItem => item.DateTimeSubmitted)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Appeal)
+                @Html.ActionLink(item.Appeal, "Appeal", new { id = item.CompetitorID + "," + item.CompetitionID})
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VoteCount)
