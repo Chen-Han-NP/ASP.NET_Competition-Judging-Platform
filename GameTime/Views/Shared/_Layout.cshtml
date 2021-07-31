@@ -22,6 +22,10 @@
         {
             @await Html.PartialAsync("_AdminMenu.cshtml");
         }
+        else if (Context.Session.GetString("Role") == "Judge")
+            {
+                @await Html.PartialAsync("_JudgeMenu.cshtml");
+            }
         else
         {
             @await Html.PartialAsync("_PublicMenu.cshtml");

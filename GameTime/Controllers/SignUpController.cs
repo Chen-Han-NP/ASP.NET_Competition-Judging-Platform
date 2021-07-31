@@ -62,6 +62,7 @@ namespace GameTime.Controllers
             ViewData["GetAOI"] = GetAOI();
             ViewData["GetJudgeID"] = GetJudgeID();
             HttpContext.Session.SetInt32("JudgeID", GetJudgeID());
+            HttpContext.Session.SetString("Role", "Judge");
             return View(judge);
         }
 

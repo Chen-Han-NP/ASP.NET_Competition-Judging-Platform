@@ -68,6 +68,7 @@ namespace GameTime.Controllers
                     if (checkEmail == email && checkPassword == password)
                     {
                         HttpContext.Session.SetInt32("JudgeID", judgeID);
+                        HttpContext.Session.SetString("Role", "Judge");
                         return RedirectToAction("Index", "Judge");
                     }
                 }
