@@ -94,7 +94,7 @@ namespace GameTime.Controllers
             {
                 Value = "default",
                 Text = "-- select option --",
-                Selected = true
+                Selected = true,
             });
 
             for (int i = 0; i < AOI.Count(); i++)
