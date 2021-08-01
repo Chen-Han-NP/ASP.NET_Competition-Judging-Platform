@@ -190,8 +190,6 @@ namespace GameTime.Controllers
                     else
                     {
                         // Else create a new score
-                    }
-                    {
                         scoreContext.addScore(cs);
                     }
                 }
