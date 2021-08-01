@@ -7,8 +7,10 @@
 <div style="text-align:center">
     <h2>COMPETITIONS</h2>
 </div>
+<div>
+    <p class="">Today's Date: <mark>@DateTime.Today.ToString("dd MMM yyyy")</mark> </p>
+</div>
 <br />
-
 
 <form method="post">
     <div class="input-group rounded col-md-8">
@@ -17,6 +19,8 @@
         <input type="submit" class="btn btn-success" style="margin-left:5px;" value="Search" />
     </div>
 </form>
+
+
 
 @if (Convert.ToBoolean(ViewData["SuccessfulSearch"]) == false)
 {
@@ -43,24 +47,29 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>@item.CompetitionID.ToString()</td>
-                    <td>@item.CompetitionName</td>
-                    <td>@item.AreaInterestName</td>
-                    <td>@Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")</td>
-                    <td>@Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")</td>
-                    <td>@Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")</td>
-                    <td>@item.Status</td>
+                    <tr>
+                        <td>@item.CompetitionID.ToString()</td>
+                        <td>@item.CompetitionName</td>
+                        <td>@item.AreaInterestName</td>
+                        <td>@Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")</td>
+                        <td>@Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")</td>
+                        <td>@Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")</td>
+                        <td>@item.Status</td>
 
-                    <td>
-                        <a asp-action="ViewCompetition" asp-controller="ViewCompetition"
-                           asp-route-CompetitionId="@item.CompetitionID"
-                           asp-route-CompetitionName="@item.CompetitionName">View</a>
-                    </td>
-                </tr>
+
+
+
+
+
+                        <td>
+                            <a asp-action="ViewCompetition" asp-controller="ViewCompetition"
+                               asp-route-CompetitionId="@item.CompetitionID"
+                               asp-route-CompetitionName="@item.CompetitionName">View</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
- </div>
+    </div>
 
 }

@@ -52,25 +52,25 @@
                                 <p>No Date Set</p>
                     }
                 }
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")
             </td>
             <td>
                 @{
                     if (item.EndDate == null)
                     {
-                                <p>No Date Set</p>
+                        <p>No Date Set</p>
                     }
                 }
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")
             </td>
             <td>
                 @{
                     if (item.ResultReleasedDate == null)
                     {
-                                <p>No Date Set</p>
+                        <p>No Date Set</p>
                     }
                 }
-                @Html.DisplayFor(modelItem => item.ResultReleasedDate)
+                @Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")
             </td>
             <td>
                 @Html.ActionLink("Update", "Update", new { id = item.CompetitionID }) |
