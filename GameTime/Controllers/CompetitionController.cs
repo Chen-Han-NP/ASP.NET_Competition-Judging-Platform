@@ -32,7 +32,15 @@ namespace GameTime.Controllers
         }
         public ActionResult ErrorPage()
         {
-            ViewData["Error"] = TempData["Error"].ToString();
+            //if (TempData["Error"] == null)
+            //{
+            //    ViewData["Error"] = "An error has occured.";
+            //}
+            //else
+            //{
+                ViewData["Error"] = TempData["Error"].ToString();
+            //}
+           
             return View();
         }
         
@@ -244,23 +252,28 @@ namespace GameTime.Controllers
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
             // ...need to do 
+            Competition comp = compContext.GetDetails(id.Value);
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
                 TempData["Error"] = "You are not authorised to enter this page.";
                 return RedirectToAction("ErrorPage", "Competition");
             }
-            Competition comp = compContext.GetDetails(id.Value);
-            if (id == null || comp.CompetitionID == 0)
+            else if (id == null || comp.CompetitionID == 0)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
                 TempData["Error"] = "Invalid Competition ID";
                 return RedirectToAction("ErrorPage"); 
             }
            
-            if(DateTime.Now > comp.EndDate)
+            else if(DateTime.Now > comp.EndDate)
             {
                 TempData["Error"] = "Not allowed to add judges. Competition has ended.";
+                return RedirectToAction("ErrorPage");
+            }
+            else if(comp.StartDate == null || comp.EndDate == null)
+            {
+                TempData["Error"] = "Not allowed to add judges. Competition dates have not been finalised.";
                 return RedirectToAction("ErrorPage");
             }
 
@@ -350,31 +363,38 @@ namespace GameTime.Controllers
             // Stop accessing the action if not logged in
             // or account not in the "Administrator" role
             // ...need to do 
+            Competition comp = compContext.GetDetails(id.Value);
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
                 TempData["Error"] = "You are not authorised to enter this page.";
                 return RedirectToAction("ErrorPage", "Competition");
             }
-            Competition comp = compContext.GetDetails(id.Value);
-            if (id == null || comp.CompetitionID == 0)
+            else if (id == null || comp.CompetitionID == 0)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
-                TempData["ErrorID"] = "Invalid Competition ID";
+                TempData["Error"] = "Invalid Competition ID";
                 return RedirectToAction("ErrorPage");
             }
             
-            if (DateTime.Now > comp.EndDate)
+            else if (DateTime.Now > comp.EndDate)
             {
-                TempData["ErrorCompetitionStart"] = "Not allowed to remove judges. Competition has ended.";
+                TempData["Error"] = "Not allowed to remove judges. Competition has ended.";
                 return RedirectToAction("ErrorPage");
             }
+            
+            else if (comp.StartDate == null || comp.EndDate == null)
+            {
+                TempData["Error"] = "Not allowed to add judges. Competition dates have not been finalised.";
+                return RedirectToAction("ErrorPage");
+            }
+
 
             List<int> judgeidList = compContext.getJudgesinCompetition(id.Value);
             if (judgeidList.Count == 0)
             { //Query string parameter not provided
               //Return to listing page, not allowed to edit
-                TempData["ErrorNoJudges"] = "There are no judges to remove.";
+                TempData["Error"] = "There are no judges to remove.";
                 return RedirectToAction("ErrorPage");
             }
             for (int i = 0; i < judgeidList.Count; i++)
