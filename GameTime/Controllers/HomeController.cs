@@ -169,7 +169,7 @@ namespace GameTime.Controllers
         }
         public ActionResult Judge()
         {
-            return View();
+            return RedirectToAction("Index", "Judge");
         }
         public ActionResult Competitor()
         {
