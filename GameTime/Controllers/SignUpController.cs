@@ -29,6 +29,7 @@ namespace GameTime.Controllers
             competitor.Salutation = null; //cant be set to null because of GetAllCompetitor()
             competitor.Password = "";
             competitor.CompetitorID = competitorContext.Add(competitor);
+            HttpContext.Session.SetString("CompetitorID", competitor.CompetitorID.ToString());
             HttpContext.Session.SetString("Role", "Competitor");
             return RedirectToAction("Competitor", "Home");
         }
