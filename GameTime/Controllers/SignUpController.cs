@@ -62,8 +62,6 @@ namespace GameTime.Controllers
             Judge judge = new Judge();
             ViewData["GetAOI"] = GetAOI();
             ViewData["GetJudgeID"] = GetJudgeID();
-            HttpContext.Session.SetInt32("JudgeID", GetJudgeID());
-            HttpContext.Session.SetString("Role", "Judge");
             return View(judge);
         }
 
@@ -75,7 +73,7 @@ namespace GameTime.Controllers
             {
                 judge.JudgeID = judgeContext.Add(judge);
                 HttpContext.Session.SetInt32("JudgeID", judge.JudgeID);
-
+                HttpContext.Session.SetString("Role", "Judge");
                 return RedirectToAction("Index", "Judge");
             }
             else
