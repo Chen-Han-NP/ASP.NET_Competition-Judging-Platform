@@ -17,19 +17,6 @@ namespace GameTime.Models
 
         public double Score { get; set; }
 
-        [Display(Name = "Criteria 1")]
-        public string C1Score { get; set; }
-
-        [Display(Name = "Criteria 2")]
-        public string C2Score { get; set; }
-
-        [Display(Name = "Criteria 3")]
-        public string C3Score { get; set; }
-
-        [Display(Name = "Criteria 4")]
-        public string C4Score { get; set; }
-
-
         public string FileSubmitted { get; set; }
 
         [DataType(DataType.DateTime)]

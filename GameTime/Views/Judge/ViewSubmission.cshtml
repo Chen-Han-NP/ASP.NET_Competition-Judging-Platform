@@ -24,18 +24,6 @@
                 @Html.DisplayNameFor(model => model.Score)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.C1Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C2Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C3Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C4Score)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.FileSubmitted)
             </th>
             <th>
@@ -65,19 +53,8 @@
                 @Html.DisplayFor(modelItem => item.CompetitorName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Score)
-            </td>
-            <td>
-                @Html.ActionLink(item.C1Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",1" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C2Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",2" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C3Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",3" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C4Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",4" })
+                @Html.ActionLink(item.Score.ToString(), "Score", new { id = item.CompetitorID + "," + item.CompetitionID })
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FileSubmitted)
