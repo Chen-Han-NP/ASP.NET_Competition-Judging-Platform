@@ -4,63 +4,78 @@
     ViewData["Title"] = "Competitor";
 }
 
-<h1>Competitor</h1>
+<style>
+    body {
+        background-color: darkviolet;
+    }
+</style>
 
-<h4>CompetitorSignUp</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CompetitorSignUp">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CompetitorName" class="control-label"></label>
-                <input asp-for="CompetitorName" class="form-control" />
-                <span asp-validation-for="CompetitorName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Salutation" class="col-form-label"></label>
-                <div class="form-group form-check-inline">
-                    <label class="control-label">
-                        <input asp-for="Salutation" checked class="form-check-input" type="radio" value="Mr" />
-                        <span style="font-weight:normal; padding-right:20px">Mr</span>
-                    </label>
-                    <label class="control-label">
-                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mrs" />
-                        <span style="font-weight:normal; padding-right:20px">Mrs</span>
-                    </label>
-                    <label class="control-label">
-                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Ms" />
-                        <span style="font-weight:normal; padding-right:20px">Ms</span>
-                    </label>
-                    <label class="control-label">
-                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mdm" />
-                        <span style="font-weight:normal; padding-right:20px">Mdm</span>
-                    </label>
-                    <label class="control-label">
-                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Dr" />
-                        <span style="font-weight:normal; padding-right:20px">Dr</span>
-                    </label>
+
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">Competitor Sign Up</h5>
+                        <form asp-action="CompetitorSignUp">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="CompetitorName" class="control-label"></label>
+                                <input asp-for="CompetitorName" class="form-control" />
+                                <span asp-validation-for="CompetitorName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Salutation" class="col-form-label"></label>
+                                <div class="form-group form-check-inline">
+                                    <label class="control-label">
+                                        <input asp-for="Salutation" checked class="form-check-input" type="radio" value="Mr" />
+                                        <span style="font-weight:normal; padding-right:20px">Mr</span>
+                                    </label>
+                                    <label class="control-label">
+                                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mrs" />
+                                        <span style="font-weight:normal; padding-right:20px">Mrs</span>
+                                    </label>
+                                    <label class="control-label">
+                                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Ms" />
+                                        <span style="font-weight:normal; padding-right:20px">Ms</span>
+                                    </label>
+                                    <label class="control-label">
+                                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Mdm" />
+                                        <span style="font-weight:normal; padding-right:20px">Mdm</span>
+                                    </label>
+                                    <label class="control-label">
+                                        <input asp-for="Salutation" class="form-check-input" type="radio" value="Dr" />
+                                        <span style="font-weight:normal; padding-right:20px">Dr</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EmailAddr" class="control-label"></label>
+                                <input asp-for="EmailAddr" class="form-control" />
+                                <span asp-validation-for="EmailAddr" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" type="password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Sign Up" placeholder="Sign Up" class="btn btn-primary" />
+                            </div>
+
+                        </form>
+
+                        <div>
+                            <a asp-action="Index">Go Back</a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EmailAddr" class="control-label"></label>
-                <input asp-for="EmailAddr" class="form-control" />
-                <span asp-validation-for="EmailAddr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" type ="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="CompetitorSignUp" class="btn btn-primary" />
-            </div>
-
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Go Back</a>
-</div>
+</body>
 
