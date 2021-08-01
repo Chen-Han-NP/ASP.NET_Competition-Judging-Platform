@@ -119,14 +119,26 @@ namespace GameTime.Controllers
 
                     List<Criteria> cList = criteriaContext.GetAllCriteria(m.CompetitionId);
 
-                    if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[0].CriteriaID))
-                        s.C1Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[0].CriteriaID).Score.ToString();
+                    if (cList.Count >= 1)
+                    {
+                        if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[0].CriteriaID))
+                            s.C1Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[0].CriteriaID).Score.ToString();
+                    }
+                    if (cList.Count >= 2)
+                    {
                     if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[1].CriteriaID))
                         s.C2Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[1].CriteriaID).Score.ToString();
-                    if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[2].CriteriaID))
-                        s.C3Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[2].CriteriaID).Score.ToString();
-                    if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[3].CriteriaID))
-                        s.C4Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[3].CriteriaID).Score.ToString();
+                    }
+                    if (cList.Count >= 3)
+                    {
+                        if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[2].CriteriaID))
+                            s.C3Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[2].CriteriaID).Score.ToString();
+                    }
+                    if (cList.Count >= 4)
+                    {
+                        if (scoreContext.hasScore(m.CompetitorId, m.CompetitionId, cList[3].CriteriaID))
+                            s.C4Score = scoreContext.getCompetitorScore(m.CompetitorId, m.CompetitionId, cList[3].CriteriaID).Score.ToString();
+                    }
                     s.Score = scoreContext.getFinalScore(m.CompetitorId, m.CompetitionId);
                     Model.Add(s);
                 }
@@ -249,6 +261,14 @@ namespace GameTime.Controllers
             AppealViewModel appeal = submissionContext.GetAppeal(competitorID, competitionID);
 
             return View(appeal);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Appeal(AppealViewModel appeal)
+        {
+            submissionContext.DeleteAppeal(appeal.competitorID, appeal.competitionID);
+            return RedirectToAction("ViewSubmission", "Judge");
         }
 
         public bool isJudge()

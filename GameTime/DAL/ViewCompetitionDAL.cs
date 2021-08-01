@@ -36,7 +36,8 @@ namespace GameTime.DAL
             cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
 FROM Competition c
 INNER JOIN AreaInterest a
-ON c.AreaInterestID = a.AreaInterestID";
+ON c.AreaInterestID = a.AreaInterestID
+WHERE (c.StartDate IS NOT NULL) AND (c.EndDate IS NOT NULL) AND (c.ResultReleasedDate IS NOT NULL)";
 
             conn.Open();
 
