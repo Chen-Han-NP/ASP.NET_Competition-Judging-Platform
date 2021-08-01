@@ -51,6 +51,22 @@ namespace GameTime.Controllers
         {
             if (ModelState.IsValid)
             {
+                int judgeId = HttpContext.Session.GetInt32("JudgeID") ?? default(int);
+                List<int> compIdList = judgeContext.getCompetitions(judgeId);
+                bool inComp = false;
+                foreach (int i in compIdList)
+                {
+                    if(i == criteria.CompetitionID)
+                    {
+                        inComp = true;
+                        break;
+                    }
+                }
+                if (!inComp)
+                {
+                    ViewBag.Error = "Judge is not in this Competition";
+                    return View();
+                }
                 if (criteriaContext.GetTotalCriteria(criteria.CompetitionID) >= 100) // Check if competition already have 100% weightage
                 {
                     ViewBag.Error = "Criteria already has 100% weightage";
