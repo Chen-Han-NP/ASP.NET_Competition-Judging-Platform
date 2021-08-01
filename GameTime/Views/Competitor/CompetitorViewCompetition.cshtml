@@ -44,9 +44,9 @@
                         <td>@item.CompetitionID.ToString()</td>
                         <td>@item.CompetitionName</td>
                         <td>@item.AreaInterestName</td>
-                        <td>@Convert.ToDateTime(item.StartDate)</td>
-                        <td>@Convert.ToDateTime(item.EndDate)</td>
-                        <td>@Convert.ToDateTime(item.ResultReleasedDate)</td>
+                        <td>@Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")</td>
+                        <td>@Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")</td>
+                        <td>@Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")</td>
 
                         <td>
                             <a asp-action="CriteriaView" asp-controller="Competitor"

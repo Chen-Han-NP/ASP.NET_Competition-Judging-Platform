@@ -1,17 +1,20 @@
 ﻿@model IEnumerable<GameTime.Models.CompetitionViewModel>
 @{
+
 }
+
+
 <div style="text-align:center">
-    <h1>Competitions</h1>
+    <h2>COMPETITIONS</h2>
 </div>
 <br />
 
 
 <form method="post">
-    <div class="input-group rounded">
-        <input type="text" class="form-control rounded" name="CompetitionName" placeholder="Search" aria-label="Search"
+    <div class="input-group rounded col-md-8">
+        <input type="text" class="form-control rounded" name="CompetitionName" placeholder="Search for a competition by Name" aria-label="Search"
                aria-describedby="search-addon" />
-        <input type="submit" value="Search" />
+        <input type="submit" class="btn btn-success" style="margin-left:5px;" value="Search" />
     </div>
 </form>
 
@@ -24,7 +27,7 @@
 @if (Model.ToList().Count > 0)
 {
     <div class="table-responsive">
-        <table id="viewCompetitions" class="table table-striped table-bordered ">
+        <table id="viewCompetitions" class="table table-striped table-bordered table-responsive-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -44,17 +47,10 @@
                     <td>@item.CompetitionID.ToString()</td>
                     <td>@item.CompetitionName</td>
                     <td>@item.AreaInterestName</td>
-                    <td>@Convert.ToDateTime(item.StartDate).ToShortDateString()</td>
-                    <td>@Convert.ToDateTime(item.EndDate).ToShortDateString()</td>
-                    <td>@Convert.ToDateTime(item.ResultReleasedDate).ToShortDateString()</td>
-                    @if (DateTime.Compare((DateTime)item.ResultReleasedDate, DateTime.Now) > 0)
-                    {
-                        <td>On-going</td>
-                    }
-                    else
-                    {
-                        <td>Over</td>
-                    }
+                    <td>@Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")</td>
+                    <td>@Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")</td>
+                    <td>@Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")</td>
+                    <td>@item.Status</td>
 
                     <td>
                         <a asp-action="ViewCompetition" asp-controller="ViewCompetition"

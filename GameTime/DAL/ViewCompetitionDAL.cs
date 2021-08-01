@@ -46,20 +46,39 @@ WHERE (c.StartDate IS NOT NULL) AND (c.EndDate IS NOT NULL) AND (c.ResultRelease
             List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
             while (reader.Read())
             {
-                competitionList.Add(
-                new CompetitionViewModel
+                CompetitionViewModel competition = new CompetitionViewModel
                 {
-                    CompetitionID = reader.GetInt32(0), 
-                    AreaInterestID = reader.GetInt32(1), 
+                    CompetitionID = reader.GetInt32(0),
+                    AreaInterestID = reader.GetInt32(1),
                     AreaInterestName = reader.GetString(2),
-                    CompetitionName = reader.GetString(3), 
+                    CompetitionName = reader.GetString(3),
                     StartDate = !reader.IsDBNull(4) ?
                                   reader.GetDateTime(4) : (DateTime?)null,
                     EndDate = !reader.IsDBNull(5) ?
                                   reader.GetDateTime(5) : (DateTime?)null,
                     ResultReleasedDate = !reader.IsDBNull(6) ?
                                   reader.GetDateTime(6) : (DateTime?)null
-                });
+                };
+
+                if (DateTime.Compare(DateTime.Now, (DateTime)competition.ResultReleasedDate) >= 0)
+                {
+                    competition.Status = "Over";
+                }
+                else if ((DateTime.Compare(DateTime.Now, (DateTime)competition.EndDate) >= 0) &&
+                    (DateTime.Compare(DateTime.Now, (DateTime)competition.ResultReleasedDate) < 0))
+                {
+                    competition.Status = "Tabulating Results";
+                }
+                else if ((DateTime.Compare(DateTime.Now, (DateTime)competition.StartDate) >= 0) &&
+                     (DateTime.Compare(DateTime.Now, (DateTime)competition.EndDate) < 0))
+                {
+                    competition.Status = "On-going";
+                }
+                else
+                {
+                    competition.Status = "Not-started";
+                }
+                competitionList.Add(competition);
             }
 
             reader.Close();

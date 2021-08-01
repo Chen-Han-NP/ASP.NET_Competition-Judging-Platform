@@ -58,20 +58,13 @@ namespace GameTime.Controllers
             competitionCommentVM.commentList = competitionContext.getAllComments((int)competitionId);
             competitionCommentVM.competition = competitionContext.getCompetitionDetails((int)competitionId);
 
-            //check whether the competition is over or not
-            if (DateTime.Compare((DateTime)competitionCommentVM.competition.ResultReleasedDate, DateTime.Now ) > 0 )
-            {
-                ViewData["Status"] = "on-going";
+      
+            //Get the status of the competition
+            List<CompetitionViewModel> competitionList = new List<CompetitionViewModel>();
+            competitionList = competitionContext.GetAllCompetitions();
+            CompetitionViewModel competition = competitionList.Find(obj => obj.CompetitionID == (int)competitionId);
+            ViewData["Status"] = competition.Status;
 
-            }
-            else
-            {
-                ViewData["Status"] = "over";
-                //If its over, sort the competitionList according to the ranking, and only pass the first 3 values to the view.
-                List<CompetitorSubmissionViewModel> sortedCompetitor = competitionCommentVM.competitorList.OrderBy(x => x.Ranking).ToList();
-                competitionCommentVM.competitorList = sortedCompetitor;
-            }
-            
             //For voting checks
             string sessionCompetitionId = "competition" + competitionId.ToString();
 
