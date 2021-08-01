@@ -101,7 +101,8 @@ namespace GameTime.DAL
             // SQL 1st subquery checks for previously joined competitions
             // 2nd subquery checks for competitions with 2 or more judges
             // 3rd subquery checks for competitions with 3 or more days left to join
-            cmd.CommandText = @"SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
+            cmd.CommandText = @"
+SELECT c.CompetitionID, c.AreaInterestID, a.Name, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate
 FROM Competition c
 INNER JOIN AreaInterest a
 ON c.AreaInterestID = a.AreaInterestID
@@ -120,6 +121,8 @@ AND c.CompetitionID NOT IN
 (SELECT CompetitionID
 FROM Competition
 WHERE GETDATE() > DATEADD(DAY, -3, StartDate))
+AND (
+(c.StartDate IS NOT NULL) AND (c.EndDate IS NOT NULL) AND (c.ResultReleasedDate IS NOT NULL))
 ";
 
             cmd.Parameters.AddWithValue("@competitorId", competitorId);
