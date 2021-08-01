@@ -4,9 +4,19 @@
     ViewData["Title"] = "Appeal";
 }
 
-<h1>Appeal</h1>
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<div>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">Appeal</h1>
+
+<div class="whiteText">
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -34,6 +44,7 @@
         <input type="submit" value="Delete Appeal" class="btn btn-primary" />
     </form>
 </div>
+
 <div>
-    <a asp-action="ViewSubmission">Back to Submission View</a>
+    <input class="btn btn-primary" type="button" value="Back to Submission View" onclick="location.href='@Url.Action("ViewSubmission", "Judge")'" />
 </div>
