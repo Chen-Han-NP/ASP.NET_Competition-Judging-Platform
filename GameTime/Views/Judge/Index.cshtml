@@ -4,49 +4,30 @@
     ViewData["Title"] = "Judge";
 }
 
-<div>
-    <h4>Judge</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JudgeID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JudgeID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JudgeName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JudgeName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Salutation)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Salutation)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AreaInterestID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AreaInterestID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailAddr)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EmailAddr)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-    </dl>
+<style>
+    body {
+        background-color: darkviolet;
+    }
+
+    .whiteText {
+        color: snow;
+    }
+
+    .flexb {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        height:200px;
+    }
+
+</style>
+
+
+<div class="flexb whiteText">
+    <h4>Welcome back @Html.DisplayFor(model => model.Salutation) @Html.DisplayFor(model => model.JudgeName)</h4>
 </div>
-<div>
+<div class="flex justify-content-center">
     <input type="button" value="Create Criteria" onclick="location.href='@Url.Action("CreateCriteria", "Judge")'" />
     <input type="button" value="View Submission" onclick="location.href='@Url.Action("ViewSubmission", "Judge")'" />
 </div>
+

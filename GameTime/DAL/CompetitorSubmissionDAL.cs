@@ -256,7 +256,7 @@ WHERE (CompetitionID = @competitionID) AND (CompetitorID = @competitorID)";
             SqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = @"UPDATE CompetitionSubmission
-SET Appeal = ''
+SET Appeal = null
 WHERE (CompetitionID = @competitionID) AND (CompetitorID = @competitorID)";
 
             cmd.Parameters.AddWithValue("@competitorID", competitorID);
