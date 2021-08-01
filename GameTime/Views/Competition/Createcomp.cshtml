@@ -3,12 +3,21 @@
 @{
     ViewData["Title"] = "Createcomp";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>Create New Competition</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">Create New Competition</h1>
 
 
 <hr />
-<div class="row">
+<div class="row whiteText">
     <div class="col-md-4">
         <form asp-action="Createcomp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -51,6 +60,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 

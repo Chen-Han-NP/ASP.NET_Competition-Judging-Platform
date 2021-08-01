@@ -3,14 +3,23 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>Area Of Interests</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">Area Of Interests</h1>
 
 <p>
-    <a asp-action="CreateAOI">Create New Area Of Interest</a>
+    <a class="btn btn-primary" asp-action="CreateAOI">Create New Area Of Interest</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered">
+    <thead class="thead-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.AreaInterestID)
@@ -21,7 +30,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="background-color: white;">
         @foreach (var item in Model)
         {
             <tr>
@@ -42,5 +51,5 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="Home" asp-action="Admin">Back to Admin Page</a>
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Admin">Back to Admin Page</a>
 </div>

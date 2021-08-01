@@ -3,12 +3,20 @@
 @{
     ViewData["Title"] = "AddJudge";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>AddJudge</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+<h1 class="whiteText">AddJudge</h1>
 
-<h4>CompetitionJudge</h4>
+<h4 class="whiteText">CompetitionJudge</h4>
 <hr />
-<div class="row">
+<div class="row whiteText">
     <div class="col-md-4">
         @ViewData["noJudgesAvailable"]
         <form asp-action="AddJudge">
@@ -33,6 +41,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 

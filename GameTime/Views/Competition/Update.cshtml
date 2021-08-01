@@ -3,12 +3,21 @@
 @{
     ViewData["Title"] = "Update";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>Update</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
 
-<h4>Competition</h4>
+<h1 class="whiteText">Update</h1>
+
+<h4 class="whiteText">Competition</h4>
 <hr />
-<div class="row">
+<div class="row whiteText">
     <div class="col-md-4">
         <form asp-action="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -51,6 +60,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 
