@@ -1,22 +1,26 @@
 ﻿@model GameTime.Models.CompetitionCommentViewModel
 @{
 }
-
+<style>
+    body {
+        background-color: darkviolet;
+    }
+</style>
 
 
 <div style="text-align:center">
-    <h4 class="">@Model.competition.CompetitionName</h4>
+    <h4 style="color:snow;" >@Model.competition.CompetitionName</h4>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-info" asp-action="Index">Back to List</a>
 </div>
 
 <br />
 
 <div class="competitionDetails">
-    <p class="">Current Status: <mark>@ViewData["Status"]</mark> </p>
-    <p class="">Result Release Date: <mark>@Convert.ToDateTime(Model.competition.ResultReleasedDate).ToString("dd MMM yyyy")</mark></p>
+    <p style="color:snow;" class="">Current Status: <mark>@ViewData["Status"]</mark> </p>
+    <p style="color:snow;" class="">Result Release Date: <mark>@Convert.ToDateTime(Model.competition.ResultReleasedDate).ToString("dd MMM yyyy")</mark></p>
 </div>
 
 
@@ -29,11 +33,11 @@
 
         @if ((string)TempData["hasVoted"] == "false")
         {
-            <p class="">You have <mark>1</mark> vote</p>
+            <p style="color:snow;" class="">You have <mark>1</mark> vote</p>
         }
         else
         {
-            <p class="">You have voted to <mark>@TempData["votedTo"]</mark>.</p>
+            <p style="color:snow;" class="">You have voted to <mark>@TempData["votedTo"]</mark>.</p>
         }
         <div class="table-responsive">
             <table id="viewCompetitors" class="table table-striped table-bordered">
@@ -45,7 +49,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color:snow;">
                     @foreach (var item in Model.competitorList)
                     {
                         <tr>
@@ -83,7 +87,7 @@
 
     else
     {
-        <p>Currently no competitor taking part in this competition yet!</p>
+        <p style="color:snow;">Currently no competitor taking part in this competition yet!</p>
     }
 
 }
@@ -92,7 +96,7 @@
 else
 {
     <div class="table-responsive">
-        <p>Top <mark>3</mark> competitors</p>
+        <p style="color:snow;">Top <mark>3</mark> competitors</p>
         <table id="viewCompetitors" class="table table-striped table-bordered table-responsive-sm">
             <thead class="thead-dark">
                 <tr>
@@ -102,7 +106,7 @@ else
                     <th>Vote Count</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color:snow;">
                 @foreach (var item in Model.competitorList.Take(3))
                 {
                     <tr>
@@ -119,15 +123,16 @@ else
 
 <!--For Comment Section-->
 <br />
+<br />
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-responsive-sm">
-        <thead>
+        <thead style="background-color:snow;">
             <tr>
                 <th>Comments</th>
                 <th>Time Posted</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color:snow;">
 
             @foreach (var item in Model.commentList)
             {
