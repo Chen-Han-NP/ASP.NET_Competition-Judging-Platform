@@ -4,11 +4,12 @@
     ViewData["Title"] = "View Submission";
 }
 
-<h1>View Competitor Submission</h1>
+<h1>Competitor Submission</h1>
 
 
 <h3>@TempData["NoSubmission"]</h3>
-<table class="table">
+
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>
@@ -22,18 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C1Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C2Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C3Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.C4Score)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FileSubmitted)
@@ -65,22 +54,11 @@
                 @Html.DisplayFor(modelItem => item.CompetitorName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Score)
+                @Html.ActionLink(item.Score.ToString(), "Score", new { id = item.CompetitorID + "," + item.CompetitionID })
+
             </td>
             <td>
-                @Html.ActionLink(item.C1Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",1" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C2Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",2" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C3Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",3" })
-            </td>
-            <td>
-                @Html.ActionLink(item.C4Score, "Score", new { id = item.CompetitorID + "," + item.CompetitionID + ",4" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileSubmitted)
+                <a href="">@Html.DisplayFor(modelItem => item.FileSubmitted)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTimeSubmitted)
