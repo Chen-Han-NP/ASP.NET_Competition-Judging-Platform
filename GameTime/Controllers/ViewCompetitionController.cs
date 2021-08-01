@@ -65,6 +65,13 @@ namespace GameTime.Controllers
             CompetitionViewModel competition = competitionList.Find(obj => obj.CompetitionID == (int)competitionId);
             ViewData["Status"] = competition.Status;
 
+            if (competition.Status == "Over")
+            {
+                List<CompetitorSubmissionViewModel> sortedCompetitor = competitionCommentVM.competitorList.OrderBy(x => x.Ranking).ToList();
+                competitionCommentVM.competitorList = sortedCompetitor;
+            }
+
+
             //For voting checks
             string sessionCompetitionId = "competition" + competitionId.ToString();
 
