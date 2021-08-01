@@ -2,17 +2,26 @@
 @{
     ViewData["Title"] = "ErrorPage";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>OOPS!</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
 
-<h2>@ViewData["Error"]</h2>
+<h1 class="whiteText">OOPS!</h1>
+
+<h2 class="whiteText">@ViewData["Error"]</h2>
 
 <br />
 <div>
-    <a class="btn btn-outline-success text-dark" href="~/Home">Back to Admin HomePage</a>
+    <a class="btn btn-primary" href="~/Home">Back to Admin HomePage</a>
 </div>
 <br />
 <div>
-    <a class="btn btn-outline-success text-dark" asp-action="Index">Back to Competition List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to Competition List</a>
 </div>
 

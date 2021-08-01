@@ -34,9 +34,18 @@ namespace GameTime.Controllers
         }
         public ActionResult ErrorPage()
         {
-            //return an error page with error message when user is not allowed to execute an certain action.
-            ViewData["Error"] = TempData["Error"].ToString();
-            return View();
+            if (TempData["Error"] == null)
+            {
+                ViewData["Error"] = "Error";
+                return View();
+            }
+            else
+            {
+                //return an error page with error message when user is not allowed to execute an certain action.
+                ViewData["Error"] = TempData["Error"].ToString();
+                return View();
+            }
+            
         }
         
         

@@ -3,18 +3,27 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<style>
+    body {
+        background-color: darkviolet;
+    }
 
-<h1>Delete</h1>
+    .whiteText {
+        color: snow;
+    }
+</style>
+
+<h1 class="whiteText">Delete</h1>
 
 <form asp-action="Delete">
-    <fieldset class="FormContent">
+    <fieldset class="FormContent whiteText">
         <legend>Are you sure to delete this record?</legend>
         <div class="form-group row">
             <label asp-for="AreaInterestID"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 col-md-5">
                 <input asp-for="AreaInterestID" readonly
-                       class="form-control-plaintext" />
+                       class="form-control-plaintext whiteText" />
             </div>
         </div>
         <div class="form-group row">
@@ -22,7 +31,7 @@
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 col-md-5">
                 <input asp-for="Name" readonly
-                       class="form-control-plaintext" />
+                       class="form-control-plaintext whiteText" />
             </div>
         </div>
         <div class="form-group row">
@@ -32,7 +41,7 @@
             </div>
         </div>
         <div>
-            <a asp-action="Index">Back to List</a>
+            <a class="btn btn-primary" asp-action="Index">Back to List</a>
         </div>
     </fieldset>
 </form>
