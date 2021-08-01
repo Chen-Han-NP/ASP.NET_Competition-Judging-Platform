@@ -56,30 +56,33 @@
                     </td>
 
 
+                    @*
+                     @if ((DateTime.Today > item.StartDate) && (DateTime.Today < item.EndDate))
+                    {
+                        <td>
+                            <a asp-action="UploadView" asp-controller="Competitor"
+                               asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+                        </td>
+                    }
+                    else if (DateTime.Today < item.StartDate)
+                    {
+                        <td>
+                            Compeition Not Started
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            Compeition Ended
+                        </td>
+                    }
+                    *@
 
-                    @if ((DateTime.Today > item.StartDate) && (DateTime.Today < item.EndDate))
-                {
+
                     <td>
-                        <a asp-action="UploadView" asp-controller="Competitor"
-                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-                    </td>
-                }
-                else if (DateTime.Today < item.StartDate)
-                {
-                    <td>
-                        Compeition Not Started
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        Compeition Ended
-                    </td>
-                }
-                    @*<td>
-                        <a asp-action="UploadView" asp-controller="Competitor"
-                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-                    </td>*@
+            <a asp-action="UploadView" asp-controller="Competitor"
+               asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+        </td>
 
                     <td>
                         <a asp-action="ViewScore" asp-controller="Competitor"
