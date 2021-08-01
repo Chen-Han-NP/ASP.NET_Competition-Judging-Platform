@@ -130,6 +130,7 @@ namespace GameTime.Controllers
             int competitionID = Int32.Parse(idList[1]);
 
             List<Criteria> cList = criteriaContext.GetAllCriteria(competitionID);
+            if (cList.Count() == 0) RedirectToAction("ViewSubmission", "Judge");
 
             foreach (Criteria c in cList) // For each criteria in the competition
             {
