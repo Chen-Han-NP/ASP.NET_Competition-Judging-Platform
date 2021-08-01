@@ -30,23 +30,10 @@ namespace GameTime.DAL
 
         public int AddComp(Competition comp)
         {
-
-            //if (comp.StartDate == null)
-            //{
-            //    comp.StartDate = DateTime.Parse("01/01/1753");
-            //}
-            //if (comp.EndDate == null)
-            //{
-            //    comp.EndDate = DateTime.Parse("01/01/1753");
-            //}
-            //if (comp.ResultReleasedDate == null)
-            //{
-            //    comp.ResultReleasedDate = DateTime.Parse("01/01/1753");
-            //}
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
+            //return the auto-generated competitionid after insertion
             cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleasedDate)
 OUTPUT INSERTED.CompetitionID
 VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedDate)";
@@ -54,6 +41,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@AreaInterestID", comp.AreaInterestID);
             cmd.Parameters.AddWithValue("@CompetitionName", comp.CompetitionName);
+            //check if the dates are null
             if (comp.StartDate == null)
             {
                 cmd.Parameters.AddWithValue("@StartDate", DBNull.Value);
@@ -107,10 +95,12 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             List<Competition> CompetitionList = new List<Competition>();
             while (reader.Read())
             {
+                // create competition object and assign their respective  values
                 Competition competition = new Competition();
                 competition.CompetitionID = reader.GetInt32(0);
                 competition.AreaInterestID = reader.GetInt32(1);
                 competition.CompetitionName = reader.GetString(2);
+                //if the value is not null, read the value
                 if (!reader.IsDBNull(3))
                 {
                     competition.StartDate = reader.GetDateTime(3); //3: 4th column
@@ -132,41 +122,12 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
                 CompetitionList.Add(competition);
 
-                //             CompetitionList.Add(
-                //new Competition
-                //{
-                //    CompetitionID = reader.GetInt32(0), //0: 1st column
-                //             AreaInterestID = reader.GetInt32(1), //1: 2nd column
-                //                                                  //Get the first character of a string
-                //             CompetitionName = reader.GetString(2), //2: 3rd column
-
-
-                //             StartDate = reader.GetDateTime(3), //3: 4th column
-                //             EndDate = reader.GetDateTime(4),
-                //    ResultReleasedDate = reader.GetDateTime(5)
-                //}
-
-
             }
             //Close DataReader
             reader.Close();
             //Close the database connection
             conn.Close();
-            for (int i = 0; i < CompetitionList.Count; i++)
-            {
-                if (CompetitionList[i].StartDate == DateTime.Parse("01/01/1753"))
-                {
-                    CompetitionList[i].StartDate = null;
-                }
-                if (CompetitionList[i].EndDate == DateTime.Parse("01/01/1753"))
-                {
-                    CompetitionList[i].EndDate = null;
-                }
-                if (CompetitionList[i].ResultReleasedDate == DateTime.Parse("01/01/1753"))
-                {
-                    CompetitionList[i].ResultReleasedDate = null;
-                }
-            }
+            
             return CompetitionList;
         }
         public Competition GetDetails(int competitionId)
@@ -175,7 +136,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
-            //retrieves all attributes of a staff record.
+            //retrieves all attributes of a competition record.
             cmd.CommandText = @"SELECT * FROM Competition WHERE CompetitionID = @selectedCompetitionID";
             //Define the parameter used in SQL statement, value for the
             //parameter is retrieved from the method parameter “staffId”.
@@ -219,6 +180,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@AreaInterestID", competition.AreaInterestID);
             cmd.Parameters.AddWithValue("@CompetitionName", competition.CompetitionName);
+            //check if the values are null if null assign DBnull value
             if (competition.StartDate == null)
             {
                 cmd.Parameters.AddWithValue("@StartDate", DBNull.Value);
@@ -259,6 +221,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
         {
 
             SqlCommand cmd = conn.CreateCommand();
+            //execute remove competition
             cmd.CommandText = @"DELETE FROM Competition WHERE CompetitionID = @selectCompetitionID";
             cmd.Parameters.AddWithValue("@selectCompetitionID", competition.CompetitionID);
             //Open a database connection
@@ -278,7 +241,7 @@ VALUES(@AreaInterestID, @CompetitionName, @StartDate, @EndDate, @ResultReleasedD
 
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
+            //insert the competition judge obeject
             cmd.CommandText = @"INSERT INTO CompetitionJudge (CompetitionID, JudgeID)
 VALUES(@CompetitionID, @JudgeID)";
             //Define the parameters used in SQL statement, value for each parameter
@@ -287,8 +250,6 @@ VALUES(@CompetitionID, @JudgeID)";
             cmd.Parameters.AddWithValue("@JudgeID", judge.JudgeID);
             //conn.Close();
             conn.Open();
-            //ExecuteScalar is used to retrieve the auto-generated
-            //StaffID after executing the INSERT SQL statement
             cmd.ExecuteScalar();
             //A connection should be closed after operations.
             conn.Close();
@@ -301,8 +262,7 @@ VALUES(@CompetitionID, @JudgeID)";
             bool judgeFound = false;
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
-            //Specify the SELECT SQL statement that
-            //retrieves all attributes of a staff record.
+            //get the judge id from competition judge to check whether the judge is added.
             cmd.CommandText = @"SELECT JudgeID FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID AND JudgeID = @selectedJudgeID";
             //Define the parameter used in SQL statement, value for the
             //parameter is retrieved from the method parameter “staffId”.
@@ -336,10 +296,8 @@ VALUES(@CompetitionID, @JudgeID)";
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
-            //retrieves all attributes of a staff record.
+            //retrieves comeptition judge object where competition id matches
             cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @selectedCompetitionID";
-            //Define the parameter used in SQL statement, value for the
-            //parameter is retrieved from the method parameter “staffId”.
             cmd.Parameters.AddWithValue("@selectedCompetitionID", id);
             //Open a database connection
             conn.Open();
@@ -368,7 +326,7 @@ VALUES(@CompetitionID, @JudgeID)";
 
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
+            //delete record where competition id and judge id match
             cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @CompetitionID AND JudgeID = @JudgeID";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
@@ -376,8 +334,6 @@ VALUES(@CompetitionID, @JudgeID)";
             cmd.Parameters.AddWithValue("@JudgeID", judge.JudgeID);
             //conn.Close();
             conn.Open();
-            //ExecuteScalar is used to retrieve the auto-generated
-            //StaffID after executing the INSERT SQL statement
             cmd.ExecuteNonQuery();
             //A connection should be closed after operations.
             conn.Close();
@@ -389,13 +345,12 @@ VALUES(@CompetitionID, @JudgeID)";
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
-            //retrieves all attributes of a staff record.
+            //retrieves count of competitions that a judge has join which is happening now
             cmd.CommandText = @"SELECT COUNT(c.CompetitionID) FROM CompetitionJudge j
 INNER JOIN Competition c
 ON j.CompetitionID = c.CompetitionID 
 WHERE j.JudgeID = @selectedJudgeID AND c.EndDate > GETDATE() ";
-            //Define the parameter used in SQL statement, value for the
-            //parameter is retrieved from the method parameter “staffId”.
+            
             cmd.Parameters.AddWithValue("@selectedJudgeID", id);
             //Open a database connection
             conn.Open();

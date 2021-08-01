@@ -18,7 +18,8 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                TempData["Error"] = "You are not authorised to enter this page.";
+                return RedirectToAction("ErrorPage");
             }
             List<AreaOfInterest> aiList = AOIContext.GetAreaOfInterests();
             return View(aiList);
@@ -37,7 +38,7 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                TempData["Error"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                TempData["Error"] = "You are not authorised to enter this page.";
                 return RedirectToAction("ErrorPage");
             }
 
@@ -77,7 +78,7 @@ namespace GameTime.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Admin"))
             {
-                TempData["Error"] = "YOU IMPOSTOR, YOU AINT A ADMIN";
+                TempData["Error"] = "You are not authorised to enter this page.";
                 return RedirectToAction("ErrorPage");
             }
             AreaOfInterest aoi = AOIContext.GetDetails(id.Value);
