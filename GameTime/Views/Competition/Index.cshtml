@@ -49,10 +49,14 @@
                 @{
                     if (item.StartDate == null)
                     {
-                                <p>No Date Set</p>
+                        <p>No Date Set</p>
+                    }
+                    else
+                    {
+                        @Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")
                     }
                 }
-                @Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")
+                @*@Convert.ToDateTime(item.StartDate).ToString("dd MMM yyyy")*@
             </td>
             <td>
                 @{
@@ -60,8 +64,13 @@
                     {
                         <p>No Date Set</p>
                     }
+                    else
+                    {
+                        @Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")
+                    }
+
                 }
-                @Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")
+                @*@Convert.ToDateTime(item.EndDate).ToString("dd MMM yyyy")*@
             </td>
             <td>
                 @{
@@ -69,8 +78,12 @@
                     {
                         <p>No Date Set</p>
                     }
+                    else
+                    {
+                        @Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")
+                    }
                 }
-                @Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")
+                @*@Convert.ToDateTime(item.ResultReleasedDate).ToString("dd MMM yyyy")*@
             </td>
             <td>
                 @Html.ActionLink("Update", "Update", new { id = item.CompetitionID }) |
