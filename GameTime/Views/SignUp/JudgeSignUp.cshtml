@@ -5,7 +5,7 @@
 
 <h1>Judge</h1>
 
-<h4>JudgeSignUp</h4>
+<h4>Judge Sign Up</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -45,8 +45,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="AreaInterestID" class="control-label"></label>
-                <select asp-for="AreaInterestID" asp-items="@ViewData["AOIList"] as List<SelectListItem>"></select>
+                <label asp-for="AreaInterestID" class="control-label"></label> <br />
+                <select asp-for="AreaInterestID" asp-items="@ViewData["AOIList"] as List<SelectListItem>"></select> <br />
+                <span asp-validation-for="AreaInterestID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmailAddr" class="control-label"></label>

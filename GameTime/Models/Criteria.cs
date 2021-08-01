@@ -9,13 +9,16 @@ namespace GameTime.Models
     public class Criteria
     {
         [Required]
+        [Display(Name = "Criteria ID")]
         public int CriteriaID { get; set; }
 
         [Required]
+        [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "Character name can be up to 50 characters.")]
+        [Display(Name = "Criteria Name")]
         public string CriteriaName { get; set; }
 
         [Required]

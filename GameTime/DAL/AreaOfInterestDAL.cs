@@ -34,7 +34,7 @@ namespace GameTime.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
+            //return the auto-generated AOIID after insertion
             cmd.CommandText = @"INSERT INTO AreaInterest (Name)
 OUTPUT INSERTED.AreaInterestID
 VALUES(@name)";
@@ -44,7 +44,7 @@ VALUES(@name)";
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
-            //StaffID after executing the INSERT SQL statement
+            //AOIID after executing the INSERT SQL statement
             aoi.AreaInterestID = (int)cmd.ExecuteScalar();
             
             //A connection should be closed after operations.
@@ -64,7 +64,7 @@ VALUES(@name)";
             conn.Open();
             //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            //Read all records until the end, save data into a staff list
+            //Read all records until the end, save data into  interest list
             List<AreaOfInterest> aiList = new List<AreaOfInterest>();
             while (reader.Read())
             {
@@ -92,11 +92,11 @@ VALUES(@name)";
             //Open a database connection
             conn.Open();
             int rowAffected;
-            //Execute the DELETE SQL to remove the staff record
+            //Execute the DELETE SQL to remove the interest record
             rowAffected = cmd.ExecuteNonQuery();
             //Close database connection
             conn.Close();
-            //Return number of row of staff record updated or deleted
+            //Return number of row of interest record updated or deleted
             return rowAffected;
         }
 
@@ -105,11 +105,8 @@ VALUES(@name)";
             //Competition Competition = new Competition();
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
-            //Specify the SELECT SQL statement that
-            //retrieves all attributes of a staff record.
+            //Specify the SELECT SQL statement that retrieves competitions matching the selected area of interest 
             cmd.CommandText = @"SELECT * FROM Competition WHERE AreaInterestID = @selectedaoiId";
-            //Define the parameter used in SQL statement, value for the
-            //parameter is retrieved from the method parameter “staffId”.
             cmd.Parameters.AddWithValue("@selectedaoiId", aoiId);
             //Open a database connection
             conn.Open();
@@ -122,7 +119,8 @@ VALUES(@name)";
                 while (reader.Read())
                 {
                     Competition Competition = new Competition();
-                    // Fill staff object with values from the data reader
+                    // Fill competition object with values from the data reader
+                    // if date is null, leave it as null
                     Competition.CompetitionID = aoiId;
                     Competition.AreaInterestID = reader.GetInt32(1);
                     Competition.CompetitionName = reader.GetString(2);
@@ -149,7 +147,6 @@ VALUES(@name)";
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
             cmd.CommandText = @"SELECT * FROM AreaInterest WHERE AreaInterestID = @selectredaoiid";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
@@ -164,7 +161,7 @@ VALUES(@name)";
                 //Read the record from database
                 while (reader.Read())
                 {
-                    // Fill staff object with values from the data reader
+                    // Fill aoi object with values from the data reader
                     aoi.AreaInterestID = aoiID;
                     aoi.Name = reader.GetString(1);
                     

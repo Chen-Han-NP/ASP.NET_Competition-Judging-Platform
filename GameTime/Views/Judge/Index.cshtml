@@ -16,18 +16,21 @@
     .flexb {
         display: flex;
         justify-content: center;
+    }
+
+    .welcome {
         align-items: end;
-        height:200px;
+        height: 200px;
     }
 
 </style>
 
 
-<div class="flexb whiteText">
+<div class="flexb welcome whiteText">
     <h4>Welcome back @Html.DisplayFor(model => model.Salutation) @Html.DisplayFor(model => model.JudgeName)</h4>
 </div>
-<div class="flex justify-content-center">
-    <input type="button" value="Create Criteria" onclick="location.href='@Url.Action("CreateCriteria", "Judge")'" />
-    <input type="button" value="View Submission" onclick="location.href='@Url.Action("ViewSubmission", "Judge")'" />
+<div class="flexb justify-content-center whiteText">
+    <input class="btn btn-primary" type="button" value="Create Criteria" onclick="location.href='@Url.Action("CreateCriteria", "Judge")'" /> <h4>|</h4>
+    <input class="btn btn-primary" type="button" value="View Submission" onclick="location.href='@Url.Action("ViewSubmission", "Judge")'" />
 </div>
 

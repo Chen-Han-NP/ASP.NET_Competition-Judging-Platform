@@ -4,11 +4,12 @@
     ViewData["Title"] = "View Submission";
 }
 
-<h1>View Competitor Submission</h1>
+<h1>Competitor Submission</h1>
 
 
 <h3>@TempData["NoSubmission"]</h3>
-<table class="table">
+
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>
@@ -57,7 +58,7 @@
 
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileSubmitted)
+                <a href="">@Html.DisplayFor(modelItem => item.FileSubmitted)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTimeSubmitted)

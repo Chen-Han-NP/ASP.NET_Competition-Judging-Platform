@@ -131,12 +131,14 @@ namespace GameTime.Controllers
 
             List<Criteria> cList = criteriaContext.GetAllCriteria(competitionID);
 
-            foreach (Criteria c in cList)
+            foreach (Criteria c in cList) // For each criteria in the competition
             {
                 CompetitionScore Model;
                 if (scoreContext.hasScore(competitorID, competitionID, c.CriteriaID)) // Check if Criteria previously has score to get
                 {
                     Model = scoreContext.getCompetitorScore(competitorID, competitionID, c.CriteriaID); // Yes : get Score to Model
+                    Model.CriteriaName = c.CriteriaName;
+                    Model.Weightage = c.Weightage;
                 }
                 else // No : create new Score
                 {
@@ -164,11 +166,14 @@ namespace GameTime.Controllers
             {
                 foreach (CompetitionScore cs in csList)
                 {
-                    if (scoreContext.hasScore(cs.CompetitorID, cs.CompetitionID, cs.CriteriaID))
+                    if (scoreContext.hasScore(cs.CompetitorID, cs.CompetitionID, cs.CriteriaID)) // If score exist update score
                     {
                         scoreContext.updateScore(cs);
                     }
                     else
+                    {
+                        // Else create a new score
+                    }
                     {
                         scoreContext.addScore(cs);
                     }
