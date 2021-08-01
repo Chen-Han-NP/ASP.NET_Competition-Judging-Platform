@@ -25,10 +25,11 @@
         else if (Context.Session.GetString("Role") == "Judge")
             {
                 @await Html.PartialAsync("_JudgeMenu.cshtml");
-            }
+        }
         else
         {
             @await Html.PartialAsync("_PublicMenu.cshtml");
+            
         }
     </header>
     <div class="container">
