@@ -3,22 +3,25 @@
 }
 
 
+
 <div style="text-align:center">
-    <h2>@Model.competition.CompetitionName</h2>
+    <h4 class="">@Model.competition.CompetitionName</h4>
 </div>
-
-<div class="competitionDetails">
-    <h5>Current Status: The competition is @ViewData["Status"] </h5>
-    <h7>Result Release date: @Model.competition.ResultReleasedDate</h7>
-</div>
-
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+<br />
 
-@if (ViewData["Status"].ToString() == "on-going")
+<div class="competitionDetails">
+    <p class="">Current Status: <mark>@ViewData["Status"]</mark> </p>
+    <p class="">Result Release Date: <mark>@Convert.ToDateTime(Model.competition.ResultReleasedDate).ToString("dd MMM yyyy")</mark></p>
+</div>
+
+
+
+@if (ViewData["Status"].ToString() != "Over")
 {
 
     @if (Model.competitorList.ToList().Count > 0)
@@ -26,11 +29,11 @@
 
         @if ((string)TempData["hasVoted"] == "false")
         {
-            <h4>You have 1 vote</h4>
+            <p class="">You have <mark>1</mark> vote</p>
         }
         else
         {
-            <h4>You have voted to @TempData["votedTo"].</h4>
+            <p class="">You have voted to <mark>@TempData["votedTo"]</mark>.</p>
         }
         <div class="table-responsive">
             <table id="viewCompetitors" class="table table-striped table-bordered">
@@ -63,7 +66,7 @@
                                 }
                                 else
                                 {
-                                    <a>Vote</a>
+                                    <a></a>
                                 }
 
 
@@ -80,7 +83,7 @@
 
     else
     {
-        <h3>Currently no competitor taking part in this competition yet!</h3>
+        <p>Currently no competitor taking part in this competition yet!</p>
     }
 
 }
@@ -89,8 +92,8 @@
 else
 {
     <div class="table-responsive">
-        <h5>Top 3 competitors</h5>
-        <table id="viewCompetitors" class="table table-striped table-bordered">
+        <p>Top <mark>3</mark> competitors</p>
+        <table id="viewCompetitors" class="table table-striped table-bordered table-responsive-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>Rank</th>
@@ -116,7 +119,7 @@ else
 
 
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered table-responsive-sm">
         <thead>
             <tr>
                 <th>Comments</th>

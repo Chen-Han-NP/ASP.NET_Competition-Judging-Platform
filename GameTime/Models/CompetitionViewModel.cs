@@ -40,6 +40,9 @@ namespace GameTime.Models
         public DateTime? ResultReleasedDate { get; set; }
 
 
+        public string Status { get; set; }
+
+
 
 
 
