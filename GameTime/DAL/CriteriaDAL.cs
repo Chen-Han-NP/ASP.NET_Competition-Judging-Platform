@@ -103,8 +103,19 @@ GROUP BY CompetitionID";
             //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
 
+            int TotalCriteria;
             reader.Read();
-            int TotalCriteria = reader.GetInt32(1);
+            try
+            {
+                TotalCriteria = reader.GetInt32(1);
+            }
+            catch (Exception)
+            {
+                TotalCriteria = 0;
+                reader.Close();
+                conn.Close();
+                return TotalCriteria;
+            }
 
             reader.Close();
             conn.Close();
