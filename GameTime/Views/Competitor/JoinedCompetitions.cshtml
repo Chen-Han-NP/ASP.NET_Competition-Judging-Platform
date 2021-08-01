@@ -67,22 +67,22 @@
                     else if (DateTime.Today < item.StartDate)
                     {
                         <td>
-                            Compeition Not Started
+                            Competition Not Started
                         </td>
                     }
                     else
                     {
                         <td>
-                            Compeition Ended
+                            Competition Ended
                         </td>
                     }
                     
 
 
-                    <td>
+                    @*<td>
             <a asp-action="UploadView" asp-controller="Competitor"
                asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-        </td>
+        </td>*@
 
                     <td>
                         <a asp-action="ViewScore" asp-controller="Competitor"
