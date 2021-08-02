@@ -9,7 +9,7 @@
 
 
 <div style="text-align:center">
-    <h4 style="color:snow;" >@Model.competition.CompetitionName</h4>
+    <h4 style="color:snow;">@Model.competition.CompetitionName</h4>
 </div>
 
 <div>
@@ -20,7 +20,16 @@
 
 <div class="competitionDetails">
     <p style="color:snow;" class="">Current Status: <mark>@ViewData["Status"]</mark> </p>
-    <p style="color:snow;" class="">Result Release Date: <mark>@Convert.ToDateTime(Model.competition.ResultReleasedDate).ToString("dd MMM yyyy")</mark></p>
+    @if (ViewData["Status"].ToString() != "On-going")
+    {
+        <p style="color:snow;" class="">Start Date: <mark>@Convert.ToDateTime(Model.competition.StartDate).ToString("dd MMM yyyy")</mark></p>
+    }
+    @if (ViewData["Status"].ToString() != "Not-started")
+    {
+        <p style="color:snow;" class="">Result Release Date: <mark>@Convert.ToDateTime(Model.competition.ResultReleasedDate).ToString("dd MMM yyyy")</mark></p>
+    }
+
+
 </div>
 
 
@@ -30,23 +39,29 @@
 
     @if (Model.competitorList.ToList().Count > 0)
     {
+        @if (ViewData["Status"].ToString() == "On-going")
+        {
+            @if ((string)TempData["hasVoted"] == "false")
+            {
+                <p style="color:snow;" class="">You have <mark>1</mark> vote</p>
+            }
+            else
+            {
+                <p style="color:snow;" class="">You have voted to <mark>@TempData["votedTo"]</mark>.</p>
+            }
+        }
 
-        @if ((string)TempData["hasVoted"] == "false")
-        {
-            <p style="color:snow;" class="">You have <mark>1</mark> vote</p>
-        }
-        else
-        {
-            <p style="color:snow;" class="">You have voted to <mark>@TempData["votedTo"]</mark>.</p>
-        }
         <div class="table-responsive">
             <table id="viewCompetitors" class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th>Name</th>
-                        <th>Work Submitted</th>
-                        <th>Vote Count</th>
-                        <th></th>
+                        @if (ViewData["Status"].ToString() == "On-going")
+                        {
+                            <th>Work Submitted</th>
+                            <th>Vote Count</th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody style="background-color:snow;">
@@ -54,28 +69,33 @@
                     {
                         <tr>
                             <td>@item.Salutation @item.CompetitorName</td>
-                            <td><a href="/competitorSubmissions/@item.FileSubmitted">@item.FileSubmitted</a>
-                            </td>
-                            <td>@item.VoteCount.ToString()</td>
-                            <td>
+                            @if (ViewData["Status"].ToString() == "On-going")
+                            {
 
-                                @if ((string)TempData["hasVoted"] == "false")
-                                {
-                                    <a asp-action="Vote" asp-controller="ViewCompetition"
-                                       asp-route-CompetitorId="@item.CompetitorId"
-                                       asp-route-CompetitorName="@item.CompetitorName"
-                                       asp-route-CompetitionId="@item.CompetitionId">
-                                        Vote
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a></a>
-                                }
+                                <td>
+                                    <a href="/competitorSubmissions/@item.FileSubmitted">@item.FileSubmitted</a>
+                                </td>
+                                <td>@item.VoteCount.ToString()</td>
+                                <td>
+
+                                    @if ((string)TempData["hasVoted"] == "false")
+                                    {
+                                        <a asp-action="Vote" asp-controller="ViewCompetition"
+                                           asp-route-CompetitorId="@item.CompetitorId"
+                                           asp-route-CompetitorName="@item.CompetitorName"
+                                           asp-route-CompetitionId="@item.CompetitionId">
+                                            Vote
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a></a>
+                                    }
 
 
 
-                            </td>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>
@@ -91,6 +111,8 @@
     }
 
 }
+
+
 
 //For competition that is OVER
 else

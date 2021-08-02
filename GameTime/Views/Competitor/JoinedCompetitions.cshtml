@@ -56,33 +56,36 @@
                     </td>
 
 
-                    
-                     @if ((DateTime.Today > item.StartDate) && (DateTime.Today < item.EndDate))
-                    {
-                        <td>
-                            <a asp-action="UploadView" asp-controller="Competitor"
-                               asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-                        </td>
-                    }
-                    else if (DateTime.Today < item.StartDate)
-                    {
-                        <td>
-                            Competition Not Started
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            Competition Ended
-                        </td>
-                    }
-                    
+
+                    @*
+
+        @if ((DateTime.Today > item.StartDate) && (DateTime.Today < item.EndDate))
+        {
+            <td>
+                <a asp-action="UploadView" asp-controller="Competitor"
+                   asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+            </td>
+        }
+        else if (DateTime.Today < item.StartDate)
+        {
+            <td>
+                Competition Not Started
+            </td>
+        }
+        else
+        {
+            <td>
+                Competition Ended
+            </td>
+        }
+
+                    *@
 
 
-                    @*<td>
-            <a asp-action="UploadView" asp-controller="Competitor"
-               asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
-        </td>*@
+                    <td>
+                        <a asp-action="UploadView" asp-controller="Competitor"
+                           asp-route-CompetitionId="@item.CompetitionID">Upload File</a>
+                    </td>
 
                     <td>
                         <a asp-action="ViewScore" asp-controller="Competitor"
